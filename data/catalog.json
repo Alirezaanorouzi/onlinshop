@@ -5,8 +5,8 @@
     "collection": "men",
     "category": "shirt",
     "price": 1850000,
-    "image": "/images/men-oxford-shirt.svg",
-    "description": "پیراهن نخی با یقه انگلیسی و دکمه‌های جلو، برای استفاده روزمره.",
+    "image": "/images/men-oxford-shirt.png",
+    "description": "پیراهن رسمی کرم با یقه کلاسیک و آستین بلند.",
     "colors": [
       { "id": "cream", "name": "کرم", "hex": "#f3f0e8" },
       { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
@@ -15,14 +15,14 @@
   },
   {
     "slug": "men-linen-shirt",
-    "name": "پیراهن لینن آستین کوتاه",
+    "name": "پیراهن راه‌راه آستین کوتاه",
     "collection": "men",
     "category": "shirt",
     "price": 1650000,
-    "image": "/images/men-linen-shirt.svg",
-    "description": "پیراهن خنک با بافت لینن و برش آزاد.",
+    "image": "/images/men-linen-shirt.png",
+    "description": "پیراهن آستین کوتاه راه‌راه با برش آزاد و دکمه جلو.",
     "colors": [
-      { "id": "sand", "name": "شن", "hex": "#e7e1d6" },
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" },
       { "id": "white", "name": "سفید", "hex": "#f7f7f5" }
     ],
     "sizes": ["M", "L", "XL"]
