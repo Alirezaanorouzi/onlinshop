@@ -1,31 +1,33 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { assetPath } from "@/lib/asset-path";
+import { ProductImageGallery } from "@/components/ProductImageGallery";
+import { getProductImages } from "@/lib/product-images";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { useSearch } from "@/lib/search";
 import type { Product } from "@/lib/types";
 
 function ProductCard({ product }: { product: Product }) {
+  const images = getProductImages(product);
+
   return (
-    <Link
-      href={`/product/${product.slug}`}
+    <div
       className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-surface/50 p-2 transition hover:border-gold/35 hover:bg-surface"
     >
-      <span className="relative block aspect-[3/4] overflow-hidden rounded-xl bg-surface">
-        <Image
-          src={assetPath(product.image)}
-          alt={product.name}
-          fill
-          unoptimized
-          className="object-cover transition duration-300 group-hover:scale-[1.03]"
-          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-        />
-      </span>
-      <span className="mt-3 line-clamp-2 px-1 text-sm leading-6">{product.name}</span>
+      <ProductImageGallery
+        images={images}
+        alt={product.name}
+        variant="card"
+        productHref={`/product/${product.slug}`}
+      />
+      <Link
+        href={`/product/${product.slug}`}
+        className="mt-3 line-clamp-2 px-1 text-sm leading-6 hover:text-gold"
+      >
+        {product.name}
+      </Link>
       <span className="mt-1 px-1 pb-1 text-xs text-gold">{formatPrice(product.price)}</span>
-    </Link>
+    </div>
   );
 }
 

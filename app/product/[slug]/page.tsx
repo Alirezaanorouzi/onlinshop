@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { AddToCart } from "@/components/AddToCart";
-import { assetPath } from "@/lib/asset-path";
+import { ProductImageGallery } from "@/components/ProductImageGallery";
+import { getProductImages } from "@/lib/product-images";
 import {
   getCategory,
   getCollection,
@@ -53,17 +53,12 @@ async function ProductContent({
 
   return (
     <article className="mx-auto grid max-w-6xl gap-8 px-3 py-8 sm:gap-10 sm:px-4 sm:py-12 lg:grid-cols-2">
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface">
-        <Image
-          src={assetPath(product.image)}
-          alt={product.name}
-          fill
-          unoptimized
-          priority
-          className="object-cover"
-          sizes="(min-width: 1024px) 50vw, 100vw"
-        />
-      </div>
+      <ProductImageGallery
+        images={getProductImages(product)}
+        alt={product.name}
+        variant="detail"
+        priority
+      />
       <div>
         <p className="text-sm text-muted">
           <Link

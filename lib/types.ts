@@ -19,6 +19,8 @@ export type Product = {
   category: string;
   price: number;
   image: string;
+  /** Extra gallery shots; falls back to `image` when omitted */
+  images?: string[];
   description: string;
   colors: Color[];
   sizes: string[];
