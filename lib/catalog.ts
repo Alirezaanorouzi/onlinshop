@@ -49,11 +49,14 @@ const collections: Collection[] = [
 ];
 
 const menCategoryImages: Record<string, string> = {
+  accessory: "/images/categories/men-accessory.png",
+  shirt: "/images/categories/men-shirt.png",
   tshirt: "/images/categories/men-tshirt.png",
   hoodie: "/images/categories/men-hoodie.png",
-  pants: "/images/categories/men-pants.png",
   set: "/images/categories/men-set.png",
+  pants: "/images/categories/men-pants.png",
   shorts: "/images/categories/men-shorts.png",
+  shoes: "/images/categories/men-shoes.png",
 };
 
 function variantsFor(product: RawProduct): Variant[] {
