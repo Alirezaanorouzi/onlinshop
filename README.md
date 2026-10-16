@@ -18,12 +18,16 @@ With `GITHUB_REPO` in `.env`, the app uses the same base path as GitHub Pages. O
 **Live URL (after deploy):**  
 https://alirezaanorouzi.github.io/onlinshop/
 
-### One-time GitHub settings
+### One-time GitHub settings (important)
 
-1. Push this project to `https://github.com/Alirezaanorouzi/onlinshop` on branch **`main`**.
+If you only see the README on the site, Pages is pointing at **`main`** instead of the built files. Fix it once:
+
+1. Push code to **`main`** (workflow builds the shop into the **`gh-pages`** branch).
 2. Repo **Settings → Pages → Build and deployment**
-   - **Source:** GitHub Actions
-3. After the workflow runs, the site URL appears on the Pages settings page.
+   - **Source:** Deploy from a branch
+   - **Branch:** `gh-pages` → `/ (root)` → **Save**
+3. Wait for the **Deploy GitHub Pages** action to finish (tab **Actions**).
+4. Open **https://alirezaanorouzi.github.io/onlinshop/** (not the repo README page).
 
 ### Deploy
 
