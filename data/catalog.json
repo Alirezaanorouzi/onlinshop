@@ -29,43 +29,57 @@
   },
   {
     "slug": "men-plain-tee",
-    "name": "تیشرت نخی ساده",
+    "name": "تیشرت اورسایز کرم",
     "collection": "men",
     "category": "tshirt",
-    "price": 790000,
-    "image": "/images/men-plain-tee.svg",
-    "description": "تیشرت روزمره با یقه گرد و پارچه نخی.",
+    "price": 890000,
+    "image": "/images/men-plain-tee.png",
+    "description": "تیشرت اورسایز با طرح جلو و پارچه نخی ضخیم.",
     "colors": [
-      { "id": "white", "name": "سفید", "hex": "#f7f7f5" },
+      { "id": "cream", "name": "کرم", "hex": "#f3efe8" },
       { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
     ],
     "sizes": ["S", "M", "L", "XL"]
   },
   {
     "slug": "men-heavy-tee",
-    "name": "تیشرت سنگین یقه گرد",
+    "name": "تیشرت اورسایز سبز",
     "collection": "men",
     "category": "tshirt",
     "price": 980000,
-    "image": "/images/men-heavy-tee.svg",
-    "description": "تیشرت ضخیم‌تر با افتادگی کمتر و دوخت تمیز.",
+    "image": "/images/men-heavy-tee.png",
+    "description": "تیشرت اورسایز سبز با آستین کوتاه و برش آزاد.",
     "colors": [
-      { "id": "cream", "name": "کرم", "hex": "#f3efe8" },
-      { "id": "gray", "name": "خاکستری", "hex": "#8d8a86" }
+      { "id": "green", "name": "سبز", "hex": "#1e4d3a" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "slug": "men-oversize-tee",
+    "name": "تیشرت اورسایز یقه گرد",
+    "collection": "men",
+    "category": "tshirt",
+    "price": 920000,
+    "image": "/images/men-oversize-tee.png",
+    "description": "تیشرت اورسایز یقه گرد با پارچه نرم و دوخت تمیز.",
+    "colors": [
+      { "id": "green", "name": "سبز", "hex": "#1e4d3a" },
+      { "id": "white", "name": "سفید", "hex": "#f7f7f5" }
     ],
     "sizes": ["M", "L", "XL"]
   },
   {
     "slug": "men-daily-hoodie",
-    "name": "هودی سبک روزمره",
+    "name": "سویشرت زیپ‌دار خاکستری",
     "collection": "men",
     "category": "hoodie",
     "price": 2450000,
-    "image": "/images/men-daily-hoodie.svg",
-    "description": "هودی نخی با کلاه و جیب کانگورویی.",
+    "image": "/images/men-daily-hoodie.png",
+    "description": "سویشرت زیپ‌دار با یقه ایستاده و برش آزاد.",
     "colors": [
-      { "id": "cream", "name": "کرم", "hex": "#f2efe8" },
-      { "id": "brown", "name": "قهوه‌ای", "hex": "#6b4a34" }
+      { "id": "grey", "name": "خاکستری", "hex": "#4a4a4a" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
     ],
     "sizes": ["M", "L", "XL"]
   },
@@ -75,13 +89,26 @@
     "collection": "men",
     "category": "hoodie",
     "price": 2190000,
-    "image": "/images/men-crew-sweat.svg",
-    "description": "دورس نرم برای هوای خنک، بدون طرح اضافه.",
+    "image": "/images/men-crew-sweat.png",
+    "description": "دورس یقه گرد با پارچه ضخیم و دوخت تمیز.",
     "colors": [
       { "id": "stone", "name": "استخوانی", "hex": "#ece7df" },
       { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
     ],
     "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "slug": "men-zip-sweat",
+    "name": "سویشرت زیپ‌دار مشکی",
+    "collection": "men",
+    "category": "hoodie",
+    "price": 2590000,
+    "image": "/images/men-zip-sweat.png",
+    "description": "سویشرت زیپ‌دار مشکی با یقه بلند و آستین راحت.",
+    "colors": [
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["M", "L", "XL"]
   },
   {
     "slug": "men-hoodie-set",
@@ -117,7 +144,7 @@
     "collection": "men",
     "category": "pants",
     "price": 2290000,
-    "image": "/images/men-straight-jeans.svg",
+    "image": "/images/men-straight-jeans.png",
     "description": "جین راسته با رنگ آبی میانه و قد استاندارد.",
     "colors": [
       { "id": "blue", "name": "آبی", "hex": "#6d88a8" },
@@ -131,7 +158,7 @@
     "collection": "men",
     "category": "pants",
     "price": 1980000,
-    "image": "/images/men-chino.svg",
+    "image": "/images/men-chino.png",
     "description": "شلوار کتان با برش مستقیم و کمر راحت.",
     "colors": [
       { "id": "sand", "name": "شن", "hex": "#c4b49a" },
