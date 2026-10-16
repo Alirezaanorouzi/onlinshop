@@ -48,6 +48,14 @@ const collections: Collection[] = [
   },
 ];
 
+const menCategoryImages: Record<string, string> = {
+  tshirt: "/images/categories/men-tshirt.png",
+  hoodie: "/images/categories/men-hoodie.png",
+  pants: "/images/categories/men-pants.png",
+  set: "/images/categories/men-set.png",
+  shorts: "/images/categories/men-shorts.png",
+};
+
 function variantsFor(product: RawProduct): Variant[] {
   return product.sizes.flatMap((size, sizeIndex) =>
     product.colors.map((color, colorIndex) => ({
@@ -87,11 +95,13 @@ export function getCategories(collectionSlug: string): Category[] {
   return collection.categories.map((category) => ({
     ...category,
     image:
+      (collectionSlug === "men" && menCategoryImages[category.slug]) ||
       products.find(
         (product) =>
           product.collection === collectionSlug &&
           product.category === category.slug,
-      )?.image ?? "",
+      )?.image ||
+      "",
   }));
 }
 
