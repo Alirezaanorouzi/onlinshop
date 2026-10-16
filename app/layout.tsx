@@ -39,8 +39,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Header />
           </Suspense>
           <main className="flex-1">{children}</main>
-          <footer className="border-t border-white/10 px-4 py-8 text-center text-sm text-muted">
-            {site.name}
+          <footer className="border-t border-white/10 px-4 py-6 sm:px-6">
+            <p className="text-right text-sm text-muted">{site.footerCredit}</p>
           </footer>
         </Providers>
       </body>
