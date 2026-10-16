@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #0f241c;
+  --color-surface: #16352a;
+  --color-elevated: #122c22;
+  --color-cream: #e8f4ed;
+  --color-muted: #94b5a4;
+  --color-gold: #5ee39a;
+  --font-sans: var(--font-vazir);
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-vazir), sans-serif;
+}
+
+::selection {
+  background: #5ee39a;
+  color: #0c1f17;
+}

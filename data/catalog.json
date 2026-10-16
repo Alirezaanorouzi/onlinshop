@@ -1,0 +1,560 @@
+[
+  {
+    "slug": "men-oxford-shirt",
+    "name": "پیراهن آکسفورد یقه انگلیسی",
+    "collection": "men",
+    "category": "shirt",
+    "price": 1850000,
+    "image": "/images/men-oxford-shirt.svg",
+    "description": "پیراهن نخی با یقه انگلیسی و دکمه‌های جلو، برای استفاده روزمره.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f3f0e8" },
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
+    ],
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "slug": "men-linen-shirt",
+    "name": "پیراهن لینن آستین کوتاه",
+    "collection": "men",
+    "category": "shirt",
+    "price": 1650000,
+    "image": "/images/men-linen-shirt.svg",
+    "description": "پیراهن خنک با بافت لینن و برش آزاد.",
+    "colors": [
+      { "id": "sand", "name": "شن", "hex": "#e7e1d6" },
+      { "id": "white", "name": "سفید", "hex": "#f7f7f5" }
+    ],
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "slug": "men-plain-tee",
+    "name": "تیشرت نخی ساده",
+    "collection": "men",
+    "category": "tshirt",
+    "price": 790000,
+    "image": "/images/men-plain-tee.svg",
+    "description": "تیشرت روزمره با یقه گرد و پارچه نخی.",
+    "colors": [
+      { "id": "white", "name": "سفید", "hex": "#f7f7f5" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "slug": "men-heavy-tee",
+    "name": "تیشرت سنگین یقه گرد",
+    "collection": "men",
+    "category": "tshirt",
+    "price": 980000,
+    "image": "/images/men-heavy-tee.svg",
+    "description": "تیشرت ضخیم‌تر با افتادگی کمتر و دوخت تمیز.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f3efe8" },
+      { "id": "gray", "name": "خاکستری", "hex": "#8d8a86" }
+    ],
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "slug": "men-daily-hoodie",
+    "name": "هودی سبک روزمره",
+    "collection": "men",
+    "category": "hoodie",
+    "price": 2450000,
+    "image": "/images/men-daily-hoodie.svg",
+    "description": "هودی نخی با کلاه و جیب کانگورویی.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f2efe8" },
+      { "id": "brown", "name": "قهوه‌ای", "hex": "#6b4a34" }
+    ],
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "slug": "men-crew-sweat",
+    "name": "دورس یقه گرد",
+    "collection": "men",
+    "category": "hoodie",
+    "price": 2190000,
+    "image": "/images/men-crew-sweat.svg",
+    "description": "دورس نرم برای هوای خنک، بدون طرح اضافه.",
+    "colors": [
+      { "id": "stone", "name": "استخوانی", "hex": "#ece7df" },
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
+    ],
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "slug": "men-hoodie-set",
+    "name": "ست هودی و شلوار",
+    "collection": "men",
+    "category": "set",
+    "price": 3890000,
+    "image": "/images/men-hoodie-set.svg",
+    "description": "ست هماهنگ هودی و شلوار با پارچه یکسان.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f6f3ee" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "slug": "men-tee-set",
+    "name": "ست تیشرت و شلوارک",
+    "collection": "men",
+    "category": "set",
+    "price": 1690000,
+    "image": "/images/men-tee-set.svg",
+    "description": "ست سبک برای خانه و پیاده‌روی.",
+    "colors": [
+      { "id": "white", "name": "سفید", "hex": "#f7f5f1" },
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "men-straight-jeans",
+    "name": "شلوار جین راست",
+    "collection": "men",
+    "category": "pants",
+    "price": 2290000,
+    "image": "/images/men-straight-jeans.svg",
+    "description": "جین راسته با رنگ آبی میانه و قد استاندارد.",
+    "colors": [
+      { "id": "blue", "name": "آبی", "hex": "#6d88a8" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["30", "32", "34", "36"]
+  },
+  {
+    "slug": "men-chino",
+    "name": "شلوار کتان چینو",
+    "collection": "men",
+    "category": "pants",
+    "price": 1980000,
+    "image": "/images/men-chino.svg",
+    "description": "شلوار کتان با برش مستقیم و کمر راحت.",
+    "colors": [
+      { "id": "sand", "name": "شن", "hex": "#c4b49a" },
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
+    ],
+    "sizes": ["31", "32", "33", "34"]
+  },
+  {
+    "slug": "men-denim-shorts",
+    "name": "شلوارک جین",
+    "collection": "men",
+    "category": "shorts",
+    "price": 1290000,
+    "image": "/images/men-denim-shorts.svg",
+    "description": "شلوارک جین با قد بالای زانو.",
+    "colors": [
+      { "id": "blue", "name": "آبی", "hex": "#6f8eaf" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["30", "32", "34"]
+  },
+  {
+    "slug": "men-cotton-shorts",
+    "name": "شلوارک کتان",
+    "collection": "men",
+    "category": "shorts",
+    "price": 980000,
+    "image": "/images/men-cotton-shorts.svg",
+    "description": "شلوارک سبک کتان برای هوای گرم.",
+    "colors": [
+      { "id": "sand", "name": "شن", "hex": "#d7c4a4" },
+      { "id": "white", "name": "سفید", "hex": "#f7f7f5" }
+    ],
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "slug": "men-leather-sneaker",
+    "name": "کفش چرم روزمره",
+    "collection": "men",
+    "category": "shoes",
+    "price": 3450000,
+    "image": "/images/men-leather-sneaker.svg",
+    "description": "کفش چرم با زیره نرم برای استفاده روزانه.",
+    "colors": [
+      { "id": "brown", "name": "قهوه‌ای", "hex": "#6b4a34" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["۴۰", "۴۱", "۴۲", "۴۳", "۴۴"]
+  },
+  {
+    "slug": "men-white-sneaker",
+    "name": "کتانی سفید",
+    "collection": "men",
+    "category": "shoes",
+    "price": 2890000,
+    "image": "/images/men-white-sneaker.svg",
+    "description": "کتانی ساده با رویه روشن و کفی سبک.",
+    "colors": [
+      { "id": "white", "name": "سفید", "hex": "#f4f1ec" }
+    ],
+    "sizes": ["۴۰", "۴۱", "۴۲", "۴۳", "۴۴"]
+  },
+  {
+    "slug": "men-cap",
+    "name": "کلاه کپ",
+    "collection": "men",
+    "category": "accessory",
+    "price": 650000,
+    "image": "/images/men-cap.svg",
+    "description": "کلاه نقاب‌دار با تنظیم پشت.",
+    "colors": [
+      { "id": "wine", "name": "زرشکی", "hex": "#6e2d38" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["فری"]
+  },
+  {
+    "slug": "men-belt",
+    "name": "کمربند چرم",
+    "collection": "men",
+    "category": "accessory",
+    "price": 890000,
+    "image": "/images/men-belt.svg",
+    "description": "کمربند چرم با سگک ساده.",
+    "colors": [
+      { "id": "brown", "name": "قهوه‌ای", "hex": "#5c4030" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["۹۰", "۹۵", "۱۰۰"]
+  },
+  {
+    "slug": "women-blouse",
+    "name": "بلوز نخی یقه گرد",
+    "collection": "women",
+    "category": "blouse",
+    "price": 1490000,
+    "image": "/images/women-blouse.svg",
+    "description": "بلوز سبک با برش آزاد و آستین کوتاه.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f7f1ea" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-silk-blouse",
+    "name": "بلوز ابریشمی",
+    "collection": "women",
+    "category": "blouse",
+    "price": 2190000,
+    "image": "/images/women-silk-blouse.svg",
+    "description": "بلوز لطیف با افت نرم روی تن.",
+    "colors": [
+      { "id": "blush", "name": "صورتی کم‌رنگ", "hex": "#f3e6ea" },
+      { "id": "cream", "name": "کرم", "hex": "#f7f1ea" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-tee",
+    "name": "تیشرت ساده زنانه",
+    "collection": "women",
+    "category": "tshirt",
+    "price": 690000,
+    "image": "/images/women-tee.svg",
+    "description": "تیشرت نخی با یقه گرد و قد استاندارد.",
+    "colors": [
+      { "id": "white", "name": "سفید", "hex": "#f6f3ef" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "slug": "women-rib-tee",
+    "name": "تیشرت کبریتی",
+    "collection": "women",
+    "category": "tshirt",
+    "price": 850000,
+    "image": "/images/women-rib-tee.svg",
+    "description": "تیشرت بافت کبریتی با چسبندگی ملایم.",
+    "colors": [
+      { "id": "sand", "name": "شن", "hex": "#efe6df" },
+      { "id": "brown", "name": "قهوه‌ای", "hex": "#6b4a34" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-hoodie",
+    "name": "هودی زنانه",
+    "collection": "women",
+    "category": "hoodie",
+    "price": 2350000,
+    "image": "/images/women-hoodie.svg",
+    "description": "هودی نرم با کلاه و آستین کش‌باف.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f3eee8" },
+      { "id": "gray", "name": "خاکستری", "hex": "#8d8a86" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-zip-hoodie",
+    "name": "سویشرت زیپ‌دار",
+    "collection": "women",
+    "category": "hoodie",
+    "price": 2590000,
+    "image": "/images/women-zip-hoodie.svg",
+    "description": "سویشرت زیپ‌دار برای لایه‌لایه پوشیدن.",
+    "colors": [
+      { "id": "stone", "name": "استخوانی", "hex": "#ece4dc" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "slug": "women-set",
+    "name": "ست بلوز و شلوار",
+    "collection": "women",
+    "category": "set",
+    "price": 3290000,
+    "image": "/images/women-set.svg",
+    "description": "ست هماهنگ برای استفاده روزمره.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f6f1ec" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-knit-set",
+    "name": "ست بافت",
+    "collection": "women",
+    "category": "set",
+    "price": 3650000,
+    "image": "/images/women-knit-set.svg",
+    "description": "ست بافت نرم برای هوای خنک.",
+    "colors": [
+      { "id": "sand", "name": "شن", "hex": "#e9dfd6" },
+      { "id": "brown", "name": "قهوه‌ای", "hex": "#6b4a34" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-wide-pants",
+    "name": "شلوار گشاد کتان",
+    "collection": "women",
+    "category": "pants",
+    "price": 1890000,
+    "image": "/images/women-wide-pants.svg",
+    "description": "شلوار گشاد با کمر کشی راحت.",
+    "colors": [
+      { "id": "sand", "name": "شن", "hex": "#cbb79a" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-jeans",
+    "name": "شلوار جین زنانه",
+    "collection": "women",
+    "category": "pants",
+    "price": 2150000,
+    "image": "/images/women-jeans.svg",
+    "description": "جین راسته با کش کم در پارچه.",
+    "colors": [
+      { "id": "blue", "name": "آبی", "hex": "#7f92a8" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["26", "28", "30", "32"]
+  },
+  {
+    "slug": "women-skirt",
+    "name": "دامن کوتاه",
+    "collection": "women",
+    "category": "skirt",
+    "price": 1390000,
+    "image": "/images/women-skirt.svg",
+    "description": "دامن ساده با کمر ثابت.",
+    "colors": [
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#2c3444" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-long-skirt",
+    "name": "دامن بلند",
+    "collection": "women",
+    "category": "skirt",
+    "price": 1750000,
+    "image": "/images/women-long-skirt.svg",
+    "description": "دامن بلند با افت آزاد.",
+    "colors": [
+      { "id": "wine", "name": "زرشکی", "hex": "#8d3b45" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "slug": "women-heel",
+    "name": "کفش پاشنه‌دار",
+    "collection": "women",
+    "category": "shoes",
+    "price": 2980000,
+    "image": "/images/women-heel.svg",
+    "description": "کفش رسمی با پاشنه کوتاه.",
+    "colors": [
+      { "id": "black", "name": "مشکی", "hex": "#1e1e1e" }
+    ],
+    "sizes": ["۳۶", "۳۷", "۳۸", "۳۹", "۴۰"]
+  },
+  {
+    "slug": "women-sneaker",
+    "name": "کتانی زنانه",
+    "collection": "women",
+    "category": "shoes",
+    "price": 2650000,
+    "image": "/images/women-sneaker.svg",
+    "description": "کتانی سبک برای پیاده‌روی روزانه.",
+    "colors": [
+      { "id": "white", "name": "سفید", "hex": "#f5f2ee" },
+      { "id": "sand", "name": "شن", "hex": "#e7d3c0" }
+    ],
+    "sizes": ["۳۶", "۳۷", "۳۸", "۳۹", "۴۰"]
+  },
+  {
+    "slug": "women-scarf",
+    "name": "شال نخی",
+    "collection": "women",
+    "category": "accessory",
+    "price": 720000,
+    "image": "/images/women-scarf.svg",
+    "description": "شال سبک با بافت نخی.",
+    "colors": [
+      { "id": "wine", "name": "زرشکی", "hex": "#8d3d45" },
+      { "id": "cream", "name": "کرم", "hex": "#f7f1ea" }
+    ],
+    "sizes": ["فری"]
+  },
+  {
+    "slug": "women-bag",
+    "name": "کیف دوشی",
+    "collection": "women",
+    "category": "accessory",
+    "price": 1890000,
+    "image": "/images/women-bag.svg",
+    "description": "کیف کوچک با بند دوشی.",
+    "colors": [
+      { "id": "gold", "name": "کرم تیره", "hex": "#c4a574" },
+      { "id": "black", "name": "مشکی", "hex": "#1c1c1c" }
+    ],
+    "sizes": ["فری"]
+  },
+  {
+    "slug": "kids-shirt",
+    "name": "پیراهن بچگانه",
+    "collection": "kids",
+    "category": "shirt",
+    "price": 890000,
+    "image": "/images/kids-shirt.svg",
+    "description": "پیراهن سبک با دکمه‌های جلو برای کودکان.",
+    "colors": [
+      { "id": "blue", "name": "آبی روشن", "hex": "#e7f0f6" },
+      { "id": "white", "name": "سفید", "hex": "#f7f7f5" }
+    ],
+    "sizes": ["۸", "۱۰", "۱۲", "۱۴"]
+  },
+  {
+    "slug": "kids-tee",
+    "name": "تیشرت بچگانه",
+    "collection": "kids",
+    "category": "tshirt",
+    "price": 490000,
+    "image": "/images/kids-tee.svg",
+    "description": "تیشرت نخی نرم برای بازی و مدرسه.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f7f3e8" },
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
+    ],
+    "sizes": ["۸", "۱۰", "۱۲", "۱۴"]
+  },
+  {
+    "slug": "kids-hoodie",
+    "name": "هودی بچگانه",
+    "collection": "kids",
+    "category": "hoodie",
+    "price": 1290000,
+    "image": "/images/kids-hoodie.svg",
+    "description": "هودی گرم با کلاه برای هوای خنک.",
+    "colors": [
+      { "id": "blue", "name": "آبی روشن", "hex": "#e8eef6" },
+      { "id": "gray", "name": "خاکستری", "hex": "#8d8a86" }
+    ],
+    "sizes": ["۸", "۱۰", "۱۲", "۱۴"]
+  },
+  {
+    "slug": "kids-set",
+    "name": "ست بچگانه",
+    "collection": "kids",
+    "category": "set",
+    "price": 1590000,
+    "image": "/images/kids-set.svg",
+    "description": "ست تیشرت و شلوار با پارچه نرم.",
+    "colors": [
+      { "id": "cream", "name": "کرم", "hex": "#f6f1e8" },
+      { "id": "blue", "name": "آبی روشن", "hex": "#e7f0f6" }
+    ],
+    "sizes": ["۸", "۱۰", "۱۲", "۱۴"]
+  },
+  {
+    "slug": "kids-pants",
+    "name": "شلوار بچگانه",
+    "collection": "kids",
+    "category": "pants",
+    "price": 980000,
+    "image": "/images/kids-pants.svg",
+    "description": "شلوار راحت با کمر کشی.",
+    "colors": [
+      { "id": "blue", "name": "آبی", "hex": "#8ea4b8" },
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
+    ],
+    "sizes": ["۸", "۱۰", "۱۲", "۱۴"]
+  },
+  {
+    "slug": "kids-shorts",
+    "name": "شلوارک بچگانه",
+    "collection": "kids",
+    "category": "shorts",
+    "price": 590000,
+    "image": "/images/kids-shorts.svg",
+    "description": "شلوارک سبک برای هوای گرم.",
+    "colors": [
+      { "id": "blue", "name": "آبی", "hex": "#7f9eb8" },
+      { "id": "sand", "name": "شن", "hex": "#d7c4a4" }
+    ],
+    "sizes": ["۸", "۱۰", "۱۲", "۱۴"]
+  },
+  {
+    "slug": "kids-shoes",
+    "name": "کفش بچگانه",
+    "collection": "kids",
+    "category": "shoes",
+    "price": 1490000,
+    "image": "/images/kids-shoes.svg",
+    "description": "کفش سبک با چسب رویه برای پوشیدن آسان.",
+    "colors": [
+      { "id": "white", "name": "سفید", "hex": "#f4f2ee" },
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e2a44" }
+    ],
+    "sizes": ["۲۸", "۳۰", "۳۲", "۳۴"]
+  },
+  {
+    "slug": "kids-cap",
+    "name": "کلاه بچگانه",
+    "collection": "kids",
+    "category": "accessory",
+    "price": 420000,
+    "image": "/images/kids-cap.svg",
+    "description": "کلاه نقاب‌دار در اندازه کودک.",
+    "colors": [
+      { "id": "navy", "name": "سرمه‌ای", "hex": "#1e3a5f" },
+      { "id": "red", "name": "قرمز", "hex": "#8d3b45" }
+    ],
+    "sizes": ["فری"]
+  }
+]
