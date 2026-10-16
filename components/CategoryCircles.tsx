@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { assetPath } from "@/lib/asset-path";
 import type { Category } from "@/lib/types";
 
 export function CategoryCircles({
@@ -21,7 +22,7 @@ export function CategoryCircles({
           >
             <span className="relative mx-auto block size-20 overflow-hidden rounded-full bg-surface ring-1 ring-white/10 transition hover:ring-gold/40 sm:size-24">
               <Image
-                src={category.image}
+                src={assetPath(category.image)}
                 alt=""
                 fill
                 unoptimized

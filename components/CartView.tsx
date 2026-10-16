@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { assetPath } from "@/lib/asset-path";
 import { getProductBySlug } from "@/lib/catalog";
 import { useCart } from "@/lib/cart";
 import { formatNumber, formatPrice } from "@/lib/format";
@@ -41,7 +42,7 @@ export function CartView() {
         {detailed.map(({ line, product, colorName }) => (
           <li key={`${line.productSlug}-${line.size}-${line.color}`} className="flex gap-4 py-5">
             <Image
-              src={product.image}
+              src={assetPath(product.image)}
               alt=""
               width={96}
               height={96}

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { assetPath } from "@/lib/asset-path";
 import { formatNumber, formatPrice } from "@/lib/format";
 import { useSearch } from "@/lib/search";
 import type { Product } from "@/lib/types";
@@ -14,7 +15,7 @@ function ProductCard({ product }: { product: Product }) {
     >
       <span className="relative block aspect-[3/4] overflow-hidden rounded-xl bg-surface">
         <Image
-          src={product.image}
+          src={assetPath(product.image)}
           alt={product.name}
           fill
           unoptimized

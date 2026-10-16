@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { AddToCart } from "@/components/AddToCart";
+import { assetPath } from "@/lib/asset-path";
 import {
   getCategory,
   getCollection,
@@ -54,7 +55,7 @@ async function ProductContent({
     <article className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2">
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface">
         <Image
-          src={product.image}
+          src={assetPath(product.image)}
           alt={product.name}
           fill
           unoptimized

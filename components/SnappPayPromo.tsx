@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { assetPath } from "@/lib/asset-path";
 import { getProducts } from "@/lib/catalog";
 
 const INTERVAL_MS = 5000;
@@ -41,7 +42,7 @@ export function SnappPayPromo({ compact = false }: { compact?: boolean }) {
         >
           <div className="relative h-24 w-20 shrink-0 -rotate-6 overflow-hidden rounded-2xl bg-white/15 shadow-lg ring-2 ring-white/25 sm:h-28 sm:w-24">
             <Image
-              src={featured.image}
+                src={assetPath(featured.image)}
               alt={featured.name}
               fill
               unoptimized

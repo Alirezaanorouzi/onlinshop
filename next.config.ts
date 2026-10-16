@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   output: isStaticExport ? "export" : undefined,
   basePath: basePath || undefined,
   assetPrefix: basePath ? `${basePath}/` : undefined,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   trailingSlash: isStaticExport ? true : undefined,
   images: {
     unoptimized: true,
