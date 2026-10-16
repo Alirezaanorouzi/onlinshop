@@ -1,0 +1,30 @@
+1:"$Sreact.fragment"
+2:"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js"
+3:I[11414,["$2"],"Providers"]
+4:"$Sreact.suspense"
+5:I[70119,["$2"],"Header"]
+6:I[39756,["$2"],"default"]
+7:I[37457,["$2"],"default"]
+8:I[22016,["$2"],""]
+f:I[97367,["$2"],"OutletBoundary"]
+12:"ViewportBoundary"
+13:I[97367,["$2"],"$12"]
+14:"MetadataBoundary"
+15:I[97367,["$2"],"$14"]
+16:I[27201,["$2"],"IconMark"]
+:HL["/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","style"]
+a:X
+d:X
+d:C
+e:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","div",null,{"className":"mx-auto max-w-3xl px-4 py-24","children":[["$","h1",null,{"className":"text-3xl font-semibold","children":"صفحه پیدا نشد"}],["$","$L8",null,{"href":"/collection/men","className":"mt-6 inline-block text-sm text-gold","children":"بازگشت به فروشگاه"}]]}],null,["$","$Lf",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@10"}]}]]}],"p":"$@11","v":null,"s":"$a"}}]]
+b:[["children",{"s":"/_not-found","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@c","v":"$d","s":"$a"},"c":"$Qe"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next"}],["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js","async":true}]],["$","html",null,{"lang":"fa","dir":"rtl","className":"KuON5a_variable h-full","children":["$","body",null,{"className":"flex min-h-full flex-col antialiased","children":[["$","div",null,{"className":"pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-1 bg-gold sm:block"}],["$","$L3",null,{"children":[["$","$4",null,{"fallback":["$","div",null,{"className":"h-[7.5rem] border-b border-white/10 md:h-16"}],"children":["$","$L5",null,{}]}],["$","main",null,{"className":"flex-1","children":["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}],"notFound":[["$","div",null,{"className":"mx-auto max-w-3xl px-4 py-24","children":[["$","h1",null,{"className":"text-3xl font-semibold","children":"صفحه پیدا نشد"}],["$","$L8",null,{"href":"/collection/men","className":"mt-6 inline-block text-sm text-gold","children":"بازگشت به فروشگاه"}]]}],[]]}]}],["$","footer",null,{"className":"border-t border-white/10 px-4 py-6 sm:px-6","children":["$","p",null,{"className":"text-right text-sm text-muted","children":"مجتبی نوروزی _ تمام حقوق محفوظ است."}]}]]}]]}]}]]}],"p":"$@9","v":null,"s":"$a"},"c":"$Qb"},"h":{"r":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L13",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}]]}],["$","$L15",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"قائم مقام"}],["$","meta","1",{"name":"description","content":"فروشگاه پوشاک قائم مقام"}],["$","link","2",{"rel":"icon","href":"/onlinshop/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L16","3",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@17","v":null,"s":"$a"}},"a":"$@18","u":"$@19","b":"8vqOWkEy6WcAyzkT518sO"}
+10:null
+a:300
+19:true
+a:C
+18:0
+c:"$undefined"
+9:"$undefined"
+17:"$undefined"
+11:"$undefined"

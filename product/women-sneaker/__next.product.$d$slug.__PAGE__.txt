@@ -1,0 +1,36 @@
+1:"$Sreact.fragment"
+2:"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js"
+3:I[11414,["$2"],"Providers"]
+4:"$Sreact.suspense"
+5:I[70119,["$2"],"Header"]
+6:I[39756,["$2"],"default"]
+7:I[37457,["$2"],"default"]
+8:"/onlinshop/_next/static/chunks/01oi-hibocy71.js"
+9:I[22016,["$2","$8"],""]
+12:"ProductImageGallery"
+13:I[56147,["$2","$8"],"$12"]
+14:I[68714,["$2","$8"],"AddToCart"]
+15:I[97367,["$2"],"OutletBoundary"]
+18:"ViewportBoundary"
+19:I[97367,["$2"],"$18"]
+1a:"MetadataBoundary"
+1b:I[97367,["$2"],"$1a"]
+1c:I[27201,["$2"],"IconMark"]
+:HL["/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","style"]
+b:X
+e:X
+e:C
+11:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","$4",null,{"fallback":["$","p",null,{"className":"px-4 py-20 text-sm text-muted","children":"در حال بارگذاری…"}],"children":["$","article",null,{"className":"mx-auto grid max-w-6xl gap-8 px-3 py-8 sm:gap-10 sm:px-4 sm:py-12 lg:grid-cols-2","children":[["$","$L13",null,{"images":["/images/women-sneaker.svg"],"alt":"کتانی زنانه","variant":"detail","priority":true}],["$","div",null,{"children":[["$","p",null,{"className":"text-sm text-muted","children":[["$","$L9",null,{"href":"/collection/women","className":"hover:text-cream","children":"کالکشن بانوان"}],[["$","span",null,{"className":"px-2","children":"/"}],["$","$L9",null,{"href":"/collection/women/shoes","className":"hover:text-cream","children":"کفش زنانه"}]]]}],["$","h1",null,{"className":"mt-4 text-2xl font-semibold sm:text-3xl md:text-4xl","children":"کتانی زنانه"}],["$","p",null,{"className":"mt-4 max-w-md text-sm leading-8 text-cream/80","children":"کتانی سبک برای پیاده‌روی روزانه."}],["$","$L14",null,{"product":{"slug":"women-sneaker","name":"کتانی زنانه","collection":"women","category":"shoes","price":2650000,"image":"/images/women-sneaker.svg","description":"کتانی سبک برای پیاده‌روی روزانه.","colors":[{"id":"white","name":"سفید","hex":"#f5f2ee"},{"id":"sand","name":"شن","hex":"#e7d3c0"}],"sizes":["۳۶","۳۷","۳۸","۳۹","۴۰"],"variants":[{"size":"۳۶","color":"white","inStock":true},{"size":"۳۶","color":"sand","inStock":false},{"size":"۳۷","color":"white","inStock":true},{"size":"۳۷","color":"sand","inStock":true},{"size":"۳۸","color":"white","inStock":true},{"size":"۳۸","color":"sand","inStock":true},{"size":"۳۹","color":"white","inStock":true},{"size":"۳۹","color":"sand","inStock":true},{"size":"۴۰","color":"white","inStock":true},{"size":"۴۰","color":"sand","inStock":true}]}}]]}]]}]}],[["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/01oi-hibocy71.js","async":true}]],["$","$L15",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@16"}]}]]}],"p":"$@17","v":null,"s":"$b"}}]]
+f:[["children",{"s":{"n":"slug","t":"d","k":"women-sneaker","s":[]},"h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@10","v":"$e","s":"$b"},"c":"$Q11"}]]
+c:[["children",{"s":"product","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@d","v":"$e","s":"$b"},"c":"$Qf"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next"}],["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js","async":true}]],["$","html",null,{"lang":"fa","dir":"rtl","className":"KuON5a_variable h-full","children":["$","body",null,{"className":"flex min-h-full flex-col antialiased","children":[["$","div",null,{"className":"pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-1 bg-gold sm:block"}],["$","$L3",null,{"children":[["$","$4",null,{"fallback":["$","div",null,{"className":"h-[7.5rem] border-b border-white/10 md:h-16"}],"children":["$","$L5",null,{}]}],["$","main",null,{"className":"flex-1","children":["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}],"notFound":[["$","div",null,{"className":"mx-auto max-w-3xl px-4 py-24","children":[["$","h1",null,{"className":"text-3xl font-semibold","children":"صفحه پیدا نشد"}],["$","$L9",null,{"href":"/collection/men","className":"mt-6 inline-block text-sm text-gold","children":"بازگشت به فروشگاه"}]]}],[]]}]}],["$","footer",null,{"className":"border-t border-white/10 px-4 py-6 sm:px-6","children":["$","p",null,{"className":"text-right text-sm text-muted","children":"مجتبی نوروزی _ تمام حقوق محفوظ است."}]}]]}]]}]}]]}],"p":"$@a","v":null,"s":"$b"},"c":"$Qc"},"h":{"r":["$","$1","h",{"children":[null,["$","$L19",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}]]}],["$","$L1b",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"کتانی زنانه | قائم مقام"}],["$","meta","1",{"name":"description","content":"فروشگاه پوشاک قائم مقام"}],["$","link","2",{"rel":"icon","href":"/onlinshop/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L1c","3",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@1d","v":null,"s":"$b"}},"a":"$@1e","u":"$@1f","b":"8vqOWkEy6WcAyzkT518sO"}
+16:null
+b:300
+1f:true
+b:C
+1e:0
+10:"$undefined"
+d:"$undefined"
+a:"$undefined"
+1d:"$undefined"
+17:"$undefined"

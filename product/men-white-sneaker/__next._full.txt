@@ -1,0 +1,32 @@
+1:"$Sreact.fragment"
+2:"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js"
+3:I[11414,["$2"],"Providers"]
+4:"$Sreact.suspense"
+5:I[70119,["$2"],"Header"]
+6:I[39756,["$2"],"default"]
+7:I[37457,["$2"],"default"]
+8:"/onlinshop/_next/static/chunks/01oi-hibocy71.js"
+9:I[22016,["$2","$8"],""]
+f:I[97367,["$2"],"OutletBoundary"]
+11:"ViewportBoundary"
+12:I[97367,["$2"],"$11"]
+14:"MetadataBoundary"
+15:I[97367,["$2"],"$14"]
+17:I[68027,["$2"],"default",1]
+:HL["/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","style"]
+:HL["/onlinshop/_next/static/media/ec8f59eafded4799-s.p.2avnhkksosb5d.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/onlinshop/_next/static/media/f1d25eabcf1db66d-s.p.21se6xk6bxqs6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+b:X
+d:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","$4",null,{"fallback":["$","p",null,{"className":"px-4 py-20 text-sm text-muted","children":"در حال بارگذاری…"}],"children":"$Le"}],[["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/01oi-hibocy71.js","async":true,"nonce":"$undefined"}]],["$","$Lf",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@10"}]}]]}],"p":false,"v":null}}]]
+c:[["children",{"s":{"n":"slug","t":"d","k":"men-white-sneaker","s":[]},"h":512,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],"p":false,"v":"$b"},"c":"$Qd"}]]
+a:[["children",{"s":"product","h":512,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],"p":false,"v":"$b"},"c":"$Qc"}]]
+0:{"P":null,"c":["","product","men-white-sneaker",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"fa","dir":"rtl","className":"KuON5a_variable h-full","children":["$","body",null,{"className":"flex min-h-full flex-col antialiased","children":[["$","div",null,{"className":"pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-1 bg-gold sm:block"}],["$","$L3",null,{"children":[["$","$4",null,{"fallback":["$","div",null,{"className":"h-[7.5rem] border-b border-white/10 md:h-16"}],"children":["$","$L5",null,{}]}],["$","main",null,{"className":"flex-1","children":["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","div",null,{"className":"mx-auto max-w-3xl px-4 py-24","children":[["$","h1",null,{"className":"text-3xl font-semibold","children":"صفحه پیدا نشد"}],["$","$L9",null,{"href":"/collection/men","className":"mt-6 inline-block text-sm text-gold","children":"بازگشت به فروشگاه"}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}],["$","footer",null,{"className":"border-t border-white/10 px-4 py-6 sm:px-6","children":["$","p",null,{"className":"text-right text-sm text-muted","children":"مجتبی نوروزی _ تمام حقوق محفوظ است."}]}]]}]]}]}]]}],"p":false,"v":null},"c":"$Qa"},"h":{"r":["$","$1","h",{"children":[null,["$","$L12",null,{"children":"$L13"}],["$","$L15",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$4",null,{"name":"Next.Metadata","children":"$L16"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":false,"v":null}},"m":"$undefined","G":["$17",[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"8vqOWkEy6WcAyzkT518sO"}
+18:"ProductImageGallery"
+19:I[56147,["$2","$8"],"$18"]
+1a:I[68714,["$2","$8"],"AddToCart"]
+b:C
+e:["$","article",null,{"className":"mx-auto grid max-w-6xl gap-8 px-3 py-8 sm:gap-10 sm:px-4 sm:py-12 lg:grid-cols-2","children":[["$","$L19",null,{"images":["/images/men-white-sneaker.svg"],"alt":"کتانی سفید","variant":"detail","priority":true}],["$","div",null,{"children":[["$","p",null,{"className":"text-sm text-muted","children":[["$","$L9",null,{"href":"/collection/men","className":"hover:text-cream","children":"کالکشن آقایان"}],[["$","span",null,{"className":"px-2","children":"/"}],["$","$L9",null,{"href":"/collection/men/shoes","className":"hover:text-cream","children":"کفش مردانه"}]]]}],["$","h1",null,{"className":"mt-4 text-2xl font-semibold sm:text-3xl md:text-4xl","children":"کتانی سفید"}],["$","p",null,{"className":"mt-4 max-w-md text-sm leading-8 text-cream/80","children":"کتانی ساده با رویه روشن و کفی سبک."}],["$","$L1a",null,{"product":{"slug":"men-white-sneaker","name":"کتانی سفید","collection":"men","category":"shoes","price":2890000,"image":"/images/men-white-sneaker.svg","description":"کتانی ساده با رویه روشن و کفی سبک.","colors":[{"id":"white","name":"سفید","hex":"#f4f1ec"}],"sizes":["۴۰","۴۱","۴۲","۴۳","۴۴"],"variants":[{"size":"۴۰","color":"white","inStock":true},{"size":"۴۱","color":"white","inStock":true},{"size":"۴۲","color":"white","inStock":true},{"size":"۴۳","color":"white","inStock":true},{"size":"۴۴","color":"white","inStock":true}]}}]]}]]}]
+13:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}]]
+1b:I[27201,["$2"],"IconMark"]
+10:null
+16:[["$","title","0",{"children":"کتانی سفید | قائم مقام"}],["$","meta","1",{"name":"description","content":"فروشگاه پوشاک قائم مقام"}],["$","link","2",{"rel":"icon","href":"/onlinshop/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L1b","3",{}]]

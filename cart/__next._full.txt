@@ -1,0 +1,28 @@
+1:"$Sreact.fragment"
+2:"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js"
+3:I[11414,["$2"],"Providers"]
+4:"$Sreact.suspense"
+5:I[70119,["$2"],"Header"]
+6:I[39756,["$2"],"default"]
+7:I[37457,["$2"],"default"]
+8:I[22016,["$2"],""]
+c:"/onlinshop/_next/static/chunks/411fyqb4znuaa.js"
+d:I[61945,["$2","$c"],"CartView"]
+e:I[97367,["$2"],"OutletBoundary"]
+10:"ViewportBoundary"
+11:I[97367,["$2"],"$10"]
+13:"MetadataBoundary"
+14:I[97367,["$2"],"$13"]
+16:I[68027,["$2"],"default",1]
+:HL["/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","style"]
+:HL["/onlinshop/_next/static/media/ec8f59eafded4799-s.p.2avnhkksosb5d.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/onlinshop/_next/static/media/f1d25eabcf1db66d-s.p.21se6xk6bxqs6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+a:X
+b:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","$Ld",null,{}],[["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/411fyqb4znuaa.js","async":true,"nonce":"$undefined"}]],["$","$Le",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@f"}]}]]}],"p":false,"v":null}}]]
+9:[["children",{"s":"cart","h":512,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],"p":false,"v":"$a"},"c":"$Qb"}]]
+0:{"P":null,"c":["","cart",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"fa","dir":"rtl","className":"KuON5a_variable h-full","children":["$","body",null,{"className":"flex min-h-full flex-col antialiased","children":[["$","div",null,{"className":"pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-1 bg-gold sm:block"}],["$","$L3",null,{"children":[["$","$4",null,{"fallback":["$","div",null,{"className":"h-[7.5rem] border-b border-white/10 md:h-16"}],"children":["$","$L5",null,{}]}],["$","main",null,{"className":"flex-1","children":["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","div",null,{"className":"mx-auto max-w-3xl px-4 py-24","children":[["$","h1",null,{"className":"text-3xl font-semibold","children":"صفحه پیدا نشد"}],["$","$L8",null,{"href":"/collection/men","className":"mt-6 inline-block text-sm text-gold","children":"بازگشت به فروشگاه"}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}],["$","footer",null,{"className":"border-t border-white/10 px-4 py-6 sm:px-6","children":["$","p",null,{"className":"text-right text-sm text-muted","children":"مجتبی نوروزی _ تمام حقوق محفوظ است."}]}]]}]]}]}]]}],"p":false,"v":null},"c":"$Q9"},"h":{"r":["$","$1","h",{"children":[null,["$","$L11",null,{"children":"$L12"}],["$","$L14",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$4",null,{"name":"Next.Metadata","children":"$L15"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":false,"v":null}},"m":"$undefined","G":["$16",[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"8vqOWkEy6WcAyzkT518sO"}
+a:C
+12:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}]]
+17:I[27201,["$2"],"IconMark"]
+f:null
+15:[["$","title","0",{"children":"سبد خرید | قائم مقام"}],["$","meta","1",{"name":"description","content":"فروشگاه پوشاک قائم مقام"}],["$","link","2",{"rel":"icon","href":"/onlinshop/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L17","3",{}]]

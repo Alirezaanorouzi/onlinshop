@@ -1,0 +1,8 @@
+:HL["/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","style"]
+:HL["/onlinshop/_next/static/media/ec8f59eafded4799-s.p.2avnhkksosb5d.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/onlinshop/_next/static/media/f1d25eabcf1db66d-s.p.21se6xk6bxqs6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+4:[["children",{"s":"__PAGE__","h":160}]]
+3:[["children",{"s":{"n":"category","t":"d","k":"pants","s":[]},"h":96,"c":"$Q4"}]]
+2:[["children",{"s":{"n":"slug","t":"d","k":"men","s":[]},"h":96,"c":"$Q3"}]]
+1:[["children",{"s":"collection","h":96,"c":"$Q2"}]]
+0:{"b":"8vqOWkEy6WcAyzkT518sO","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

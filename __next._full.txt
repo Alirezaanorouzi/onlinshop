@@ -1,0 +1,25 @@
+1:"$Sreact.fragment"
+2:"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js"
+3:I[11414,["$2"],"Providers"]
+4:"$Sreact.suspense"
+5:I[70119,["$2"],"Header"]
+6:I[39756,["$2"],"default"]
+7:I[37457,["$2"],"default"]
+8:I[22016,["$2"],""]
+a:"/onlinshop/_next/static/chunks/32-2e4ykoe8lx.js"
+b:I[86897,["$2","$a"],"HomeRedirect"]
+c:I[97367,["$2"],"OutletBoundary"]
+e:"ViewportBoundary"
+f:I[97367,["$2"],"$e"]
+11:"MetadataBoundary"
+12:I[97367,["$2"],"$11"]
+14:I[68027,["$2"],"default",1]
+:HL["/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","style"]
+:HL["/onlinshop/_next/static/media/ec8f59eafded4799-s.p.2avnhkksosb5d.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/onlinshop/_next/static/media/f1d25eabcf1db66d-s.p.21se6xk6bxqs6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+9:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","$Lb",null,{}],[["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/32-2e4ykoe8lx.js","async":true,"nonce":"$undefined"}]],["$","$Lc",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@d"}]}]]}],"p":false,"v":null}}]]
+0:{"P":null,"c":["",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"fa","dir":"rtl","className":"KuON5a_variable h-full","children":["$","body",null,{"className":"flex min-h-full flex-col antialiased","children":[["$","div",null,{"className":"pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-1 bg-gold sm:block"}],["$","$L3",null,{"children":[["$","$4",null,{"fallback":["$","div",null,{"className":"h-[7.5rem] border-b border-white/10 md:h-16"}],"children":["$","$L5",null,{}]}],["$","main",null,{"className":"flex-1","children":["$","$L6",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L7",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","div",null,{"className":"mx-auto max-w-3xl px-4 py-24","children":[["$","h1",null,{"className":"text-3xl font-semibold","children":"صفحه پیدا نشد"}],["$","$L8",null,{"href":"/collection/men","className":"mt-6 inline-block text-sm text-gold","children":"بازگشت به فروشگاه"}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}],["$","footer",null,{"className":"border-t border-white/10 px-4 py-6 sm:px-6","children":["$","p",null,{"className":"text-right text-sm text-muted","children":"مجتبی نوروزی _ تمام حقوق محفوظ است."}]}]]}]]}]}]]}],"p":false,"v":null},"c":"$Q9"},"h":{"r":["$","$1","h",{"children":[null,["$","$Lf",null,{"children":"$L10"}],["$","$L12",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$4",null,{"name":"Next.Metadata","children":"$L13"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":false,"v":null}},"m":"$undefined","G":["$14",[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"8vqOWkEy6WcAyzkT518sO"}
+10:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}]]
+15:I[27201,["$2"],"IconMark"]
+d:null
+13:[["$","title","0",{"children":"قائم مقام"}],["$","meta","1",{"name":"description","content":"فروشگاه پوشاک قائم مقام"}],["$","link","2",{"rel":"icon","href":"/onlinshop/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L15","3",{}]]

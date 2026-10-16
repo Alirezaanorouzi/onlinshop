@@ -1,0 +1,36 @@
+1:"$Sreact.fragment"
+2:"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js"
+3:I[11414,["$2"],"Providers"]
+4:"$Sreact.suspense"
+5:I[70119,["$2"],"Header"]
+6:I[39756,["$2"],"default"]
+7:I[37457,["$2"],"default"]
+8:"/onlinshop/_next/static/chunks/1av5i62luxvzy.js"
+9:I[22016,["$2","$8"],""]
+14:I[50864,["$2","$8"],"ProductStrip"]
+15:I[97367,["$2"],"OutletBoundary"]
+18:"ViewportBoundary"
+19:I[97367,["$2"],"$18"]
+1a:"MetadataBoundary"
+1b:I[97367,["$2"],"$1a"]
+1c:I[27201,["$2"],"IconMark"]
+:HL["/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","style"]
+b:X
+e:X
+e:C
+13:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","$4",null,{"fallback":["$","p",null,{"className":"px-4 py-20 text-sm text-muted","children":"در حال بارگذاری…"}],"children":["$","div",null,{"className":"pt-10","children":[["$","div",null,{"className":"mx-auto max-w-6xl px-4","children":[["$","p",null,{"className":"text-sm text-muted","children":[["$","$L9",null,{"href":"/collection/men","className":"hover:text-cream","children":"کالکشن آقایان"}],["$","span",null,{"className":"px-2","children":"/"}],["$","span",null,{"children":"دورس و هودی مردانه"}]]}],["$","h1",null,{"className":"mt-4 text-4xl font-semibold","children":"دورس و هودی مردانه"}]]}],["$","div",null,{"className":"mt-10","children":["$","$L14",null,{"title":"محصولات","products":[{"slug":"men-daily-hoodie","name":"سویشرت زیپ‌دار خاکستری","collection":"men","category":"hoodie","price":2450000,"image":"/images/men-daily-hoodie.png","description":"سویشرت زیپ‌دار با یقه ایستاده و برش آزاد.","colors":[{"id":"grey","name":"خاکستری","hex":"#4a4a4a"},{"id":"black","name":"مشکی","hex":"#1c1c1c"}],"sizes":["M","L","XL"],"variants":[{"size":"M","color":"grey","inStock":true},{"size":"M","color":"black","inStock":false},{"size":"L","color":"grey","inStock":true},{"size":"L","color":"black","inStock":true},{"size":"XL","color":"grey","inStock":true},{"size":"XL","color":"black","inStock":true}]},{"slug":"men-crew-sweat","name":"دورس یقه گرد","collection":"men","category":"hoodie","price":2190000,"image":"/images/men-crew-sweat.png","description":"دورس یقه گرد با پارچه ضخیم و دوخت تمیز.","colors":[{"id":"stone","name":"استخوانی","hex":"#ece7df"},{"id":"navy","name":"سرمه‌ای","hex":"#1e2a44"}],"sizes":["S","M","L","XL"],"variants":[{"size":"S","color":"stone","inStock":true},{"size":"S","color":"navy","inStock":false},{"size":"M","color":"stone","inStock":true},{"size":"M","color":"navy","inStock":true},{"size":"L","color":"stone","inStock":true},{"size":"L","color":"navy","inStock":true},{"size":"XL","color":"stone","inStock":true},{"size":"XL","color":"navy","inStock":true}]},{"slug":"men-zip-sweat","name":"سویشرت زیپ‌دار مشکی","collection":"men","category":"hoodie","price":2590000,"image":"/images/men-zip-sweat.png","description":"سویشرت زیپ‌دار مشکی با یقه بلند و آستین راحت.","colors":[{"id":"black","name":"مشکی","hex":"#1c1c1c"}],"sizes":["M","L","XL"],"variants":[{"size":"M","color":"black","inStock":true},{"size":"L","color":"black","inStock":true},{"size":"XL","color":"black","inStock":true}]}]}]}]]}]}],[["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/1av5i62luxvzy.js","async":true}]],["$","$L15",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@16"}]}]]}],"p":"$@17","v":null,"s":"$b"}}]]
+11:[["children",{"s":{"n":"category","t":"d","k":"hoodie","s":[]},"h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@12","v":"$e","s":"$b"},"c":"$Q13"}]]
+f:[["children",{"s":{"n":"slug","t":"d","k":"men","s":[]},"h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@10","v":"$e","s":"$b"},"c":"$Q11"}]]
+c:[["children",{"s":"collection","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@d","v":"$e","s":"$b"},"c":"$Qf"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/onlinshop/_next/static/chunks/2z_xdqkyc--gp.css","precedence":"next"}],["$","script","script-0",{"src":"/onlinshop/_next/static/chunks/43cpzx7dy6d1j.js","async":true}]],["$","html",null,{"lang":"fa","dir":"rtl","className":"KuON5a_variable h-full","children":["$","body",null,{"className":"flex min-h-full flex-col antialiased","children":[["$","div",null,{"className":"pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-1 bg-gold sm:block"}],["$","$L3",null,{"children":[["$","$4",null,{"fallback":["$","div",null,{"className":"h-[7.5rem] border-b border-white/10 md:h-16"}],"children":["$","$L5",null,{}]}],["$","main",null,{"className":"flex-1","children":["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}],"notFound":[["$","div",null,{"className":"mx-auto max-w-3xl px-4 py-24","children":[["$","h1",null,{"className":"text-3xl font-semibold","children":"صفحه پیدا نشد"}],["$","$L9",null,{"href":"/collection/men","className":"mt-6 inline-block text-sm text-gold","children":"بازگشت به فروشگاه"}]]}],[]]}]}],["$","footer",null,{"className":"border-t border-white/10 px-4 py-6 sm:px-6","children":["$","p",null,{"className":"text-right text-sm text-muted","children":"مجتبی نوروزی _ تمام حقوق محفوظ است."}]}]]}]]}]}]]}],"p":"$@a","v":null,"s":"$b"},"c":"$Qc"},"h":{"r":["$","$1","h",{"children":[null,["$","$L19",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}]]}],["$","$L1b",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"دورس و هودی مردانه | قائم مقام"}],["$","meta","1",{"name":"description","content":"فروشگاه پوشاک قائم مقام"}],["$","link","2",{"rel":"icon","href":"/onlinshop/favicon.ico?favicon.117ezoe8m31dk.ico","sizes":"48x48","type":"image/x-icon"}],["$","$L1c","3",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@1d","v":null,"s":"$b"}},"a":"$@1e","u":"$@1f","b":"8vqOWkEy6WcAyzkT518sO"}
+16:null
+b:300
+1f:true
+b:C
+1e:0
+12:"$undefined"
+10:"$undefined"
+d:"$undefined"
+a:"$undefined"
+1d:"$undefined"
+17:"$undefined"
