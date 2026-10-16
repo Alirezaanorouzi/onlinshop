@@ -11,7 +11,7 @@ export function CategoryCircles({
   categories: Category[];
 }) {
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-10">
+    <section className="mx-auto max-w-6xl px-3 pb-8 sm:px-4 sm:pb-10">
       <h2 className="mb-6 text-sm text-muted">دسته‌بندی‌های مرتبط</h2>
       <div className="grid grid-cols-4 gap-4 sm:grid-cols-4 lg:grid-cols-8">
         {categories.map((category) => (

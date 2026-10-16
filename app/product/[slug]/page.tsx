@@ -52,7 +52,7 @@ async function ProductContent({
   const category = getCategory(product.collection, product.category);
 
   return (
-    <article className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2">
+    <article className="mx-auto grid max-w-6xl gap-8 px-3 py-8 sm:gap-10 sm:px-4 sm:py-12 lg:grid-cols-2">
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface">
         <Image
           src={assetPath(product.image)}
@@ -84,7 +84,9 @@ async function ProductContent({
             </>
           )}
         </p>
-        <h1 className="mt-4 text-3xl font-semibold sm:text-4xl">{product.name}</h1>
+        <h1 className="mt-4 text-2xl font-semibold sm:text-3xl md:text-4xl">
+          {product.name}
+        </h1>
         <p className="mt-4 max-w-md text-sm leading-8 text-cream/80">
           {product.description}
         </p>

@@ -14,7 +14,7 @@ export function CollectionHero({
     <>
       <div>
         <p className="text-[11px] tracking-[0.35em] text-gold">COLLECTION</p>
-        <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">
+        <h1 className="mt-2 text-2xl font-semibold sm:mt-3 sm:text-4xl md:text-5xl">
           {collection.title}
         </h1>
         <p className="mt-4 text-sm text-muted">
@@ -38,7 +38,7 @@ export function CollectionHero({
   }
 
   return (
-    <section className="mx-auto grid max-w-6xl gap-8 px-4 py-14 md:grid-cols-2 md:items-end md:py-20">
+    <section className="mx-auto grid max-w-6xl gap-6 px-3 py-10 sm:gap-8 sm:px-4 sm:py-14 md:grid-cols-2 md:items-end md:py-20">
       {content}
     </section>
   );

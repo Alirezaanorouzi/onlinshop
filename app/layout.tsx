@@ -19,13 +19,23 @@ export const metadata: Metadata = {
   description: site.description,
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="fa" dir="rtl" className={`${vazirmatn.variable} h-full`}>
       <body className="flex min-h-full flex-col antialiased">
-        <div className="pointer-events-none fixed inset-y-0 right-0 z-50 w-1 bg-gold" />
+        <div className="pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-1 bg-gold sm:block" />
         <Providers>
-          <Suspense fallback={<div className="h-16 border-b border-white/10" />}>
+          <Suspense
+            fallback={
+              <div className="h-[7.5rem] border-b border-white/10 md:h-16" />
+            }
+          >
             <Header />
           </Suspense>
           <main className="flex-1">{children}</main>

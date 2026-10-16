@@ -48,8 +48,8 @@ async function CollectionContent({
   return (
     <>
       {slug === "men" ? (
-        <section className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-          <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-8">
+        <section className="mx-auto max-w-6xl px-3 py-6 sm:px-4 sm:py-10 md:py-14">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-8">
             <CollectionHero
               collection={collection}
               count={products.length}

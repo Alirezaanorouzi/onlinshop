@@ -43,7 +43,7 @@ export function ProductStrip({
     : products;
 
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-16">
+    <section className="mx-auto max-w-6xl px-3 pb-12 sm:px-4 sm:pb-16">
       <div className="mb-5 flex items-baseline justify-between gap-4">
         <h2 className="text-sm text-muted">{title}</h2>
         <p className="text-sm text-muted">{formatNumber(visible.length)} مورد</p>

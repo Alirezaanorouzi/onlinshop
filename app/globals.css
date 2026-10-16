@@ -10,10 +10,17 @@
   --font-sans: var(--font-vazir);
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--color-ink);
   color: var(--color-cream);
   font-family: var(--font-vazir), sans-serif;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 ::selection {
