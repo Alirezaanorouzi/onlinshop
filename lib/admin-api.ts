@@ -92,6 +92,45 @@ export async function removeProduct(slug: string) {
   if (!response.ok) throw new Error(await response.text());
 }
 
+export type AdminOrder = {
+  id: number;
+  amountTomans: number;
+  status: string;
+  shipped: boolean;
+  shipmentLabel: "ارسال شده" | "ارسال نشده";
+  shippingFullName: string;
+  shippingPhone: string;
+  shippingCity: string;
+  shippingAddress: string;
+  shippingPostalCode: string;
+  createdAt: string;
+  refId: string | null;
+  items: {
+    productSlug: string;
+    productName: string;
+    size: string;
+    color: string;
+    colorLabel: string;
+    quantity: number;
+    unitPriceTomans: number;
+  }[];
+};
+
+export async function listAdminOrders(): Promise<AdminOrder[]> {
+  const response = await adminFetch("/api/admin/orders");
+  if (!response.ok) throw new Error(await response.text());
+  const data = (await response.json()) as { orders: AdminOrder[] };
+  return data.orders;
+}
+
+export async function setAdminOrderShipped(orderId: number, shipped: boolean) {
+  const response = await adminFetch(`/api/admin/orders/${orderId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ shipped }),
+  });
+  if (!response.ok) throw new Error(await response.text());
+}
+
 export async function uploadImage(file: File) {
   const form = new FormData();
   form.set("file", file);

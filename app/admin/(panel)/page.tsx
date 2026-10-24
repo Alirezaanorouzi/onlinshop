@@ -111,7 +111,13 @@ export default function AdminDashboardPage() {
         }}
         onConfirm={() => void confirmDelete()}
       />
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex flex-wrap justify-end gap-2">
+        <Link
+          href="/admin/orders"
+          className="rounded-lg border border-white/15 px-4 py-2 text-sm text-cream transition hover:border-gold/40"
+        >
+          سفارشات
+        </Link>
         <AdminNewProductLink />
       </div>
 

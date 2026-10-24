@@ -1,6 +1,6 @@
 import "server-only";
 
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, inArray } from "drizzle-orm";
 import { getDb } from "@/db/index";
 import { orderItems, orders, payments } from "@/db/schema";
 import { getProductsBySlugs } from "@/lib/catalog-db";
@@ -122,6 +122,84 @@ export function getOrderWithItems(orderId: number) {
     .all();
 
   return { order, items };
+}
+
+const ADMIN_VISIBLE_STATUSES: OrderStatus[] = ["paid", "processing", "shipped"];
+
+export type AdminOrderListItem = {
+  id: number;
+  amountTomans: number;
+  status: OrderStatus;
+  shippingFullName: string;
+  shippingPhone: string;
+  shippingCity: string;
+  shippingAddress: string;
+  shippingPostalCode: string;
+  createdAt: Date;
+  refId: string | null;
+  items: {
+    productSlug: string;
+    productName: string;
+    size: string;
+    color: string;
+    quantity: number;
+    unitPriceTomans: number;
+  }[];
+};
+
+export function listOrdersForAdmin(limit = 80): AdminOrderListItem[] {
+  const db = getDb();
+  const orderRows = db
+    .select()
+    .from(orders)
+    .where(inArray(orders.status, ADMIN_VISIBLE_STATUSES))
+    .orderBy(desc(orders.createdAt))
+    .limit(limit)
+    .all();
+
+  return orderRows.map((order) => {
+    const payment = db
+      .select({ refId: payments.refId })
+      .from(payments)
+      .where(eq(payments.orderId, order.id))
+      .get();
+
+    const items = db
+      .select()
+      .from(orderItems)
+      .where(eq(orderItems.orderId, order.id))
+      .all();
+
+    return {
+      id: order.id,
+      amountTomans: order.amountTomans,
+      status: order.status as OrderStatus,
+      shippingFullName: order.shippingFullName,
+      shippingPhone: order.shippingPhone,
+      shippingCity: order.shippingCity,
+      shippingAddress: order.shippingAddress,
+      shippingPostalCode: order.shippingPostalCode,
+      createdAt: order.createdAt,
+      refId: payment?.refId ?? null,
+      items: items.map((line) => ({
+        productSlug: line.productSlug,
+        productName: line.productName,
+        size: line.size,
+        color: line.color,
+        quantity: line.quantity,
+        unitPriceTomans: line.unitPriceTomans,
+      })),
+    };
+  });
+}
+
+export function setOrderShipped(orderId: number, shipped: boolean) {
+  const bundle = getOrderWithItems(orderId);
+  if (!bundle) throw new Error("سفارش پیدا نشد");
+  if (!ADMIN_VISIBLE_STATUSES.includes(bundle.order.status as OrderStatus)) {
+    throw new Error("این سفارش قابل به‌روزرسانی نیست");
+  }
+  setOrderStatus(orderId, shipped ? "shipped" : "paid");
 }
 
 export function listOrdersForUser(

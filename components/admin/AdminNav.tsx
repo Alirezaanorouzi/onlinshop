@@ -15,6 +15,9 @@ export function AdminNav() {
           پنل مدیریت
         </Link>
         <div className="flex items-center gap-3 text-sm">
+          <Link href="/admin/orders" className="text-muted hover:text-cream">
+            سفارشات
+          </Link>
           <Link href="/collection/men" className="text-muted hover:text-cream">
             فروشگاه
           </Link>

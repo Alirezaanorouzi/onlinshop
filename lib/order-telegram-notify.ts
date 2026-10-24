@@ -2,8 +2,10 @@ import "server-only";
 
 import { getProductsBySlugs } from "@/lib/catalog-db";
 import { formatNumber, formatPrice } from "@/lib/format";
+import { resolveOrderColorLabel } from "@/lib/order-display";
 import { getOrderWithItems } from "@/lib/orders-db";
 import { getPaymentByAuthority } from "@/lib/payments-db";
+import { getPublicSiteUrl } from "@/lib/site-url";
 import { isTelegramNotifyEnabled, sendTelegramMessage } from "@/lib/telegram";
 import type { CartLine } from "@/lib/types";
 
@@ -16,13 +18,18 @@ function formatCartLines(lines: CartLine[]): string {
   return lines
     .map((line) => {
       const name = bySlug.get(line.productSlug) ?? line.productSlug;
-      return `• ${name} — ${line.size} / ${line.color} × ${formatNumber(line.quantity)}`;
+      const colorLabel = resolveOrderColorLabel(line.productSlug, line.color);
+      return [
+        `• ${name}`,
+        `  سایز: ${line.size} | رنگ: ${colorLabel} × ${formatNumber(line.quantity)}`,
+      ].join("\n");
     })
     .join("\n");
 }
 
 function formatOrderItems(
   items: {
+    productSlug: string;
     productName: string;
     size: string;
     color: string;
@@ -32,10 +39,13 @@ function formatOrderItems(
 ): string {
   if (items.length === 0) return "—";
   return items
-    .map(
-      (line) =>
-        `• ${line.productName} — ${line.size} / ${line.color} × ${formatNumber(line.quantity)} (${formatPrice(line.unitPriceTomans * line.quantity)})`,
-    )
+    .map((line) => {
+      const colorLabel = resolveOrderColorLabel(line.productSlug, line.color);
+      return [
+        `• ${line.productName}`,
+        `  سایز: ${line.size} | رنگ: ${colorLabel} × ${formatNumber(line.quantity)} (${formatPrice(line.unitPriceTomans * line.quantity)})`,
+      ].join("\n");
+    })
     .join("\n");
 }
 
@@ -68,7 +78,9 @@ export async function notifyOwnerOrderPaid(
       if (bundle.order.shippingPostalCode) {
         lines.push(`کد پستی: ${bundle.order.shippingPostalCode}`);
       }
-      lines.push("", "اقلام:", formatOrderItems(bundle.items));
+      lines.push("", "محصولات:", formatOrderItems(bundle.items));
+      const panelUrl = `${getPublicSiteUrl().replace(/\/$/, "")}/admin/orders`;
+      lines.push("", `جزئیات در پنل: ${panelUrl}`);
     }
   } else if (payment.shipping) {
     lines.push("", `نام: ${payment.shipping.fullName}`);
@@ -78,9 +90,13 @@ export async function notifyOwnerOrderPaid(
     if (payment.shipping.postalCode) {
       lines.push(`کد پستی: ${payment.shipping.postalCode}`);
     }
-    lines.push("", "اقلام:", formatCartLines(payment.cart));
+    lines.push("", "محصولات:", formatCartLines(payment.cart));
+    lines.push(
+      "",
+      `جزئیات در پنل: ${getPublicSiteUrl().replace(/\/$/, "")}/admin/orders`,
+    );
   } else {
-    lines.push("", "اقلام:", formatCartLines(payment.cart));
+    lines.push("", "محصولات:", formatCartLines(payment.cart));
     if (payment.mobile) lines.push(`موبایل: ${payment.mobile}`);
   }
 
