@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { CategoryCircles } from "@/components/CategoryCircles";
 import { CollectionHero } from "@/components/CollectionHero";
 import { ProductStrip } from "@/components/ProductStrip";
 import { SnappPayPromo } from "@/components/SnappPayPromo";
-import { getCategories, getCollection, getProducts } from "@/lib/catalog";
+import { getCollection } from "@/lib/catalog";
+import { getCategories, getProducts } from "@/lib/catalog-server";
 
 export function generateStaticParams() {
   return [{ slug: "men" }, { slug: "women" }];
@@ -20,21 +20,7 @@ export async function generateMetadata({
   return { title: collection?.title ?? "کالکشن" };
 }
 
-export default function CollectionPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  return (
-    <Suspense
-      fallback={<p className="px-4 py-20 text-sm text-muted">در حال بارگذاری…</p>}
-    >
-      <CollectionContent params={params} />
-    </Suspense>
-  );
-}
-
-async function CollectionContent({
+export default async function CollectionPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -55,7 +41,14 @@ async function CollectionContent({
               count={products.length}
               compact
             />
-            <SnappPayPromo compact />
+            <SnappPayPromo
+              compact
+              featured={
+                getProducts({ collection: "men", category: "hoodie" })[0] ??
+                getProducts({ collection: "men" })[0] ??
+                null
+              }
+            />
           </div>
         </section>
       ) : (

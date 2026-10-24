@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { ProductStrip } from "@/components/ProductStrip";
+import { getCollections, getCollection } from "@/lib/catalog";
 import {
   getCategories,
   getCategory,
-  getCollection,
-  getCollections,
   getProducts,
-} from "@/lib/catalog";
+} from "@/lib/catalog-server";
 
 export function generateStaticParams() {
   return getCollections().flatMap((collection) =>
@@ -29,21 +27,7 @@ export async function generateMetadata({
   return { title: category?.name ?? "دسته‌بندی" };
 }
 
-export default function CategoryPage({
-  params,
-}: {
-  params: Promise<{ slug: string; category: string }>;
-}) {
-  return (
-    <Suspense
-      fallback={<p className="px-4 py-20 text-sm text-muted">در حال بارگذاری…</p>}
-    >
-      <CategoryContent params={params} />
-    </Suspense>
-  );
-}
-
-async function CategoryContent({
+export default async function CategoryPage({
   params,
 }: {
   params: Promise<{ slug: string; category: string }>;

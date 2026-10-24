@@ -1,0 +1,10 @@
+برای نمایش لوگوی اینماد در فوتر (وقتی سرور اینماد جواب نمی‌دهد):
+
+1. در مرورگر، روی سایت production خودتان بروید.
+2. این آدرس را باز کنید (از .env همان ENAMAD_LOGO_URL):
+   https://trustseal.enamad.ir/logo.aspx?id=8260060&Code=...
+3. تصویر را ذخیره کنید با نام: enamad-seal.png
+4. همین فایل را در این پوشه قرار دهید: public/images/enamad-seal.png
+5. دوباره deploy کنید.
+
+لینک کلیک (استعلام) همان ENAMAD_TRUST_URL می‌ماند.

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
-import { Suspense } from "react";
 import { Header } from "@/components/Header";
+import { SiteFooter } from "@/components/SiteFooter";
 import { Providers } from "@/components/Providers";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -31,17 +31,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col antialiased">
         <div className="pointer-events-none fixed inset-y-0 right-0 z-30 hidden w-1 bg-gold sm:block" />
         <Providers>
-          <Suspense
-            fallback={
-              <div className="h-[7.5rem] border-b border-white/10 md:h-16" />
-            }
-          >
-            <Header />
-          </Suspense>
+          <Header />
           <main className="flex-1">{children}</main>
-          <footer className="border-t border-white/10 px-4 py-6 sm:px-6">
-            <p className="text-right text-sm text-muted">{site.footerCredit}</p>
-          </footer>
+          <SiteFooter />
         </Providers>
       </body>
     </html>

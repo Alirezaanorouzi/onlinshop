@@ -3,14 +3,17 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { assetPath } from "@/lib/asset-path";
-import { getProducts } from "@/lib/catalog";
+import type { Product } from "@/lib/types";
 
 const INTERVAL_MS = 5000;
 
-export function SnappPayPromo({ compact = false }: { compact?: boolean }) {
-  const featured =
-    getProducts({ collection: "men", category: "hoodie" })[0] ??
-    getProducts({ collection: "men" })[0];
+export function SnappPayPromo({
+  compact = false,
+  featured,
+}: {
+  compact?: boolean;
+  featured: Product | null;
+}) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {

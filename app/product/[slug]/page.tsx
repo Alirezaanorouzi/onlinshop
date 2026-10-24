@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { AddToCart } from "@/components/AddToCart";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
+import { ProductSpecifications } from "@/components/ProductSpecifications";
 import { getProductImages } from "@/lib/product-images";
+import { getCollection } from "@/lib/catalog";
 import {
   getCategory,
-  getCollection,
   getProductBySlug,
-  getProducts,
-} from "@/lib/catalog";
+  listProductSlugs,
+} from "@/lib/catalog-server";
 
 export function generateStaticParams() {
-  return getProducts().map((product) => ({ slug: product.slug }));
+  return listProductSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -25,21 +25,7 @@ export async function generateMetadata({
   return { title: product?.name ?? "محصول" };
 }
 
-export default function ProductPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  return (
-    <Suspense
-      fallback={<p className="px-4 py-20 text-sm text-muted">در حال بارگذاری…</p>}
-    >
-      <ProductContent params={params} />
-    </Suspense>
-  );
-}
-
-async function ProductContent({
+export default async function ProductPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -86,6 +72,11 @@ async function ProductContent({
           {product.description}
         </p>
         <AddToCart product={product} />
+        <ProductSpecifications
+          product={product}
+          collectionTitle={collection?.title}
+          categoryName={category?.name}
+        />
       </div>
     </article>
   );

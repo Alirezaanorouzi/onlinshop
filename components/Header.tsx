@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import { getCollections, getProducts } from "@/lib/catalog";
+import { useEffect, useState } from "react";
+import { AccountHeaderLink } from "@/components/AccountHeaderLink";
+import { apiPath } from "@/lib/api-path";
+import { getCollections } from "@/lib/catalog";
+import type { Product } from "@/lib/types";
 import { useCart } from "@/lib/cart";
 import { formatNumber } from "@/lib/format";
 import { useSearch } from "@/lib/search";
@@ -23,9 +26,29 @@ export function Header() {
   const activeCollection = collections.find((collection) =>
     pathname.includes(`/collection/${collection.slug}`),
   )?.slug;
-  const results = query.trim()
-    ? getProducts({ collection: activeCollection, query }).slice(0, 6)
-    : [];
+  const [results, setResults] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const needle = query.trim();
+    if (!needle) {
+      setResults([]);
+      return;
+    }
+
+    const params = new URLSearchParams({ query: needle });
+    if (activeCollection) params.set("collection", activeCollection);
+
+    const timer = window.setTimeout(() => {
+      fetch(apiPath(`/api/products?${params}`))
+        .then((response) => response.json())
+        .then((data: { products?: Product[] }) => {
+          setResults((data.products ?? []).slice(0, 6));
+        })
+        .catch(() => setResults([]));
+    }, 200);
+
+    return () => window.clearTimeout(timer);
+  }, [query, activeCollection]);
 
   useEffect(() => {
     if (!open) return;
@@ -79,14 +102,7 @@ export function Header() {
           </nav>
 
           <div className="ms-auto flex shrink-0 items-center gap-0.5 sm:gap-2">
-            <button
-              type="button"
-              className="hidden size-11 place-items-center text-cream/80 sm:grid"
-              aria-label="حساب کاربری"
-              title="حساب کاربری به‌زودی"
-            >
-              <UserIcon />
-            </button>
+            <AccountHeaderLink />
             <button
               type="button"
               className="grid size-11 place-items-center text-cream/80"
@@ -220,20 +236,6 @@ function CollectionLink({
     >
       {label}
     </Link>
-  );
-}
-
-function UserIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="12" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.6" />
-      <path
-        d="M5 19.2c1.4-3 3.8-4.4 7-4.4s5.6 1.4 7 4.4"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }
 

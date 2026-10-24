@@ -1,0 +1,20 @@
+# Local SeaweedFS (S3-compatible). Start: npm run storage:up
+services:
+  seaweedfs:
+    image: chrislusf/seaweedfs:latest
+    command:
+      - server
+      - -s3
+      - -s3.config=/etc/seaweedfs/s3.json
+      - -filer
+      - -dir=/data
+    ports:
+      - "9333:9333"
+      - "8888:8888"
+      - "8333:8333"
+    volumes:
+      - seaweed_data:/data
+      - ./docker/seaweed-s3.json:/etc/seaweedfs/s3.json:ro
+
+volumes:
+  seaweed_data:

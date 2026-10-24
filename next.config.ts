@@ -13,11 +13,27 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
   trailingSlash: isStaticExport ? true : undefined,
+  async rewrites() {
+    if (isStaticExport) return [];
+    return {
+      beforeFiles: [
+        {
+          source: "/uploads/:path*",
+          destination: "/api/files/:path*",
+        },
+      ],
+    };
+  },
   images: {
     unoptimized: true,
+    localPatterns: [
+      { pathname: "/uploads/**" },
+      { pathname: "/images/**" },
+      { pathname: "/api/files/**" },
+    ],
   },
-  cacheComponents: !isStaticExport,
-  partialPrefetching: !isStaticExport,
+  cacheComponents: false,
+  partialPrefetching: false,
   allowedDevOrigins: ["127.0.0.1"],
   turbopack: {
     root: path.join(__dirname),

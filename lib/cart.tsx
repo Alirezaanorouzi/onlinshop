@@ -58,6 +58,8 @@ type CartContextValue = {
   addItem: (line: Omit<CartLine, "quantity">, quantity?: number) => void;
   setQuantity: (line: Omit<CartLine, "quantity">, quantity: number) => void;
   removeItem: (line: Omit<CartLine, "quantity">) => void;
+  removeItems: (lines: Omit<CartLine, "quantity">[]) => void;
+  clearCart: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -95,6 +97,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         lines = lines.filter((item) => !sameLine(item, line));
         emit();
       },
+      removeItems: (toRemove) => {
+        load();
+        if (toRemove.length === 0) return;
+        lines = lines.filter(
+          (item) => !toRemove.some((line) => sameLine(item, line)),
+        );
+        emit();
+      },
+      clearCart: () => {
+        load();
+        lines = EMPTY;
+        emit();
+      },
     }),
     [current],
   );
@@ -106,4 +121,16 @@ export function useCart() {
   const context = useContext(CartContext);
   if (!context) throw new Error("useCart must be used within CartProvider");
   return context;
+}
+
+/** Remove lines after successful payment (callback page). */
+export function removeCartLinesFromStorage(
+  toRemove: Omit<CartLine, "quantity">[],
+) {
+  if (typeof window === "undefined" || toRemove.length === 0) return;
+  load();
+  lines = lines.filter(
+    (item) => !toRemove.some((line) => sameLine(item, line)),
+  );
+  emit();
 }

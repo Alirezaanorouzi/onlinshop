@@ -1,0 +1,163 @@
+# استقرار قائم مقام روی لیارا (پلتفرم Next.js)
+
+## خلاصه
+
+| مورد | انتخاب |
+|------|--------|
+| پلتفرم | **Next.js** (نه Laravel، نه Static) |
+| Node | **22** (در `liara.json`) |
+| دیتابیس | **SQLite** روی دیسک `shop-data` → پوشه `data/` |
+| تصاویر | دیسک `shop-uploads` → `public/uploads/` **یا** [ذخیره‌سازی ابری S3](https://docs.liara.ir/object-storage/about/) |
+| استقرار | Liara CLI یا ZIP در کنسول |
+
+---
+
+## مرحله ۱ — حساب و برنامه
+
+1. وارد [console.liara.ir](https://console.liara.ir) شوید.
+2. منو **پلتفرم** → **ایجاد برنامه**.
+3. نوع برنامه: **Next.js**.
+4. یک **شناسه** یکتا بگذارید (مثلاً `ghaim-magham` یا `onlineshop`).
+5. شبکه و پلن را انتخاب کنید و برنامه را بسازید.
+
+آدرس پیش‌فرض: `https://شناسه-شما.liara.run`
+
+---
+
+## مرحله ۲ — دیسک‌ها (حتماً قبل از اولین استقرار موفق)
+
+در برنامه → **دیسک‌ها** → **ایجاد دیسک**:
+
+| نام دیسک (در کنسول) | اندازه پیشنهادی | اتصال در `liara.json` |
+|----------------------|-----------------|------------------------|
+| `shop-data` | ۱ گیگ | `data` |
+| `shop-uploads` | ۲–۵ گیگ | `public/uploads` |
+
+نام دیسک‌ها باید **دقیقاً** مثل `liara.json` باشد.
+
+---
+
+## مرحله ۳ — متغیرهای محیطی
+
+برنامه → **تنظیمات** → **متغیرهای محیطی**:
+
+```env
+CATALOG_BACKEND=sqlite
+SQLITE_PATH=data/catalog.sqlite
+ADMIN_TOKEN=یک-رمز-قوی-طولانی
+
+# ورود مدیر (ایمیل) — روی Liara حتماً در env برنامه بگذارید (نه فقط .env.local)
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=رمز-قوی
+
+# درگاه زرین‌پال (بدون این‌ها دکمهٔ پرداخت آنلاین در سبد خرید نمایش داده نمی‌شود)
+ZARINPAL_MERCHANT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+SITE_URL=https://دامنه-شما.ir
+# اختیاری: ZARINPAL_SANDBOX=true برای تست | ZARINPAL_ACCESS_TOKEN=...
+
+# اینماد — کد HTML را **عیناً** از پنل کپی کنید (داخل گیومهٔ دوتایی):
+# ENAMAD_EMBED="<a referrerpolicy='origin' target='_blank' href='...'><img ...></a>"
+# rel= روی لینک نگذارید (noreferrer لوگو را خراب می‌کند).
+
+# روی دامنه liara.run معمولاً base path لازم نیست — این‌ها را ست نکنید:
+# GITHUB_PAGES=
+# NEXT_PUBLIC_BASE_PATH=
+```
+
+### تصاویر — یکی از دو روش
+
+**الف) ساده (مثل لوکال بدون Docker)** — فقط دیسک `shop-uploads`؛ `S3_*` را ست **نکنید**. فایل‌ها در `/uploads/...` ذخیره می‌شوند و روی لیارا از طریق rewrite به `/api/files/...` سرو می‌شوند (دیسک mount).
+
+**ب) ذخیره‌سازی ابری لیارا (S3)** — از منو **ذخیره‌سازی ابری** باکت بسازید و کلید API بگیرید:
+
+```env
+S3_ENDPOINT=...
+S3_REGION=...
+S3_BUCKET=...
+S3_ACCESS_KEY=...
+S3_SECRET_KEY=...
+S3_PUBLIC_BASE_URL=...
+S3_FORCE_PATH_STYLE=true
+```
+
+---
+
+## مرحله ۴ — استقرار کد
+
+### روش A: Liara CLI (پیشنهادی)
+
+توکن را فقط از **[console.liara.ir/API](https://console.liara.ir/API)** بگیرید (نه JWT از تب Network مرورگر).
+
+```powershell
+npm install -g @liara/cli
+$env:LIARA_API_TOKEN = "توکن-از-صفحه-API"
+$env:ADMIN_TOKEN = "رمز-مدیر-پروداکشن"
+cd onlineshop
+.\scripts\deploy-liara.ps1 -AppName "شناسه-برنامه-شما"
+```
+
+یا دستی:
+
+```bash
+liara login --api-token YOUR_TOKEN
+liara deploy --app شناسه-برنامه-شما --port 3000
+```
+
+فایل `liara.json` در ریشه پروژه به‌صورت خودکار دیسک‌ها را وصل می‌کند.
+
+### روش B: ZIP در کنسول
+
+1. `node_modules` و `.next` را در ZIP نگذارید.
+2. **استقرار جدید** → Drag & Drop ZIP.
+3. در مرحله دیسک، `shop-data` → `data` و `shop-uploads` → `public/uploads`.
+
+لیارا خودش `npm install` و `npm run build` و `npm start` را اجرا می‌کند.
+
+---
+
+## مرحله ۵ — یک‌بار بعد از اولین استقرار
+
+در **شل** برنامه (کنسول لیارا) یا SSH:
+
+```bash
+npm run db:seed
+ADMIN_EMAIL=you@example.com ADMIN_PASSWORD='your-password' npm run db:seed-admin
+```
+
+(مایگریت با هر `npm start` خودکار است؛ **seed** فقط یک‌بار برای پر کردن از `catalog.json`.)
+
+---
+
+## مرحله ۶ — تست
+
+| آدرس | کار |
+|------|-----|
+| `/` | فروشگاه |
+| `/login` | ورود مدیر با ایمیل و رمز (`db:seed-admin`) |
+| `/api/health` | باید `{"ok":true,"catalog":"sqlite"}` بدهد |
+
+---
+
+## سایت فقط «در حال بارگذاری» یا شبیه JSON / داده
+
+Next با **Suspense + streaming** اول فقط «در حال بارگذاری…» می‌فرستد؛ اگر JS یا `_next/static` لود نشود، فروشگاه کامل دیده نمی‌شود. در نسخهٔ فعلی ریپو صفحات فروشگاه **بدون Suspense** رندر می‌شوند — دوباره `liara deploy` بزنید.
+
+همچنین **CSS** (`postcss.config.mjs`) و env بدون `GITHUB_PAGES` / `NEXT_PUBLIC_BASE_PATH` را چک کنید.
+
+- آدرس فروشگاه: `https://شناسه.liara.run/collection/men` (نه `/api/products`)
+- در env لیارا **`GITHUB_PAGES` و `NEXT_PUBLIC_BASE_PATH` را ست نکنید**
+- بعد از اولین deploy موفق: در شل → `npm run db:seed`
+
+## اگر deploy روی Liara fail شد
+
+- **اولین خطا:** `instant` در layout ادمین — در نسخهٔ فعلی ریپو حذف شده.
+- **خطای `better_sqlite3.node`:** npm روی Liara اسکریپت نصب native را بدون `allowScripts` در `package.json` اجرا نمی‌کند؛ در build از JSON استفاده می‌شود (`NEXT_PHASE`)، در runtime از SQLite روی دیسک.
+- لاگ: `liara app logs -a شناسه-برنامه` یا کنسول → استقرارها.
+
+## نکات
+
+- **GitHub Pages** جدا است؛ روی لیارا `GITHUB_PAGES=true` نگذارید.
+- برای دامنه خودتان در لیارا، دامنه را در تنظیمات برنامه اضافه کنید.
+- به‌روزرسانی: دوباره `liara deploy` یا ZIP جدید؛ دیتابیس و آپلودها روی دیسک می‌مانند.
+
+مستندات رسمی: [استقرار Next.js](https://docs.liara.ir/paas/nextjs/how-tos/deploy-app/) · [SQLite + دیسک](https://docs.liara.ir/paas/nextjs/how-tos/connect-to-db/sqlite/)

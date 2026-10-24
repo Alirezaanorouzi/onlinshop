@@ -1,0 +1,14 @@
+{
+  "identities": [
+    {
+      "name": "onlineshop",
+      "credentials": [
+        {
+          "accessKey": "onlineshop",
+          "secretKey": "onlineshop-dev-secret"
+        }
+      ],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    }
+  ]
+}

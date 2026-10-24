@@ -1,0 +1,17 @@
+{
+  "app": "qaim-magham",
+  "platform": "next",
+  "node": {
+    "version": "22"
+  },
+  "disks": [
+    {
+      "name": "shop-data",
+      "mountTo": "data"
+    },
+    {
+      "name": "shop-uploads",
+      "mountTo": "public/uploads"
+    }
+  ]
+}
