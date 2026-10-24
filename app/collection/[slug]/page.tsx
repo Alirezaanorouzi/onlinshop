@@ -1,10 +1,15 @@
+import { unstable_noStore as noStore } from "next/cache";
 import { notFound } from "next/navigation";
+import { catalogIsDatabaseBacked } from "@/lib/catalog-pages";
 import { CategoryCircles } from "@/components/CategoryCircles";
 import { CollectionHero } from "@/components/CollectionHero";
 import { ProductStrip } from "@/components/ProductStrip";
 import { SnappPayPromo } from "@/components/SnappPayPromo";
 import { getCollection } from "@/lib/catalog";
 import { getCategories, getProducts } from "@/lib/catalog-server";
+
+/** SQLite catalog on Liara: must not bake `catalog.json` at build into this page. */
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return [{ slug: "men" }, { slug: "women" }];

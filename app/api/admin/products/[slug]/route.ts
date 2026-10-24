@@ -1,5 +1,5 @@
-import { revalidatePath } from "next/cache";
 import { assertAdmin } from "@/lib/admin-auth";
+import { revalidateStorefrontCatalog } from "@/lib/catalog-revalidate";
 import {
   type AdminProductBody,
   validateAdminProductBody,
@@ -86,23 +86,13 @@ export async function PUT(
     sizes: body.sizes,
   });
 
-  revalidatePath(`/collection/${body.collection}`);
-  revalidatePath(`/collection/${body.collection}/${body.category}`);
-  revalidatePath(`/product/${body.slug}`);
-  if (existing.collection !== body.collection) {
-    revalidatePath(`/collection/${existing.collection}`);
-    revalidatePath(
-      `/collection/${existing.collection}/${existing.category}`,
-    );
-  }
-  if (
-    existing.category !== body.category &&
-    existing.collection === body.collection
-  ) {
-    revalidatePath(
-      `/collection/${existing.collection}/${existing.category}`,
-    );
-  }
+  revalidateStorefrontCatalog({
+    collection: body.collection,
+    category: body.category,
+    productSlug: body.slug,
+    previousCollection: existing.collection,
+    previousCategory: existing.category,
+  });
 
   return Response.json({ ok: true });
 }
@@ -132,10 +122,10 @@ export async function DELETE(
   }
 
   deleteProduct(existing.slug);
-  revalidatePath(`/collection/${existing.collection}`);
-  revalidatePath(
-    `/collection/${existing.collection}/${existing.category}`,
-  );
-  revalidatePath(`/product/${existing.slug}`);
+  revalidateStorefrontCatalog({
+    collection: existing.collection,
+    category: existing.category,
+    productSlug: existing.slug,
+  });
   return Response.json({ ok: true });
 }

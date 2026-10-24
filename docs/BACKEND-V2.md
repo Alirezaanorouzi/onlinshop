@@ -49,6 +49,12 @@ Migrations backfill existing `users` profile columns and legacy `payments` rows 
 - Optional `ADMIN_EMAIL` / `ADMIN_PASSWORD` for legacy tooling; not shown on the login page
 - Legacy `ADMIN_TOKEN` bearer still works for API until removed
 
+## Storefront vs build (`CATALOG_BACKEND=sqlite`)
+
+`next build` does **not** open SQLite (native module / no disk). Pages used to bake in `data/catalog.json` and stayed stale after admin edits.
+
+With `CATALOG_BACKEND=sqlite`, collection and product routes use **`force-dynamic`** so each request reads the DB on the mounted `data/` disk. Set **`CATALOG_BACKEND=sqlite` in Liara env before build**, not only at runtime.
+
 ## Liara
 
 See **[DEPLOY-LIARA.md](./DEPLOY-LIARA.md)** — `liara.json`, disks `shop-data` + `shop-uploads`, env vars, `liara deploy`.

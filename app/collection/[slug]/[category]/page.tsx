@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductStrip } from "@/components/ProductStrip";
@@ -7,8 +8,15 @@ import {
   getCategory,
   getProducts,
 } from "@/lib/catalog-server";
+import {
+  catalogIsDatabaseBacked,
+  staticCategoryParams,
+} from "@/lib/catalog-pages";
 
 export function generateStaticParams() {
+  if (catalogIsDatabaseBacked()) {
+    return staticCategoryParams();
+  }
   return getCollections().flatMap((collection) =>
     getCategories(collection.slug).map((category) => ({
       slug: collection.slug,
@@ -32,6 +40,8 @@ export default async function CategoryPage({
 }: {
   params: Promise<{ slug: string; category: string }>;
 }) {
+  if (catalogIsDatabaseBacked()) noStore();
+
   const { slug, category: categorySlug } = await params;
   const collection = getCollection(slug);
   const category = getCategory(slug, categorySlug);

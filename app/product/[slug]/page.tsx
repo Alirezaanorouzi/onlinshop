@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddToCart } from "@/components/AddToCart";
@@ -13,8 +14,10 @@ import {
   getProductBySlug,
   listProductSlugs,
 } from "@/lib/catalog-server";
+import { catalogIsDatabaseBacked } from "@/lib/catalog-pages";
 
 export function generateStaticParams() {
+  if (catalogIsDatabaseBacked()) return [];
   return listProductSlugs().map((slug) => ({ slug }));
 }
 
@@ -23,6 +26,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  if (catalogIsDatabaseBacked()) noStore();
+
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) return { title: "محصول" };
@@ -53,6 +58,8 @@ export default async function ProductPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  if (catalogIsDatabaseBacked()) noStore();
+
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) notFound();

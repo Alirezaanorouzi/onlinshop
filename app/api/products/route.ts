@@ -14,5 +14,12 @@ export function GET(request: Request) {
     slugs: slugs ? slugs.split(",").filter(Boolean) : undefined,
   });
 
-  return Response.json({ products });
+  return Response.json(
+    { products },
+    {
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    },
+  );
 }

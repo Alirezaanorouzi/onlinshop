@@ -1,5 +1,5 @@
-import { revalidatePath } from "next/cache";
 import { assertAdmin } from "@/lib/admin-auth";
+import { revalidateStorefrontCatalog } from "@/lib/catalog-revalidate";
 import {
   type AdminProductBody,
   validateAdminProductBody,
@@ -72,9 +72,11 @@ export async function POST(request: Request) {
     sizes: body.sizes,
   });
 
-  revalidatePath(`/collection/${body.collection}`);
-  revalidatePath(`/collection/${body.collection}/${body.category}`);
-  revalidatePath(`/product/${slug}`);
+  revalidateStorefrontCatalog({
+    collection: body.collection,
+    category: body.category,
+    productSlug: slug,
+  });
 
   return Response.json({ ok: true, slug });
 }

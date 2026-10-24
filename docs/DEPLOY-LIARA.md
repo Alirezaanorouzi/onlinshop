@@ -45,6 +45,8 @@
 CATALOG_BACKEND=sqlite
 SQLITE_PATH=data/catalog.sqlite
 
+# حتماً قبل از build روی Liara ست باشد — وگرنه فروشگاه همان catalog.json زمان build را نشان می‌دهد، نه SQLite ادمین.
+
 # ورود مدیر و مشتری: همان /login با OTP (کاوه‌نگار)
 ADMIN_PHONE=09xxxxxxxxx
 # بدون فاصله بعد از = — مثال اشتباه: ADMIN_PHONE= 0912...
