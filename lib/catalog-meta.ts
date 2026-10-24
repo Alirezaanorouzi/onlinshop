@@ -1,3 +1,4 @@
+import { normalizeProductGallery } from "@/lib/product-gallery";
 import type {
   Category,
   Collection,
@@ -82,14 +83,18 @@ export function rowToProduct(row: {
   colors: Product["colors"];
   sizes: string[];
 }): Product {
+  const { primaryImageUrl, galleryUrls } = normalizeProductGallery(
+    row.primaryImageUrl,
+    row.galleryUrls,
+  );
   return {
     slug: row.slug,
     name: row.name,
     collection: row.collection,
     category: row.category,
     price: row.price,
-    image: row.primaryImageUrl,
-    images: row.galleryUrls.length > 0 ? row.galleryUrls : undefined,
+    image: primaryImageUrl,
+    images: galleryUrls.length > 1 ? galleryUrls : undefined,
     description: row.description,
     colors: row.colors,
     sizes: row.sizes,

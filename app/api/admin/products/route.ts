@@ -1,31 +1,13 @@
+import { revalidatePath } from "next/cache";
 import { assertAdmin } from "@/lib/admin-auth";
+import {
+  type AdminProductBody,
+  validateAdminProductBody,
+} from "@/lib/admin-product-validate";
 import { upsertProduct } from "@/lib/catalog-db";
 import { isSqliteCatalog } from "@/lib/env";
+import { normalizeProductGallery } from "@/lib/product-gallery";
 import { createProductSlug } from "@/lib/slug";
-import type { CollectionSlug, Color } from "@/lib/types";
-
-type Body = {
-  slug: string;
-  name: string;
-  collection: CollectionSlug;
-  category: string;
-  price: number;
-  description: string;
-  primaryImageUrl: string;
-  galleryUrls?: string[];
-  colors: Color[];
-  sizes: string[];
-};
-
-function validate(body: Body) {
-  if (!body.name) return "name is required";
-  if (!body.collection || !body.category) return "collection and category required";
-  if (!Number.isFinite(body.price) || body.price < 0) return "invalid price";
-  if (!body.primaryImageUrl) return "primary image is required";
-  if (!body.colors?.length) return "at least one color required";
-  if (!body.sizes?.length) return "at least one size required";
-  return null;
-}
 
 export async function GET(request: Request) {
   try {
@@ -61,9 +43,14 @@ export async function POST(request: Request) {
     );
   }
 
-  const body = (await request.json()) as Body;
-  const error = validate(body);
+  const body = (await request.json()) as AdminProductBody;
+  const error = validateAdminProductBody(body);
   if (error) return Response.json({ error }, { status: 400 });
+
+  const { primaryImageUrl, galleryUrls } = normalizeProductGallery(
+    body.primaryImageUrl,
+    body.galleryUrls,
+  );
 
   const { getProductBySlug } = await import("@/lib/catalog-db");
   let slug = body.slug?.trim();
@@ -74,16 +61,20 @@ export async function POST(request: Request) {
 
   upsertProduct({
     slug,
-    name: body.name,
+    name: body.name.trim(),
     collection: body.collection,
     category: body.category,
     price: Math.round(body.price),
     description: body.description,
-    primaryImageUrl: body.primaryImageUrl,
-    galleryUrls: body.galleryUrls ?? [],
+    primaryImageUrl,
+    galleryUrls,
     colors: body.colors,
     sizes: body.sizes,
   });
+
+  revalidatePath(`/collection/${body.collection}`);
+  revalidatePath(`/collection/${body.collection}/${body.category}`);
+  revalidatePath(`/product/${slug}`);
 
   return Response.json({ ok: true, slug });
 }

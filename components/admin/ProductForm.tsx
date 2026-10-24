@@ -5,11 +5,17 @@ import { useMemo, useState } from "react";
 import { uploadImage, type ProductInput } from "@/lib/admin-api";
 import { getCollections } from "@/lib/catalog";
 import { assetPath } from "@/lib/asset-path";
+import { categoryForCollection, normalizeProductGallery } from "@/lib/product-gallery";
 import { parseProductInput } from "@/lib/product-input";
 import { prepareImageForUpload } from "@/lib/prepare-image-upload";
 import type { Color, CollectionSlug } from "@/lib/types";
 
 const collections = getCollections();
+
+function imageListFromInput(input: ProductInput): string[] {
+  return normalizeProductGallery(input.primaryImageUrl, input.galleryUrls)
+    .galleryUrls;
+}
 
 export function ProductForm({
   initial,
@@ -21,6 +27,7 @@ export function ProductForm({
   onSubmit: (input: ProductInput) => Promise<void>;
 }) {
   const [form, setForm] = useState<ProductInput>(initial);
+  const [imageUrls, setImageUrls] = useState(() => imageListFromInput(initial));
   const [sizesText, setSizesText] = useState(initial.sizes.join(", "));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +38,15 @@ export function ProductForm({
       []
     );
   }, [form.collection]);
+
+  function syncImagesToForm(urls: string[]) {
+    const { primaryImageUrl, galleryUrls } = normalizeProductGallery(
+      urls[0] ?? "",
+      urls,
+    );
+    setImageUrls(galleryUrls);
+    setForm((prev) => ({ ...prev, primaryImageUrl, galleryUrls }));
+  }
 
   function updateColor(index: number, patch: Partial<Color>) {
     setForm((prev) => ({
@@ -62,13 +78,13 @@ export function ProductForm({
     }));
   }
 
-  async function uploadPrimary(file: File) {
+  async function uploadGalleryImage(file: File) {
     setBusy(true);
     setError(null);
     try {
       const prepared = await prepareImageForUpload(file);
       const url = await uploadImage(prepared);
-      setForm((prev) => ({ ...prev, primaryImageUrl: url }));
+      syncImagesToForm([...imageUrls, url]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "آپلود ناموفق");
     } finally {
@@ -76,22 +92,40 @@ export function ProductForm({
     }
   }
 
+  function removeImage(index: number) {
+    syncImagesToForm(imageUrls.filter((_, i) => i !== index));
+  }
+
+  function setPrimaryImage(index: number) {
+    if (index <= 0 || index >= imageUrls.length) return;
+    const next = [...imageUrls];
+    const [picked] = next.splice(index, 1);
+    next.unshift(picked);
+    syncImagesToForm(next);
+  }
+
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
     setError(null);
 
+    const { primaryImageUrl, galleryUrls } = normalizeProductGallery(
+      imageUrls[0] ?? form.primaryImageUrl,
+      imageUrls,
+    );
+
     const parsed = parseProductInput(
       {
         ...form,
+        primaryImageUrl,
+        galleryUrls,
         sizes: sizesText.split(/[,،]/).map((s) => s.trim()).filter(Boolean),
-        galleryUrls: [],
       },
       { isNew },
     );
 
     if (!parsed.primaryImageUrl) {
-      setError("لطفاً با «افزودن عکس» یک تصویر برای محصول انتخاب کنید.");
+      setError("لطفاً حداقل یک تصویر برای محصول اضافه کنید.");
       setBusy(false);
       return;
     }
@@ -109,7 +143,7 @@ export function ProductForm({
     }
   }
 
-  const preview = form.primaryImageUrl ? assetPath(form.primaryImageUrl) : "";
+  const mainPreview = imageUrls[0] ? assetPath(imageUrls[0]) : "";
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-6 px-4 py-8">
@@ -148,12 +182,14 @@ export function ProductForm({
           <span className="text-muted">کالکشن</span>
           <select
             value={form.collection}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                collection: e.target.value as CollectionSlug,
-              })
-            }
+            onChange={(e) => {
+              const collection = e.target.value as CollectionSlug;
+              setForm((prev) => ({
+                ...prev,
+                collection,
+                category: categoryForCollection(collection, prev.category),
+              }));
+            }}
             className="mt-1 w-full rounded-lg border border-white/15 bg-ink px-3 py-2 text-sm"
           >
             {collections.map((c) => (
@@ -186,32 +222,93 @@ export function ProductForm({
         />
       </label>
 
-      <fieldset className="space-y-3 rounded-xl border border-white/10 p-4">
-        <legend className="px-1 text-sm text-muted">تصویر محصول</legend>
-        <div className="flex flex-wrap items-center gap-4">
-          {preview && (
-            <div className="relative aspect-[3/4] w-28 overflow-hidden rounded-lg bg-surface ring-1 ring-white/10">
-              <Image src={preview} alt="" fill unoptimized className="object-cover" />
-            </div>
-          )}
-          <label
-            className="flex size-28 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-white/25 bg-ink/50 transition hover:border-gold/50 hover:bg-surface/40"
-          >
-            <span className="text-2xl leading-none text-gold" aria-hidden>+</span>
-            <span className="text-xs text-muted">افزودن عکس</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              disabled={busy}
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) uploadPrimary(file);
-                e.target.value = "";
-              }}
+      <fieldset className="space-y-4 rounded-xl border border-white/10 p-4">
+        <legend className="px-1 text-sm text-muted">گالری تصاویر</legend>
+        <p className="text-xs leading-6 text-muted">
+          تصویر اول = تصویر اصلی در لیست فروشگاه. مشتری در صفحهٔ محصول بین
+          تصاویر جابه‌جا می‌شود و بندانگشتی‌ها زیر تصویر اصلی نمایش داده
+          می‌شوند.
+        </p>
+
+        {mainPreview && (
+          <div className="relative mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden rounded-xl bg-surface ring-1 ring-white/10">
+            <Image
+              src={mainPreview}
+              alt=""
+              fill
+              unoptimized
+              className="object-cover"
             />
-          </label>
-        </div>
+          </div>
+        )}
+
+        {imageUrls.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {imageUrls.map((url, index) => (
+              <div
+                key={`${url}-${index}`}
+                className="relative flex flex-col items-center gap-1"
+              >
+                <button
+                  type="button"
+                  className={`relative size-16 overflow-hidden rounded-lg bg-surface ring-1 sm:size-20 ${
+                    index === 0
+                      ? "ring-2 ring-gold"
+                      : "ring-white/15 hover:ring-gold/50"
+                  }`}
+                  onClick={() => setPrimaryImage(index)}
+                  title={index === 0 ? "تصویر اصلی" : "انتخاب به‌عنوان تصویر اصلی"}
+                >
+                  <Image
+                    src={assetPath(url)}
+                    alt=""
+                    fill
+                    unoptimized
+                    className="object-cover"
+                  />
+                </button>
+                <div className="flex gap-2 text-[10px] text-muted">
+                  {index === 0 ? (
+                    <span className="text-gold">اصلی</span>
+                  ) : (
+                    <button
+                      type="button"
+                      className="hover:text-cream"
+                      onClick={() => setPrimaryImage(index)}
+                    >
+                      اصلی کن
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="hover:text-red-300"
+                    onClick={() => removeImage(index)}
+                  >
+                    حذف
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <label
+          className="flex h-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-white/25 bg-ink/50 transition hover:border-gold/50 hover:bg-surface/40"
+        >
+          <span className="text-2xl leading-none text-gold" aria-hidden>+</span>
+          <span className="text-xs text-muted">افزودن تصویر</span>
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            disabled={busy}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) uploadGalleryImage(file);
+              e.target.value = "";
+            }}
+          />
+        </label>
       </fieldset>
 
       <label className="block text-sm">

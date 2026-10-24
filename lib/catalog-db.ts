@@ -6,6 +6,7 @@ import {
   getCollection,
   rowToProduct,
 } from "@/lib/catalog-meta";
+import { normalizeProductGallery } from "@/lib/product-gallery";
 import type { Product } from "@/lib/types";
 
 export function getProducts(filter?: {
@@ -149,7 +150,10 @@ export function upsertProduct(input: {
   sizes: string[];
 }) {
   const db = getDb();
-  const galleryUrls = input.galleryUrls ?? [];
+  const { primaryImageUrl, galleryUrls } = normalizeProductGallery(
+    input.primaryImageUrl,
+    input.galleryUrls,
+  );
   db.insert(products)
     .values({
       slug: input.slug,
@@ -158,7 +162,7 @@ export function upsertProduct(input: {
       category: input.category,
       price: input.price,
       description: input.description,
-      primaryImageUrl: input.primaryImageUrl,
+      primaryImageUrl,
       galleryUrls,
       colors: input.colors,
       sizes: input.sizes,
@@ -171,7 +175,7 @@ export function upsertProduct(input: {
         category: input.category,
         price: input.price,
         description: input.description,
-        primaryImageUrl: input.primaryImageUrl,
+        primaryImageUrl,
         galleryUrls,
         colors: input.colors,
         sizes: input.sizes,

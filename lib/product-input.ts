@@ -1,8 +1,19 @@
+import { getCollections } from "@/lib/catalog-meta";
+import {
+  categoryForCollection,
+  normalizeProductGallery,
+} from "@/lib/product-gallery";
 import type { CollectionSlug, Product } from "@/lib/types";
 import type { ProductInput } from "@/lib/admin-api";
 import { createProductSlug } from "@/lib/slug";
 
+const collections = getCollections();
+
 export function productToInput(product: Product): ProductInput {
+  const { primaryImageUrl, galleryUrls } = normalizeProductGallery(
+    product.image,
+    product.images,
+  );
   return {
     slug: product.slug,
     name: product.name,
@@ -10,8 +21,8 @@ export function productToInput(product: Product): ProductInput {
     category: product.category,
     price: product.price,
     description: product.description,
-    primaryImageUrl: product.image,
-    galleryUrls: product.images ?? [],
+    primaryImageUrl,
+    galleryUrls,
     colors: product.colors,
     sizes: product.sizes,
   };
@@ -20,11 +31,13 @@ export function productToInput(product: Product): ProductInput {
 export function emptyProductInput(
   collection: CollectionSlug = "men",
 ): ProductInput {
+  const col =
+    collections.find((item) => item.slug === collection) ?? collections[0];
   return {
     slug: "",
     name: "",
-    collection,
-    category: "shirt",
+    collection: col.slug as CollectionSlug,
+    category: col.categories[0]?.slug ?? "shirt",
     price: 0,
     description: "",
     primaryImageUrl: "",
@@ -53,13 +66,20 @@ export function parseProductInput(
     }))
     .filter((color) => color.name);
 
+  const { primaryImageUrl, galleryUrls } = normalizeProductGallery(
+    raw.primaryImageUrl,
+    raw.galleryUrls,
+  );
+
   return {
     ...raw,
     slug,
     name,
+    collection,
+    category: categoryForCollection(collection, raw.category),
     description: raw.description.trim(),
-    primaryImageUrl: raw.primaryImageUrl.trim(),
-    galleryUrls: [],
+    primaryImageUrl,
+    galleryUrls,
     colors,
     sizes: raw.sizes.map((size) => size.trim()).filter(Boolean),
   };
