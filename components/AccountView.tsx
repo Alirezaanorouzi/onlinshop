@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { AccountProfileComplete } from "@/components/AccountProfileComplete";
 import { AccountSignIn } from "@/components/auth/AccountSignIn";
 import { CustomerAccountPanel } from "@/components/CustomerAccountPanel";
 import { clearStoredAdminToken } from "@/lib/admin-api";
@@ -12,8 +13,11 @@ import {
   logoutAuthSession,
 } from "@/lib/client-auth";
 
-export function AccountView() {
+function AccountViewBody() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const completeFlow = searchParams.get("complete") === "1";
+  const returnTo = searchParams.get("next")?.trim() || "/account";
   const [sessionUser, setSessionUser] = useState<
     Awaited<ReturnType<typeof fetchAuthSession>>
   >(null);
@@ -50,15 +54,12 @@ export function AccountView() {
   }
 
   if (sessionUser?.role === "customer" && sessionUser.phone) {
-    return (
-      <Suspense
-        fallback={
-          <p className="px-4 py-20 text-center text-sm text-muted">در حال بارگذاری…</p>
-        }
-      >
-        <CustomerAccountPanel phone={sessionUser.phone} />
-      </Suspense>
-    );
+    if (completeFlow) {
+      return (
+        <AccountProfileComplete phone={sessionUser.phone} returnTo={returnTo} />
+      );
+    }
+    return <CustomerAccountPanel phone={sessionUser.phone} />;
   }
 
   if (sessionUser?.role === "admin") {
@@ -100,5 +101,20 @@ export function AccountView() {
     );
   }
 
-  return <AccountSignIn redirectTo="/account" />;
+  const signInNext = completeFlow
+    ? `/account?complete=1&next=${encodeURIComponent(returnTo)}`
+    : "/account";
+  return <AccountSignIn redirectTo={signInNext} />;
+}
+
+export function AccountView() {
+  return (
+    <Suspense
+      fallback={
+        <p className="px-4 py-20 text-center text-sm text-muted">در حال بارگذاری…</p>
+      }
+    >
+      <AccountViewBody />
+    </Suspense>
+  );
 }

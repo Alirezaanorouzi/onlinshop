@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import {
+  CustomerProfileForm,
+  type CustomerProfileFields,
+} from "@/components/CustomerProfileForm";
 import { ZarinpalCheckout } from "@/components/ZarinpalCheckout";
 import { apiPath } from "@/lib/api-path";
 import {
@@ -16,18 +20,18 @@ import type { CartLine, Product } from "@/lib/types";
 
 type PaymentConfig = { enabled?: boolean };
 
-type CustomerProfile = {
-  phone: string | null;
-  fullName: string;
-  address: string;
-  postalCode: string;
-  city: string;
-};
-
 type ProfileResponse = {
-  profile?: CustomerProfile;
+  profile?: CustomerProfileFields;
   complete?: boolean;
 };
+
+const emptyProfile = (phone: string | null): CustomerProfileFields => ({
+  phone,
+  fullName: "",
+  address: "",
+  postalCode: "",
+  city: "",
+});
 
 export function CheckoutView() {
   const router = useRouter();
@@ -36,10 +40,11 @@ export function CheckoutView() {
   const [products, setProducts] = useState<Product[]>([]);
   const [authOk, setAuthOk] = useState(false);
   const [profileComplete, setProfileComplete] = useState(false);
-  const [profile, setProfile] = useState<CustomerProfile | undefined>();
+  const [profile, setProfile] = useState<CustomerProfileFields | undefined>();
   const [onlineEnabled, setOnlineEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectionReady, setSelectionReady] = useState(false);
+  const [showProfileForm, setShowProfileForm] = useState(false);
 
   useEffect(() => {
     const raw = sessionStorage.getItem(CHECKOUT_LINES_STORAGE_KEY);
@@ -97,8 +102,11 @@ export function CheckoutView() {
       const profileData = (await profileRes.json()) as ProfileResponse;
       if (!cancelled) {
         setOnlineEnabled(Boolean(config.enabled));
-        setProfile(profileData.profile);
-        setProfileComplete(Boolean(profileData.complete));
+        const p = profileData.profile ?? emptyProfile(user.phone ?? null);
+        setProfile(p);
+        const complete = Boolean(profileData.complete);
+        setProfileComplete(complete);
+        setShowProfileForm(!complete);
         setLoading(false);
       }
     })();
@@ -124,6 +132,12 @@ export function CheckoutView() {
     0,
   );
   const cartReady = detailed.length === checkoutLines.length && checkoutLines.length > 0;
+
+  function handleProfileSaved(p: CustomerProfileFields, complete: boolean) {
+    setProfile(p);
+    setProfileComplete(complete);
+    if (complete) setShowProfileForm(false);
+  }
 
   if (!selectionReady || (!authOk && loading)) {
     return (
@@ -155,7 +169,7 @@ export function CheckoutView() {
         اطلاعات ارسال از حساب کاربری شما استفاده می‌شود.
       </p>
 
-      {profile && (
+      {profile && !showProfileForm && (
         <div className="mt-6 rounded-xl border border-white/10 bg-surface/40 p-4 text-sm">
           <p className="font-medium text-cream">{profile.fullName || "—"}</p>
           <p className="mt-1 text-muted" dir="ltr">{profile.phone}</p>
@@ -166,9 +180,44 @@ export function CheckoutView() {
             </p>
           )}
           {!profileComplete && (
-            <Link href="/account" className="mt-3 inline-block text-gold hover:underline">
-              تکمیل اطلاعات در حساب کاربری
-            </Link>
+            <button
+              type="button"
+              className="mt-3 text-gold hover:underline"
+              onClick={() => setShowProfileForm(true)}
+            >
+              تکمیل اطلاعات کاربری
+            </button>
+          )}
+          {profileComplete && (
+            <button
+              type="button"
+              className="mt-3 text-sm text-muted hover:text-cream"
+              onClick={() => setShowProfileForm(true)}
+            >
+              ویرایش آدرس
+            </button>
+          )}
+        </div>
+      )}
+
+      {profile && showProfileForm && (
+        <div className="mt-6 rounded-xl border border-gold/25 bg-surface/40 p-4">
+          <h2 className="mb-4 text-sm font-medium text-cream">
+            تکمیل اطلاعات کاربری
+          </h2>
+          <CustomerProfileForm
+            initial={profile}
+            onSaved={handleProfileSaved}
+            submitLabel="ذخیره و ادامه پرداخت"
+          />
+          {profileComplete && (
+            <button
+              type="button"
+              className="mt-3 w-full text-sm text-muted hover:text-cream"
+              onClick={() => setShowProfileForm(false)}
+            >
+              انصراف
+            </button>
           )}
         </div>
       )}
@@ -201,19 +250,16 @@ export function CheckoutView() {
         {!onlineEnabled && !loading && (
           <p className="text-sm text-muted">درگاه پرداخت آنلاین فعال نیست.</p>
         )}
-        {onlineEnabled && profileComplete && (
+        {onlineEnabled && profileComplete && !showProfileForm && (
           <ZarinpalCheckout
             lines={checkoutLines}
             totalTomans={total}
             cartReady={cartReady}
           />
         )}
-        {onlineEnabled && !profileComplete && (
+        {onlineEnabled && !profileComplete && !showProfileForm && (
           <p className="text-sm text-muted">
-            برای پرداخت، نام، آدرس و کد پستی را در{" "}
-            <Link href="/account" className="text-gold hover:underline">
-              حساب کاربری
-            </Link>{" "}
+            برای پرداخت، اطلاعات ارسال را با دکمهٔ «تکمیل اطلاعات کاربری» بالا
             کامل کنید.
           </p>
         )}

@@ -74,9 +74,14 @@ export function ZarinpalCheckout({
           role="alert"
         >
           {error}
-          {error.includes("حساب کاربری") && (
-            <a href="/account" className="mt-2 block text-gold hover:underline">
-              رفتن به حساب کاربری
+          {(error.includes("حساب کاربری") ||
+            error.includes("آدرس") ||
+            error.includes("کد پستی")) && (
+            <a
+              href="/account?complete=1&next=%2Fcart%2Fcheckout"
+              className="mt-2 block text-gold hover:underline"
+            >
+              تکمیل اطلاعات کاربری
             </a>
           )}
         </p>
