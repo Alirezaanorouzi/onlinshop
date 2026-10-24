@@ -94,6 +94,12 @@ export function markPaymentPaid(authority: string, refId: string) {
     .where(eq(payments.authority, authority))
     .run();
   setOrderStatusByPaymentAuthority(authority, "paid");
+
+  void import("@/lib/order-telegram-notify")
+    .then(({ notifyOwnerOrderPaid }) => notifyOwnerOrderPaid(authority, refId))
+    .catch((err) => {
+      console.error("[telegram] order paid notify failed:", err);
+    });
 }
 
 export function markPaymentFailed(authority: string) {

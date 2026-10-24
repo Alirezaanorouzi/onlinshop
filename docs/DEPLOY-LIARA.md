@@ -68,6 +68,11 @@ SITE_URL=https://دامنه-شما.ir
 # روی دامنه liara.run معمولاً base path لازم نیست — این‌ها را ست نکنید:
 # GITHUB_PAGES=
 # NEXT_PUBLIC_BASE_PATH=
+
+# اعلان سفارش پرداخت‌شده در تلگرام (ربات را ادمین کانال خصوصی کنید)
+# TELEGRAM_BOT_TOKEN=
+# TELEGRAM_CHAT_ID=-100...
+# TELEGRAM_NOTIFY_ENABLED=true
 ```
 
 ### تصاویر — یکی از دو روش
@@ -131,6 +136,12 @@ npm run db:seed-admin
 ```
 
 (`db:seed-admin` نیاز به `ADMIN_PHONE` در env دارد؛ مایگریت با هر `npm start` خودکار است. برای ست env از لوکال: `node scripts/liara-sync-admin-env.mjs`.)
+
+**اعلان تلگرام بعد از پرداخت موفق:** در `.env.local` مقدار `TELEGRAM_BOT_TOKEN` و `TELEGRAM_CHAT_ID` (یا `CHANNEL_ID`) را بگذارید، ربات را **ادمین کانال خصوصی** کنید، سپس:
+
+```bash
+node scripts/liara-sync-telegram-env.mjs
+```
 
 ---
 

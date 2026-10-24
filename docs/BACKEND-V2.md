@@ -37,6 +37,8 @@ Create an S3 bucket in SeaweedFS (default install often uses bucket name `seawee
 
 Order `status`: `awaiting_payment` → `paid` / `failed` (later: `processing`, `shipped`, …).
 
+On successful Zarinpal verify (`markPaymentPaid`), the app can post order details to a private Telegram channel (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` or `CHANNEL_ID`).
+
 Migrations backfill existing `users` profile columns and legacy `payments` rows into the new tables on deploy.
 
 ## Admin auth (same OTP as customers)

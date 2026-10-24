@@ -106,6 +106,24 @@ export function setOrderStatusByPaymentAuthority(
   }
 }
 
+export function getOrderWithItems(orderId: number) {
+  const db = getDb();
+  const order = db
+    .select()
+    .from(orders)
+    .where(eq(orders.id, orderId))
+    .get();
+  if (!order) return null;
+
+  const items = db
+    .select()
+    .from(orderItems)
+    .where(eq(orderItems.orderId, orderId))
+    .all();
+
+  return { order, items };
+}
+
 export function listOrdersForUser(
   userId: number,
   limit = 50,
