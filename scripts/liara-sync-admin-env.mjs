@@ -20,14 +20,37 @@ for (const line of readFileSync(envFile, "utf8").split(/\r?\n/)) {
   vars[line.slice(0, i).trim()] = line.slice(i + 1).trim();
 }
 
-const phone = vars.ADMIN_PHONE;
-const email = vars.ADMIN_EMAIL;
+const phone = vars.ADMIN_PHONE?.replace(/\s+/g, "");
+const email = vars.ADMIN_EMAIL?.trim();
 const password = vars.ADMIN_PASSWORD;
-const app = vars.LIARA_APP_NAME || "qaim-magham";
+const app =
+  vars.LIARA_APP_NAME?.trim() ||
+  JSON.parse(readFileSync(join(root, "liara.json"), "utf8")).app ||
+  "qaim-magham";
 
 if (!phone) {
-  console.error("Set ADMIN_PHONE in .env.local (store owner mobile for OTP admin login).");
+  console.error(
+    "Set ADMIN_PHONE in .env.local (no space after =), e.g. ADMIN_PHONE=09121234567",
+  );
   process.exit(1);
+}
+
+const token = vars.LIARA_API_TOKEN?.trim();
+const spawnEnv = { ...process.env };
+if (token) spawnEnv.LIARA_API_TOKEN = token;
+
+function liara(args) {
+  const r = spawnSync(liaraCmd, args, {
+    stdio: "inherit",
+    shell: true,
+    env: spawnEnv,
+  });
+  if (r.status !== 0) process.exit(r.status ?? 1);
+}
+
+// GitHub Pages vars break CSS on Liara — remove if present.
+for (const key of ["GITHUB_PAGES", "NEXT_PUBLIC_BASE_PATH"]) {
+  liara(["env", "unset", key, "-a", app, "-f"]);
 }
 
 const pairs = [["ADMIN_PHONE", phone]];
@@ -35,14 +58,9 @@ if (email) pairs.push(["ADMIN_EMAIL", email]);
 if (password) pairs.push(["ADMIN_PASSWORD", password]);
 
 for (const [key, value] of pairs) {
-  const r = spawnSync(
-    liaraCmd,
-    ["env", "set", `${key}=${value}`, "-a", app, "-f"],
-    { stdio: "inherit", shell: true },
-  );
-  if (r.status !== 0) process.exit(r.status ?? 1);
+  liara(["env", "set", `${key}=${value}`, "-a", app, "-f"]);
 }
 
 console.log(
-  `Liara env updated (${pairs.map(([k]) => k).join(", ")}). Restart the app.`,
+  `Liara app "${app}" updated: unset GITHUB_PAGES, NEXT_PUBLIC_BASE_PATH; set ${pairs.map(([k]) => k).join(", ")}. App will restart.`,
 );

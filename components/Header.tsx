@@ -19,7 +19,7 @@ const collectionShortLabel: Record<string, string> = {
   women: "بانوان",
 };
 
-export function Header() {
+export function Header({ minimal = false }: { minimal?: boolean }) {
   const pathname = usePathname();
   const { count } = useCart();
   const { query, setQuery, open, setOpen } = useSearch();
@@ -68,15 +68,42 @@ export function Header() {
     };
   }, [open]);
 
+  const mobileChromeHeight =
+    "calc(7.5rem + env(safe-area-inset-top, 0px))";
+
+  if (minimal) {
+    return (
+      <header
+        className="sticky top-0 z-[60] border-b border-white/10 bg-ink/95 backdrop-blur supports-[padding:max(0px)]:pt-[max(0px,env(safe-area-inset-top))]"
+      >
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-3 sm:h-16 sm:px-4">
+          <Link
+            href="/collection/men"
+            className="min-w-0 truncate text-base font-semibold sm:text-lg"
+          >
+            {site.name}
+          </Link>
+          <Link
+            href="/collection/men"
+            className="shrink-0 text-sm text-muted hover:text-gold"
+          >
+            فروشگاه
+          </Link>
+        </div>
+      </header>
+    );
+  }
+
   return (
     <header
-      className="relative sticky top-0 z-40 border-b border-white/10 bg-ink/95 backdrop-blur supports-[padding:max(0px)]:pt-[max(0px,env(safe-area-inset-top))]"
+      className="relative sticky top-0 z-[60] isolate border-b border-white/10 bg-ink/95 backdrop-blur supports-[padding:max(0px)]:pt-[max(0px,env(safe-area-inset-top))]"
     >
       <div className="mx-auto max-w-6xl px-3 sm:px-4">
-        <div className="flex h-14 items-center gap-2 sm:h-16 sm:gap-4">
+        <div className="relative z-[62] flex h-14 items-center gap-2 sm:h-16 sm:gap-4">
           <Link
             href="/collection/men"
             className="min-w-0 shrink truncate text-base font-semibold sm:text-lg"
+            prefetch={true}
           >
             {site.name}
           </Link>
@@ -105,7 +132,7 @@ export function Header() {
             <AccountHeaderLink />
             <button
               type="button"
-              className="grid size-11 place-items-center text-cream/80"
+              className="grid size-11 place-items-center text-cream/80 hover:text-gold"
               aria-label="جستجو"
               aria-expanded={open}
               onClick={() => setOpen(!open)}
@@ -114,7 +141,8 @@ export function Header() {
             </button>
             <Link
               href="/cart"
-              className="relative grid size-11 place-items-center text-cream/80"
+              prefetch={true}
+              className="relative grid size-11 place-items-center text-cream/80 hover:text-gold"
               aria-label="سبد خرید"
             >
               <CartIcon />
@@ -128,7 +156,7 @@ export function Header() {
         </div>
 
         <nav
-          className="grid grid-cols-2 gap-2 border-t border-white/10 py-2 md:hidden"
+          className="relative z-[61] grid grid-cols-2 gap-2 border-t border-white/10 py-2 md:hidden"
           aria-label="کالکشن‌ها"
         >
           {collections.map((collection) => {
@@ -153,12 +181,13 @@ export function Header() {
         <>
           <button
             type="button"
-            className="fixed inset-0 z-[45] bg-black/50 md:hidden"
+            className="fixed inset-x-0 bottom-0 z-[55] bg-black/50 md:hidden"
+            style={{ top: mobileChromeHeight }}
             aria-label="بستن جستجو"
             onClick={() => setOpen(false)}
           />
           <div
-            className="fixed inset-x-3 top-[calc(7.5rem+env(safe-area-inset-top,0px))] z-50 rounded-xl border border-white/10 bg-elevated p-3 shadow-xl md:absolute md:inset-x-auto md:end-3 md:top-full md:mt-2 md:w-72"
+            className="fixed inset-x-3 top-[calc(7.5rem+env(safe-area-inset-top,0px)+0.5rem)] z-[56] rounded-xl border border-white/10 bg-elevated p-3 shadow-xl md:absolute md:inset-x-auto md:end-3 md:top-full md:mt-2 md:w-72"
             role="search"
           >
             <input

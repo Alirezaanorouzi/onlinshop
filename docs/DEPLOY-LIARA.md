@@ -44,11 +44,17 @@
 ```env
 CATALOG_BACKEND=sqlite
 SQLITE_PATH=data/catalog.sqlite
-ADMIN_TOKEN=یک-رمز-قوی-طولانی
 
-# ورود مدیر (ایمیل) — روی Liara حتماً در env برنامه بگذارید (نه فقط .env.local)
-ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=رمز-قوی
+# ورود مدیر و مشتری: همان /login با OTP (کاوه‌نگار)
+ADMIN_PHONE=09xxxxxxxxx
+# بدون فاصله بعد از = — مثال اشتباه: ADMIN_PHONE= 0912...
+
+# اختیاری — برای sync مایگریت / legacy؛ روی صفحهٔ login نمایش داده نمی‌شود
+# ADMIN_EMAIL=...
+# ADMIN_PASSWORD=...
+
+# اختیاری — فقط API آپلود با Bearer؛ ورود روزمره با OTP است
+# ADMIN_TOKEN=...
 
 # درگاه زرین‌پال (بدون این‌ها دکمهٔ پرداخت آنلاین در سبد خرید نمایش داده نمی‌شود)
 ZARINPAL_MERCHANT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -121,10 +127,10 @@ liara deploy --app شناسه-برنامه-شما --port 3000
 
 ```bash
 npm run db:seed
-ADMIN_EMAIL=you@example.com ADMIN_PASSWORD='your-password' npm run db:seed-admin
+npm run db:seed-admin
 ```
 
-(مایگریت با هر `npm start` خودکار است؛ **seed** فقط یک‌بار برای پر کردن از `catalog.json`.)
+(`db:seed-admin` نیاز به `ADMIN_PHONE` در env دارد؛ مایگریت با هر `npm start` خودکار است. برای ست env از لوکال: `node scripts/liara-sync-admin-env.mjs`.)
 
 ---
 
@@ -133,7 +139,7 @@ ADMIN_EMAIL=you@example.com ADMIN_PASSWORD='your-password' npm run db:seed-admin
 | آدرس | کار |
 |------|-----|
 | `/` | فروشگاه |
-| `/login` | ورود مدیر با ایمیل و رمز (`db:seed-admin`) |
+| `/login` | ورود با OTP؛ ادمین = همان شمارهٔ `ADMIN_PHONE` |
 | `/api/health` | باید `{"ok":true,"catalog":"sqlite"}` بدهد |
 
 ---
