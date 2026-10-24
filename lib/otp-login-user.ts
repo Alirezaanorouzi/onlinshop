@@ -35,6 +35,22 @@ export function findOrCreateUserByPhone(rawPhone: string) {
     .get();
 
   if (existing) {
+    if (!asAdmin && existing.role === "admin") {
+      db.update(users)
+        .set({ role: "customer" })
+        .where(eq(users.id, existing.id))
+        .run();
+      const demoted = db
+        .select()
+        .from(users)
+        .where(eq(users.phone, phone))
+        .get();
+      if (!demoted) {
+        return { ok: false as const, error: "به‌روزرسانی حساب ناموفق بود." };
+      }
+      return { ok: true as const, user: demoted };
+    }
+
     if (asAdmin && existing.role !== "admin") {
       const targetEmail = adminEmailForPhone(phone);
       const emailOwner = db

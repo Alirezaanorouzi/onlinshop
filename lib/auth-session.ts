@@ -4,6 +4,7 @@ import { randomBytes } from "node:crypto";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db/index";
 import { sessions, users } from "@/db/schema";
+import { reconcileUserRole } from "@/lib/admin-role";
 import { parseCookies, SESSION_COOKIE } from "@/lib/auth-cookie";
 import { isSqliteCatalog } from "@/lib/env";
 
@@ -44,11 +45,17 @@ export function getSessionUser(request: Request): SessionUser | null {
     return null;
   }
 
+  const role = reconcileUserRole({
+    id: row.id,
+    phone: row.phone ?? null,
+    role: row.role,
+  });
+
   return {
     id: row.id,
     email: row.email,
     phone: row.phone ?? null,
-    role: row.role,
+    role,
   };
 }
 

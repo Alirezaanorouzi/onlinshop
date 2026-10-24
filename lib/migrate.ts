@@ -63,6 +63,13 @@ function syncAdminFromEnv(sqlite: Database.Database) {
           .run(adminEmail, passwordHash, adminPhone);
       }
     }
+
+    // Only ADMIN_PHONE may be admin when env is set (e.g. after changing owner on Liara).
+    sqlite
+      .prepare(
+        `UPDATE users SET role = 'customer' WHERE role = 'admin' AND (phone IS NULL OR phone != ?)`,
+      )
+      .run(adminPhone);
     return;
   }
 
