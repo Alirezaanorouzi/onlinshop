@@ -24,6 +24,21 @@ const nextConfig: NextConfig = {
       ],
     };
   },
+  async headers() {
+    if (isStaticExport) return [];
+    // Avoid long-lived HTML cache: after redeploy, old HTML can reference removed CSS chunks.
+    return [
+      {
+        source: "/:path((?!_next/static|_next/image|favicon.ico|images|uploads).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, s-maxage=60, stale-while-revalidate=300",
+          },
+        ],
+      },
+    ];
+  },
   images: {
     unoptimized: true,
     localPatterns: [

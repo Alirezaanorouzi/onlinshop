@@ -138,14 +138,43 @@ ADMIN_EMAIL=you@example.com ADMIN_PASSWORD='your-password' npm run db:seed-admin
 
 ---
 
+## صفحهٔ سفید / فقط متن و لینک آبی (بدون استایل و تصویر)
+
+یعنی **HTML از سرور می‌آید** اما **CSS یا JS** لود نمی‌شود (مثل لیست «محصولات» و «دسته‌بندی‌های مرتبط» بدون تم تیرهٔ فروشگاه).
+
+### ۱) متغیرهای محیطی اشتباه (شایع‌ترین)
+
+در کنسول لیارا → متغیرهای محیطی این‌ها را **حذف کنید** یا خالی بگذارید:
+
+| متغیر | چرا |
+|--------|-----|
+| `GITHUB_PAGES=true` | مسیر استاتیک `/onlinshop` و `output: export` — روی لیارا نباید باشد |
+| `NEXT_PUBLIC_BASE_PATH=/onlinshop` | فایل‌های `/_next/static/...` ۴۰۴ می‌شوند |
+
+`GITHUB_REPO` در `.env.example` فقط برای GitHub Pages است؛ روی لیارا مشکلی ایجاد نمی‌کند.
+
+بعد از تغییر env، **استقرار مجدد** (rebuild) بزنید.
+
+### ۲) کش مرورگر یا CDN بعد از deploy
+
+هر بار build، نام فایل CSS عوض می‌شود. اگر HTML قدیمی کش شده باشد، لینک CSS قبلی **۴۰۴** می‌شود و صفحه خام می‌ماند.
+
+- یک بار **Ctrl+Shift+R** (hard refresh) یا تب ناشناس
+- یا دوباره deploy با آخرین commit
+
+### ۳) تست سریع در مرورگر
+
+1. F12 → **Network** → فیلتر **CSS**
+2. صفحه را رفرش کنید؛ باید `/_next/static/chunks/....css` با وضعیت **200** باشد
+3. اگر **404** است → env بالا را چک کنید یا deploy تازه بزنید
+
+---
+
 ## سایت فقط «در حال بارگذاری» یا شبیه JSON / داده
 
 Next با **Suspense + streaming** اول فقط «در حال بارگذاری…» می‌فرستد؛ اگر JS یا `_next/static` لود نشود، فروشگاه کامل دیده نمی‌شود. در نسخهٔ فعلی ریپو صفحات فروشگاه **بدون Suspense** رندر می‌شوند — دوباره `liara deploy` بزنید.
 
-همچنین **CSS** (`postcss.config.mjs`) و env بدون `GITHUB_PAGES` / `NEXT_PUBLIC_BASE_PATH` را چک کنید.
-
-- آدرس فروشگاه: `https://شناسه.liara.run/collection/men` (نه `/api/products`)
-- در env لیارا **`GITHUB_PAGES` و `NEXT_PUBLIC_BASE_PATH` را ست نکنید**
+- آدرس فروشگاه: `https://دامنه-شما/collection/men` (نه `/api/products`)
 - بعد از اولین deploy موفق: در شل → `npm run db:seed`
 
 ## اگر deploy روی Liara fail شد

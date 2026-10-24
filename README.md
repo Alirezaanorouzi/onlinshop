@@ -9,9 +9,11 @@ npm install
 npm run dev
 ```
 
-With `GITHUB_REPO` in `.env`, the app uses the same base path as GitHub Pages. Open:
+For GitHub Pages locally, set `GITHUB_PAGES=true` and `GITHUB_REPO` (see below). Open:
 
 **http://localhost:3000/onlinshop/**
+
+Liara / normal production: **no** `GITHUB_PAGES` — use `http://localhost:3000/`.
 
 ## GitHub Pages
 
