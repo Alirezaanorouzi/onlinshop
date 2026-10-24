@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AdminNewProductLink } from "@/components/admin/AdminNewProductLink";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   listAdminProducts,
@@ -22,6 +23,11 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [collectionFilter, setCollectionFilter] = useState<string>(ALL);
   const [categoryFilter, setCategoryFilter] = useState<string>(ALL);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    slug: string;
+    name: string;
+  } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -72,18 +78,39 @@ export default function AdminDashboardPage() {
     });
   }, [products, collectionFilter, categoryFilter]);
 
-  async function handleDelete(slug: string, name: string) {
-    if (!window.confirm(`حذف «${name}»؟`)) return;
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    setError(null);
     try {
-      await removeProduct(slug);
+      await removeProduct(deleteTarget.slug);
+      setDeleteTarget(null);
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "حذف ناموفق");
+    } finally {
+      setDeleting(false);
     }
   }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        title="حذف محصول"
+        message={
+          deleteTarget
+            ? `آیا می‌خواهید «${deleteTarget.name}» حذف شود؟`
+            : ""
+        }
+        confirmLabel="بله"
+        cancelLabel="خیر"
+        busy={deleting}
+        onCancel={() => {
+          if (!deleting) setDeleteTarget(null);
+        }}
+        onConfirm={() => void confirmDelete()}
+      />
       <div className="mb-4 flex justify-end">
         <AdminNewProductLink />
       </div>
@@ -171,7 +198,12 @@ export default function AdminDashboardPage() {
                 <button
                   type="button"
                   className="text-muted hover:text-red-300"
-                  onClick={() => handleDelete(product.slug, product.name)}
+                  onClick={() =>
+                    setDeleteTarget({
+                      slug: product.slug,
+                      name: product.name,
+                    })
+                  }
                 >
                   حذف
                 </button>
