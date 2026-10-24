@@ -1,4 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddToCart } from "@/components/AddToCart";
@@ -12,22 +11,16 @@ import { getPublicSiteUrl } from "@/lib/site-url";
 import {
   getCategory,
   getProductBySlug,
-  listProductSlugs,
 } from "@/lib/catalog-server";
-import { catalogIsDatabaseBacked } from "@/lib/catalog-pages";
 
-export function generateStaticParams() {
-  if (catalogIsDatabaseBacked()) return [];
-  return listProductSlugs().map((slug) => ({ slug }));
-}
+/** SQLite admin catalog: render from DB per request (avoids DYNAMIC_SERVER_USAGE). */
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  if (catalogIsDatabaseBacked()) noStore();
-
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) return { title: "محصول" };
@@ -58,8 +51,6 @@ export default async function ProductPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  if (catalogIsDatabaseBacked()) noStore();
-
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) notFound();

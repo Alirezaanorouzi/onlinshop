@@ -1,6 +1,5 @@
-import { unstable_noStore as noStore } from "next/cache";
 import { notFound } from "next/navigation";
-import { catalogIsDatabaseBacked } from "@/lib/catalog-pages";
+import { markCatalogRequestDynamic } from "@/lib/catalog-runtime";
 import { CategoryCircles } from "@/components/CategoryCircles";
 import { CollectionHero } from "@/components/CollectionHero";
 import { ProductStrip } from "@/components/ProductStrip";
@@ -30,6 +29,8 @@ export default async function CollectionPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  markCatalogRequestDynamic();
+
   const { slug } = await params;
   const collection = getCollection(slug);
   if (!collection) notFound();

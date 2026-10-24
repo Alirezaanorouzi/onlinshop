@@ -1,5 +1,5 @@
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
+import { markCatalogRequestDynamic } from "@/lib/catalog-runtime";
 import { notFound } from "next/navigation";
 import { ProductStrip } from "@/components/ProductStrip";
 import { getCollections, getCollection } from "@/lib/catalog";
@@ -12,6 +12,8 @@ import {
   catalogIsDatabaseBacked,
   staticCategoryParams,
 } from "@/lib/catalog-pages";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   if (catalogIsDatabaseBacked()) {
@@ -40,7 +42,7 @@ export default async function CategoryPage({
 }: {
   params: Promise<{ slug: string; category: string }>;
 }) {
-  if (catalogIsDatabaseBacked()) noStore();
+  markCatalogRequestDynamic();
 
   const { slug, category: categorySlug } = await params;
   const collection = getCollection(slug);

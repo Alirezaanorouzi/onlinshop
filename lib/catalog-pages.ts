@@ -1,12 +1,9 @@
 import { getCollections } from "@/lib/catalog-meta";
+import { catalogUsesSqliteAtRuntime } from "@/lib/catalog-runtime";
 
-/**
- * On Liara, products live in SQLite (admin CRUD). `next build` intentionally reads
- * catalog.json (see isSqliteCatalog + NEXT_PHASE). Storefront pages must not serve
- * that frozen HTML when CATALOG_BACKEND=sqlite.
- */
+/** @deprecated Use catalogUsesSqliteAtRuntime */
 export function catalogIsDatabaseBacked(): boolean {
-  return process.env.CATALOG_BACKEND?.trim().toLowerCase() === "sqlite";
+  return catalogUsesSqliteAtRuntime();
 }
 
 export function staticCategoryParams() {

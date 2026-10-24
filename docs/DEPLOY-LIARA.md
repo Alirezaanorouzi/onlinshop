@@ -45,7 +45,8 @@
 CATALOG_BACKEND=sqlite
 SQLITE_PATH=data/catalog.sqlite
 
-# حتماً قبل از build روی Liara ست باشد — وگرنه فروشگاه همان catalog.json زمان build را نشان می‌دهد، نه SQLite ادمین.
+# حتماً قبل از build **و runtime** روی Liara ست باشد — وگرنه فروشگاه همان catalog.json زمان build را نشان می‌دهد، نه SQLite ادمین.
+# صفحات `/collection/*` و `/product/*` با `force-dynamic` از DB خوانده می‌شوند (خطای DYNAMIC_SERVER_USAGE بدون آن روی محصول رخ می‌دهد).
 
 # ورود مدیر و مشتری: همان /login با OTP (کاوه‌نگار)
 ADMIN_PHONE=09xxxxxxxxx
