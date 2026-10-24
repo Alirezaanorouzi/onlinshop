@@ -3,8 +3,11 @@ import { notFound } from "next/navigation";
 import { AddToCart } from "@/components/AddToCart";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductSpecifications } from "@/components/ProductSpecifications";
+import { assetPath } from "@/lib/asset-path";
 import { getProductImages } from "@/lib/product-images";
+import { getProductShareUrl } from "@/lib/product-share-url";
 import { getCollection } from "@/lib/catalog";
+import { getPublicSiteUrl } from "@/lib/site-url";
 import {
   getCategory,
   getProductBySlug,
@@ -22,7 +25,27 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const product = getProductBySlug(slug);
-  return { title: product?.name ?? "محصول" };
+  if (!product) return { title: "محصول" };
+
+  const url = getProductShareUrl(slug);
+  const origin = getPublicSiteUrl().replace(/\/$/, "");
+  const imageRel = assetPath(product.image);
+  const ogImage = imageRel.startsWith("http")
+    ? imageRel
+    : `${origin}${imageRel.startsWith("/") ? imageRel : `/${imageRel}`}`;
+
+  return {
+    title: product.name,
+    description: product.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      url,
+      type: "website",
+      images: [{ url: ogImage, alt: product.name }],
+    },
+  };
 }
 
 export default async function ProductPage({

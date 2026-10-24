@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ProductShareButton } from "@/components/ProductShareButton";
 import { assetPath } from "@/lib/asset-path";
 import { formatPrice } from "@/lib/format";
 import type { Product } from "@/lib/types";
@@ -12,21 +13,24 @@ export function ProductCard({ product }: { product: Product }) {
       data-product-name={product.name}
       className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-surface/50 p-2 transition hover:border-gold/35 hover:bg-surface"
     >
-      <Link
-        href={`/product/${product.slug}`}
-        className="relative block aspect-[3/4] overflow-hidden rounded-xl bg-surface transition duration-300 group-hover:scale-[1.01]"
-        prefetch={false}
-      >
-        <Image
-          src={assetPath(product.image)}
-          alt={product.name}
-          fill
-          unoptimized
-          loading="lazy"
-          className="object-cover"
-          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-        />
-      </Link>
+      <div className="relative overflow-hidden rounded-xl">
+        <Link
+          href={`/product/${product.slug}`}
+          className="relative block aspect-[3/4] bg-surface transition duration-300 group-hover:scale-[1.01]"
+          prefetch={false}
+        >
+          <Image
+            src={assetPath(product.image)}
+            alt={product.name}
+            fill
+            unoptimized
+            loading="lazy"
+            className="object-cover"
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+          />
+        </Link>
+        <ProductShareButton slug={product.slug} productName={product.name} />
+      </div>
       <Link
         href={`/product/${product.slug}`}
         prefetch={false}

@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
   assetPrefix: basePath ? `${basePath}/` : undefined,
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
+    NEXT_PUBLIC_SITE_URL:
+      process.env.SITE_URL?.trim() ||
+      process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+      "",
   },
   trailingSlash: isStaticExport ? true : undefined,
   async rewrites() {
