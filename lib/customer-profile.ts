@@ -3,6 +3,7 @@ import "server-only";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db/index";
 import { customerProfiles, users } from "@/db/schema";
+import { normalizePostalCode } from "@/lib/phone-ir";
 
 export type CustomerProfile = {
   phone: string | null;
@@ -62,11 +63,12 @@ export function getCustomerProfile(userId: number): CustomerProfile | null {
 }
 
 export function isProfileComplete(profile: CustomerProfile): boolean {
+  const postal = normalizePostalCode(profile.postalCode);
   return Boolean(
     profile.phone &&
-      profile.fullName.length >= 2 &&
-      profile.address.length >= 5 &&
-      /^\d{10}$/.test(profile.postalCode.replace(/\D/g, "")),
+      profile.fullName.trim().length >= 2 &&
+      profile.address.trim().length >= 5 &&
+      postal.length === 10,
   );
 }
 
@@ -81,7 +83,7 @@ export function updateCustomerProfile(
 ): CustomerProfile | null {
   const fullName = input.fullName.trim();
   const address = input.address.trim();
-  const postalDigits = input.postalCode.replace(/\D/g, "");
+  const postalDigits = normalizePostalCode(input.postalCode);
   const city = input.city?.trim() ?? "";
 
   if (fullName.length < 2) {

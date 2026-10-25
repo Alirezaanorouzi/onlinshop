@@ -82,4 +82,4 @@ Requires `CATALOG_BACKEND=sqlite`.
 | DELETE | `/api/admin/products/[slug]` | Delete (admin) |
 | POST | `/api/admin/upload` | `multipart/form-data` field `file`; header `Authorization: Bearer $ADMIN_TOKEN` |
 
-GitHub Pages CI keeps `CATALOG_BACKEND=json` (default) and static export.
+On Liara, set `CATALOG_BACKEND=sqlite` at build and runtime; `next build` may still read `catalog.json` during the build phase when `NEXT_PHASE=phase-production-build` (see `lib/env.ts`).

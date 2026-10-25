@@ -1,3 +1,4 @@
+import { getSessionUser } from "@/lib/auth-session";
 import { isSqliteCatalog } from "@/lib/env";
 import {
   getPaymentByAuthority,
@@ -22,6 +23,15 @@ export async function POST(request: Request) {
   const payment = getPaymentByAuthority(authority);
   if (!payment) {
     return Response.json({ error: "تراکنش یافت نشد" }, { status: 404 });
+  }
+
+  const session = getSessionUser(request);
+  if (
+    payment.userId &&
+    session &&
+    payment.userId !== session.id
+  ) {
+    return Response.json({ error: "دسترسی به این تراکنش مجاز نیست" }, { status: 403 });
   }
 
   if (payment.status === "paid" && payment.refId) {

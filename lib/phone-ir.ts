@@ -1,4 +1,4 @@
-function toLatinDigits(input: string): string {
+export function toLatinDigits(input: string): string {
   const persian = "۰۱۲۳۴۵۶۷۸۹";
   const arabic = "٠١٢٣٤٥٦٧٨٩";
   return input.replace(/[۰-۹]/g, (ch) => String(persian.indexOf(ch))).replace(
@@ -16,6 +16,11 @@ export function normalizeIranMobile(input: string): string | null {
 
   if (!/^09\d{9}$/.test(s)) return null;
   return s;
+}
+
+/** Ten-digit Iranian postal code (Persian/Arabic digits → Latin). */
+export function normalizePostalCode(input: string): string {
+  return toLatinDigits(input).replace(/\D/g, "").slice(0, 10);
 }
 
 export function formatIranMobileDisplay(phone: string): string {

@@ -69,9 +69,7 @@ SITE_URL=https://دامنه-شما.ir
 # ENAMAD_EMBED="<a referrerpolicy='origin' target='_blank' href='...'><img ...></a>"
 # rel= روی لینک نگذارید (noreferrer لوگو را خراب می‌کند).
 
-# روی دامنه liara.run معمولاً base path لازم نیست — این‌ها را ست نکنید:
-# GITHUB_PAGES=
-# NEXT_PUBLIC_BASE_PATH=
+# روی دامنه liara.run base path لازم نیست — NEXT_PUBLIC_BASE_PATH را ست نکنید.
 
 # اعلان سفارش پرداخت‌شده در تلگرام (ربات را ادمین کانال خصوصی کنید)
 # TELEGRAM_BOT_TOKEN=
@@ -169,10 +167,7 @@ node scripts/liara-sync-telegram-env.mjs
 
 | متغیر | چرا |
 |--------|-----|
-| `GITHUB_PAGES=true` | مسیر استاتیک `/onlinshop` و `output: export` — روی لیارا نباید باشد |
-| `NEXT_PUBLIC_BASE_PATH=/onlinshop` | فایل‌های `/_next/static/...` ۴۰۴ می‌شوند |
-
-`GITHUB_REPO` در `.env.example` فقط برای GitHub Pages است؛ روی لیارا مشکلی ایجاد نمی‌کند.
+| `NEXT_PUBLIC_BASE_PATH=/onlinshop` (یا هر مسیر اضافه) | فایل‌های `/_next/static/...` ۴۰۴ می‌شوند — اپ روی ریشهٔ دامنه است |
 
 بعد از تغییر env، **استقرار مجدد** (rebuild) بزنید.
 
@@ -206,7 +201,6 @@ Next با **Suspense + streaming** اول فقط «در حال بارگذاری�
 
 ## نکات
 
-- **GitHub Pages** جدا است؛ روی لیارا `GITHUB_PAGES=true` نگذارید.
 - برای دامنه خودتان در لیارا، دامنه را در تنظیمات برنامه اضافه کنید.
 - به‌روزرسانی: دوباره `liara deploy` یا ZIP جدید؛ دیتابیس و آپلودها روی دیسک می‌مانند.
 

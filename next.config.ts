@@ -3,10 +3,8 @@ import path from "node:path";
 import { getBasePath } from "./lib/base-path";
 
 const basePath = getBasePath();
-const isStaticExport = process.env.GITHUB_PAGES === "true";
 
 const nextConfig: NextConfig = {
-  output: isStaticExport ? "export" : undefined,
   basePath: basePath || undefined,
   assetPrefix: basePath ? `${basePath}/` : undefined,
   env: {
@@ -16,9 +14,7 @@ const nextConfig: NextConfig = {
       process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
       "",
   },
-  trailingSlash: isStaticExport ? true : undefined,
   async rewrites() {
-    if (isStaticExport) return [];
     return {
       beforeFiles: [
         {
@@ -29,7 +25,6 @@ const nextConfig: NextConfig = {
     };
   },
   async headers() {
-    if (isStaticExport) return [];
     // Avoid long-lived HTML cache: after redeploy, old HTML can reference removed CSS chunks.
     return [
       {

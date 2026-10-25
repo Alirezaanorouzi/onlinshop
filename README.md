@@ -1,46 +1,24 @@
 # قائم مقام — onlineshop
 
-Persian RTL clothing shop (Next.js).
+Persian RTL clothing shop (Next.js). Production runs on **Liara** with SQLite catalog, OTP login, and Zarinpal.
 
 ## Local development
 
 ```bash
 npm install
+cp .env.example .env.local   # then edit secrets
 npm run dev
 ```
 
-For GitHub Pages locally, set `GITHUB_PAGES=true` and `GITHUB_REPO` (see below). Open:
+Open **http://localhost:3000/**
 
-**http://localhost:3000/onlinshop/**
+For Liara deploy and env vars, see [docs/DEPLOY-LIARA.md](docs/DEPLOY-LIARA.md).
 
-Liara / normal production: **no** `GITHUB_PAGES` — use `http://localhost:3000/`.
+## Useful commands
 
-## GitHub Pages
-
-**Live URL (after deploy):**  
-https://alirezaanorouzi.github.io/onlinshop/
-
-### One-time GitHub settings (important)
-
-If you only see the README on the site, Pages is pointing at **`main`** instead of the built files. Fix it once:
-
-1. Push code to **`main`** (workflow builds the shop into the **`gh-pages`** branch).
-2. Repo **Settings → Pages → Build and deployment**
-   - **Source:** Deploy from a branch
-   - **Branch:** `gh-pages` → `/ (root)` → **Save**
-3. Wait for the **Deploy GitHub Pages** action to finish (tab **Actions**).
-4. Open **https://alirezaanorouzi.github.io/onlinshop/** (not the repo README page).
-
-### Deploy
-
-Every push to `main` runs `.github/workflows/deploy-pages.yml` and publishes the static `out/` folder.
-
-Local test of the Pages build:
-
-```powershell
-$env:GITHUB_PAGES="true"
-$env:GITHUB_REPO="https://github.com/Alirezaanorouzi/onlinshop.git"
-npm run build
-```
-
-Copy `.env.example` to `.env` and set `GITHUB_REPO` (no space after `=`).
+| Command | Purpose |
+|---------|---------|
+| `npm run build` | Production build |
+| `npm run start` | Migrate DB + `next start` |
+| `npm run db:seed` | Seed catalog into SQLite |
+| `npm run db:seed-admin` | Sync admin user from `ADMIN_PHONE` |

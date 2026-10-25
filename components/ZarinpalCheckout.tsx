@@ -15,16 +15,19 @@ export function ZarinpalCheckout({
   lines,
   totalTomans,
   cartReady,
+  productsLoading = false,
 }: {
   lines: CartLine[];
   totalTomans: number;
   cartReady: boolean;
+  productsLoading?: boolean;
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const belowMin = totalTomans < MIN_TOMANS;
-  const canPay = cartReady && !belowMin && lines.length > 0 && !busy;
+  const canPay =
+    cartReady && !belowMin && lines.length > 0 && !busy && !productsLoading;
 
   async function pay() {
     if (belowMin) {
@@ -93,7 +96,11 @@ export function ZarinpalCheckout({
         onClick={() => void pay()}
         className="w-full rounded-lg bg-gold py-3.5 text-sm font-medium text-ink transition-opacity disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:min-w-[12rem] sm:px-10"
       >
-        {busy ? "در حال انتقال به درگاه…" : `پرداخت ${formatPrice(totalTomans)}`}
+        {busy
+          ? "در حال انتقال به درگاه…"
+          : productsLoading
+            ? "در حال بارگذاری…"
+            : `پرداخت ${formatPrice(totalTomans)}`}
       </button>
 
       <p className="text-xs leading-6 text-muted">

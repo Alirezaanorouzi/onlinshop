@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { apiPath } from "@/lib/api-path";
+import { normalizePostalCode } from "@/lib/phone-ir";
 
 export type CustomerProfileFields = {
   phone: string | null;
@@ -88,7 +89,7 @@ export function CustomerProfileForm({
         onChange={(v) =>
           setDraft({
             ...draft,
-            postalCode: v.replace(/\D/g, "").slice(0, 10),
+            postalCode: normalizePostalCode(v),
           })
         }
         dir="ltr"

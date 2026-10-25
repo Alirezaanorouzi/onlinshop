@@ -4,7 +4,7 @@ import {
   isProfileComplete,
 } from "@/lib/customer-profile";
 import { isSqliteCatalog } from "@/lib/env";
-import { calculateCartTotalTomans } from "@/lib/cart-total";
+import { calculateCartTotalTomans, sanitizeCartLines } from "@/lib/cart-total";
 import { savePendingPayment } from "@/lib/payments-db";
 import { getPublicSiteUrl } from "@/lib/site-url";
 import { site } from "@/lib/site";
@@ -52,10 +52,12 @@ export async function POST(request: Request) {
   }
 
   const body = (await request.json()) as Body;
-  const lines = Array.isArray(body.lines) ? body.lines : [];
-  if (lines.length === 0) {
-    return Response.json({ error: "حداقل یک قلم برای پرداخت انتخاب کنید." }, { status: 400 });
+  const rawLines = Array.isArray(body.lines) ? body.lines : [];
+  const sanitized = sanitizeCartLines(rawLines);
+  if ("error" in sanitized) {
+    return Response.json({ error: sanitized.error }, { status: 400 });
   }
+  const lines = sanitized;
 
   const mobile = profile.phone;
 

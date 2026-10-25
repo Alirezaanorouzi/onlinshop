@@ -45,6 +45,7 @@ export function CheckoutView() {
   const [loading, setLoading] = useState(true);
   const [selectionReady, setSelectionReady] = useState(false);
   const [showProfileForm, setShowProfileForm] = useState(false);
+  const [productsLoading, setProductsLoading] = useState(false);
 
   useEffect(() => {
     const raw = sessionStorage.getItem(CHECKOUT_LINES_STORAGE_KEY);
@@ -75,12 +76,15 @@ export function CheckoutView() {
   useEffect(() => {
     if (!slugsKey) {
       setProducts([]);
+      setProductsLoading(false);
       return;
     }
+    setProductsLoading(true);
     fetch(apiPath(`/api/products?slugs=${encodeURIComponent(slugsKey)}`))
       .then((response) => response.json())
       .then((data: { products?: Product[] }) => setProducts(data.products ?? []))
-      .catch(() => setProducts([]));
+      .catch(() => setProducts([]))
+      .finally(() => setProductsLoading(false));
   }, [slugsKey]);
 
   useEffect(() => {
@@ -106,7 +110,7 @@ export function CheckoutView() {
         setProfile(p);
         const complete = Boolean(profileData.complete);
         setProfileComplete(complete);
-        setShowProfileForm(!complete);
+        setShowProfileForm(false);
         setLoading(false);
       }
     })();
@@ -131,7 +135,12 @@ export function CheckoutView() {
     (sum, item) => sum + item.product.price * item.line.quantity,
     0,
   );
-  const cartReady = detailed.length === checkoutLines.length && checkoutLines.length > 0;
+  const cartReady =
+    checkoutLines.length > 0 && detailed.length === checkoutLines.length;
+  const cartProductsMissing =
+    checkoutLines.length > 0 &&
+    !productsLoading &&
+    detailed.length < checkoutLines.length;
 
   function handleProfileSaved(p: CustomerProfileFields, complete: boolean) {
     setProfile(p);
@@ -169,7 +178,7 @@ export function CheckoutView() {
         اطلاعات ارسال از حساب کاربری شما استفاده می‌شود.
       </p>
 
-      {profile && !showProfileForm && (
+      {profile && !showProfileForm && profileComplete && (
         <div className="mt-6 rounded-xl border border-white/10 bg-surface/40 p-4 text-sm">
           <p className="font-medium text-cream">{profile.fullName || "—"}</p>
           <p className="mt-1 text-muted" dir="ltr">{profile.phone}</p>
@@ -179,38 +188,28 @@ export function CheckoutView() {
               کد پستی: <span dir="ltr">{profile.postalCode}</span>
             </p>
           )}
-          {!profileComplete && (
-            <button
-              type="button"
-              className="mt-3 text-gold hover:underline"
-              onClick={() => setShowProfileForm(true)}
-            >
-              تکمیل اطلاعات کاربری
-            </button>
-          )}
-          {profileComplete && (
-            <button
-              type="button"
-              className="mt-3 text-sm text-muted hover:text-cream"
-              onClick={() => setShowProfileForm(true)}
-            >
-              ویرایش آدرس
-            </button>
-          )}
+          <button
+            type="button"
+            className="mt-3 text-sm text-muted hover:text-cream"
+            onClick={() => setShowProfileForm(true)}
+          >
+            ویرایش آدرس
+          </button>
         </div>
       )}
 
-      {profile && showProfileForm && (
+      {profile && (showProfileForm || !profileComplete) && (
         <div className="mt-6 rounded-xl border border-gold/25 bg-surface/40 p-4">
           <h2 className="mb-4 text-sm font-medium text-cream">
             تکمیل اطلاعات کاربری
           </h2>
           <CustomerProfileForm
+            key={`${profile.phone ?? ""}-${profile.postalCode}-${profile.fullName}`}
             initial={profile}
             onSaved={handleProfileSaved}
             submitLabel="ذخیره و ادامه پرداخت"
           />
-          {profileComplete && (
+          {profileComplete && showProfileForm && (
             <button
               type="button"
               className="mt-3 w-full text-sm text-muted hover:text-cream"
@@ -250,17 +249,25 @@ export function CheckoutView() {
         {!onlineEnabled && !loading && (
           <p className="text-sm text-muted">درگاه پرداخت آنلاین فعال نیست.</p>
         )}
-        {onlineEnabled && profileComplete && !showProfileForm && (
-          <ZarinpalCheckout
-            lines={checkoutLines}
-            totalTomans={total}
-            cartReady={cartReady}
-          />
+        {onlineEnabled && profileComplete && (
+          <>
+            {cartProductsMissing && (
+              <p className="mb-4 text-sm text-red-200">
+                برخی محصولات سبد در دسترس نیستند. به سبد خرید برگردید و دوباره
+                انتخاب کنید.
+              </p>
+            )}
+            <ZarinpalCheckout
+              lines={checkoutLines}
+              totalTomans={total}
+              cartReady={cartReady}
+              productsLoading={productsLoading}
+            />
+          </>
         )}
-        {onlineEnabled && !profileComplete && !showProfileForm && (
+        {onlineEnabled && !profileComplete && (
           <p className="text-sm text-muted">
-            برای پرداخت، اطلاعات ارسال را با دکمهٔ «تکمیل اطلاعات کاربری» بالا
-            کامل کنید.
+            پس از ذخیرهٔ اطلاعات ارسال، دکمهٔ پرداخت فعال می‌شود.
           </p>
         )}
       </div>

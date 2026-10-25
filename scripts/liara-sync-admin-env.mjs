@@ -48,10 +48,8 @@ function liara(args) {
   if (r.status !== 0) process.exit(r.status ?? 1);
 }
 
-// GitHub Pages vars break CSS on Liara — remove if present.
-for (const key of ["GITHUB_PAGES", "NEXT_PUBLIC_BASE_PATH"]) {
-  liara(["env", "unset", key, "-a", app, "-f"]);
-}
+// Subpath base URL breaks assets on Liara root domains — remove if present.
+liara(["env", "unset", "NEXT_PUBLIC_BASE_PATH", "-a", app, "-f"]);
 
 const pairs = [["ADMIN_PHONE", phone]];
 if (email) pairs.push(["ADMIN_EMAIL", email]);
@@ -62,5 +60,5 @@ for (const [key, value] of pairs) {
 }
 
 console.log(
-  `Liara app "${app}" updated: unset GITHUB_PAGES, NEXT_PUBLIC_BASE_PATH; set ${pairs.map(([k]) => k).join(", ")}. App will restart.`,
+  `Liara app "${app}" updated: unset NEXT_PUBLIC_BASE_PATH if set; set ${pairs.map(([k]) => k).join(", ")}. App will restart.`,
 );

@@ -45,7 +45,5 @@ next-env.d.ts
 /data/*.sqlite
 /data/*.sqlite-*
 
-.static-export/
-
 # local dev uploads (use S3/SeaweedFS on Liara)
 /public/uploads/
