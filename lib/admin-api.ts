@@ -131,10 +131,58 @@ export async function setAdminOrderShipped(orderId: number, shipped: boolean) {
   if (!response.ok) throw new Error(await response.text());
 }
 
-export async function uploadImage(file: File) {
+export type AdminCategoryImage = {
+  categorySlug: string;
+  name: string;
+  imageUrl: string;
+  hasOverride: boolean;
+};
+
+export async function listAdminCategoryImages(collection: CollectionSlug) {
+  const response = await adminFetch(
+    `/api/admin/category-images?collection=${encodeURIComponent(collection)}`,
+  );
+  if (!response.ok) throw new Error(await response.text());
+  const data = (await response.json()) as { categories: AdminCategoryImage[] };
+  return data.categories;
+}
+
+export async function saveAdminCategoryImage(input: {
+  collection: CollectionSlug;
+  categorySlug: string;
+  imageUrl: string;
+}) {
+  const response = await adminFetch("/api/admin/category-images", {
+    method: "PUT",
+    body: JSON.stringify(input),
+  });
+  if (!response.ok) throw new Error(await response.text());
+  const data = (await response.json()) as { categories: AdminCategoryImage[] };
+  return data.categories;
+}
+
+export async function uploadAdminCategoryImage(
+  collection: CollectionSlug,
+  categorySlug: string,
+  file: File,
+) {
   const form = new FormData();
   form.set("file", file);
-  form.set("prefix", "products");
+  form.set("collection", collection);
+  form.set("categorySlug", categorySlug);
+  const response = await adminFetch("/api/admin/category-images", {
+    method: "POST",
+    body: form,
+  });
+  if (!response.ok) throw new Error(await response.text());
+  const data = (await response.json()) as { categories: AdminCategoryImage[] };
+  return data.categories;
+}
+
+export async function uploadImage(file: File, prefix = "products") {
+  const form = new FormData();
+  form.set("file", file);
+  form.set("prefix", prefix);
   const response = await adminFetch("/api/admin/upload", {
     method: "POST",
     body: form,

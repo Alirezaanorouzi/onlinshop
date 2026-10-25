@@ -118,6 +118,12 @@ export default function AdminDashboardPage() {
         >
           سفارشات
         </Link>
+        <Link
+          href="/admin/category-images"
+          className="rounded-lg border border-white/15 px-4 py-2 text-sm text-cream transition hover:border-gold/40"
+        >
+          تصاویر دسته
+        </Link>
         <AdminNewProductLink />
       </div>
 

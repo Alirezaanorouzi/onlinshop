@@ -4,6 +4,7 @@ import { getDb } from "@/db/index";
 import {
   buildCategories,
   getCollection,
+  menCategoryImages,
   rowToProduct,
 } from "@/lib/catalog-meta";
 import { normalizeProductGallery } from "@/lib/product-gallery";
@@ -188,6 +189,88 @@ export function upsertProduct(input: {
 export function deleteProduct(slug: string) {
   const db = getDb();
   db.delete(products).where(eq(products.slug, slug)).run();
+}
+
+export type AdminCategoryImageRow = {
+  categorySlug: string;
+  name: string;
+  imageUrl: string;
+  hasOverride: boolean;
+};
+
+export function listAdminCategoryImages(
+  collection: Product["collection"],
+): AdminCategoryImageRow[] {
+  const collectionMeta = getCollection(collection);
+  if (!collectionMeta) return [];
+
+  const db = getDb();
+  const overrides = db
+    .select()
+    .from(categoryImages)
+    .where(eq(categoryImages.collection, collection))
+    .all();
+  const overrideMap = new Map(
+    overrides.map((row) => [row.categorySlug, row.imageUrl]),
+  );
+
+  const productRows = db
+    .select({
+      category: products.category,
+      primaryImageUrl: products.primaryImageUrl,
+    })
+    .from(products)
+    .where(eq(products.collection, collection))
+    .all();
+  const productImageByCategory = new Map<string, string>();
+  for (const row of productRows) {
+    if (!productImageByCategory.has(row.category)) {
+      productImageByCategory.set(row.category, row.primaryImageUrl);
+    }
+  }
+
+  return collectionMeta.categories.map((category) => {
+    const override = overrideMap.get(category.slug);
+    const defaultImage =
+      collection === "men" ? menCategoryImages[category.slug] : undefined;
+    return {
+      categorySlug: category.slug,
+      name: category.name,
+      imageUrl:
+        override ??
+        defaultImage ??
+        productImageByCategory.get(category.slug) ??
+        "",
+      hasOverride: Boolean(override),
+    };
+  });
+}
+
+export function upsertCategoryImage(
+  collection: Product["collection"],
+  categorySlug: string,
+  imageUrl: string,
+) {
+  const url = imageUrl.trim();
+  if (!url) throw new Error("آدرس تصویر خالی است.");
+
+  const collectionMeta = getCollection(collection);
+  if (!collectionMeta?.categories.some((c) => c.slug === categorySlug)) {
+    throw new Error("دسته‌بندی نامعتبر است.");
+  }
+
+  const db = getDb();
+  db.insert(categoryImages)
+    .values({
+      collection,
+      categorySlug,
+      imageUrl: url,
+    })
+    .onConflictDoUpdate({
+      target: [categoryImages.collection, categoryImages.categorySlug],
+      set: { imageUrl: url },
+    })
+    .run();
 }
 
 export function findProductsByNameQuery(collection: string | undefined, query: string) {

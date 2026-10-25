@@ -18,6 +18,12 @@ export function AdminNav() {
           <Link href="/admin/orders" className="text-muted hover:text-cream">
             سفارشات
           </Link>
+          <Link
+            href="/admin/category-images"
+            className="text-muted hover:text-cream"
+          >
+            تصاویر دسته
+          </Link>
           <Link href="/collection/men" className="text-muted hover:text-cream">
             فروشگاه
           </Link>
