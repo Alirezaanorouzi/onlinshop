@@ -34,18 +34,7 @@ export default function ContactPage() {
           </dd>
         </div>
         <div className="grid gap-1 px-4 py-4 sm:grid-cols-3">
-          <dt className="text-muted">تلفن ثابت</dt>
-          <dd className="sm:col-span-2" dir="ltr">
-            <a
-              href={`tel:${business.phoneLandline.replace(/\s/g, "")}`}
-              className="text-gold hover:underline"
-            >
-              {business.phoneLandline}
-            </a>
-          </dd>
-        </div>
-        <div className="grid gap-1 px-4 py-4 sm:grid-cols-3">
-          <dt className="text-muted">تلفن همراه</dt>
+          <dt className="text-muted">تلفن</dt>
           <dd className="sm:col-span-2" dir="ltr">
             <a
               href={`tel:${business.phoneMobile.replace(/\s/g, "")}`}

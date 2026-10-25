@@ -6,7 +6,9 @@ import { site } from "@/lib/site";
  */
 function env(...keys: string[]): string {
   for (const key of keys) {
-    const value = process.env[key]?.trim();
+    const raw = process.env[key];
+    if (raw === undefined) continue;
+    const value = raw.trim();
     if (value) return value;
   }
   return "";
@@ -25,20 +27,19 @@ export const business = {
     env("NEXT_PUBLIC_BUSINESS_TAGLINE", "BUSINESS_TAGLINE") ||
     "فروشگاه اینترنتی پوشاک با تمرکز بر کیفیت، قیمت شفاف و پاسخ‌گویی به مشتری.",
   /** آدرس کامل پستی */
-  address: required(
-    env("NEXT_PUBLIC_BUSINESS_ADDRESS", "BUSINESS_ADDRESS"),
-    "آدرس کامل",
-  ),
-  /** تلفن ثابت با پیش‌شماره */
-  phoneLandline: required(
-    env("NEXT_PUBLIC_BUSINESS_PHONE_LANDLINE", "STABLE_PHONE"),
-    "تلفن ثابت",
-  ),
-  phoneMobile: required(
-    env("NEXT_PUBLIC_BUSINESS_PHONE_MOBILE", "MOBILE_PHONE"),
-    "موبایل",
-  ),
-  email: required(env("NEXT_PUBLIC_BUSINESS_EMAIL", "EMAIL"), "ایمیل"),
+  address:
+    env("NEXT_PUBLIC_BUSINESS_ADDRESS", "BUSINESS_ADDRESS") ||
+    "ملایر، بلوار قائم مقام، جنب دبستان فرهنگ",
+  /** تلفن تماس فروشگاه (از env؛ در لیارا MOBILE_PHONE یا ADMIN_PHONE) */
+  phoneMobile:
+    env(
+      "NEXT_PUBLIC_BUSINESS_PHONE_MOBILE",
+      "MOBILE_PHONE",
+      "ADMIN_PHONE",
+    ) || required("", "موبایل تماس"),
+  email:
+    env("NEXT_PUBLIC_BUSINESS_EMAIL", "EMAIL", "BUSINESS_EMAIL") ||
+    "noruzimoji69@gmail.com",
   /** مثال: شنبه تا چهارشنبه ۱۰ تا ۲۰ — پنج‌شنبه ۱۰ تا ۱۴ */
   hours:
     env("NEXT_PUBLIC_BUSINESS_HOURS", "BUSINESS_HOURS") ||
@@ -61,8 +62,9 @@ export const business = {
 };
 
 export function hasCompleteContactInfo(): boolean {
-  return !business.address.includes("【") &&
-    !business.phoneLandline.includes("【") &&
+  return (
+    Boolean(business.address.trim()) &&
     !business.phoneMobile.includes("【") &&
-    !business.email.includes("【");
+    !business.email.includes("【")
+  );
 }
