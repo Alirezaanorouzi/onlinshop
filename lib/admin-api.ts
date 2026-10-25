@@ -161,6 +161,19 @@ export async function saveAdminCategoryImage(input: {
   return data.categories;
 }
 
+export async function deleteAdminCategoryImage(
+  collection: CollectionSlug,
+  categorySlug: string,
+) {
+  const response = await adminFetch("/api/admin/category-images", {
+    method: "DELETE",
+    body: JSON.stringify({ collection, categorySlug }),
+  });
+  if (!response.ok) throw new Error(await response.text());
+  const data = (await response.json()) as { categories: AdminCategoryImage[] };
+  return data.categories;
+}
+
 export async function uploadAdminCategoryImage(
   collection: CollectionSlug,
   categorySlug: string,

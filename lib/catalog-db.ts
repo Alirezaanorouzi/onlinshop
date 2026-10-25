@@ -273,6 +273,26 @@ export function upsertCategoryImage(
     .run();
 }
 
+export function deleteCategoryImage(
+  collection: Product["collection"],
+  categorySlug: string,
+) {
+  const collectionMeta = getCollection(collection);
+  if (!collectionMeta?.categories.some((c) => c.slug === categorySlug)) {
+    throw new Error("دسته‌بندی نامعتبر است.");
+  }
+
+  const db = getDb();
+  db.delete(categoryImages)
+    .where(
+      and(
+        eq(categoryImages.collection, collection),
+        eq(categoryImages.categorySlug, categorySlug),
+      ),
+    )
+    .run();
+}
+
 export function findProductsByNameQuery(collection: string | undefined, query: string) {
   const db = getDb();
   const conditions = [like(products.name, `%${query}%`)];

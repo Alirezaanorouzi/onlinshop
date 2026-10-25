@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import {
+  deleteAdminCategoryImage,
   listAdminCategoryImages,
   uploadAdminCategoryImage,
   type AdminCategoryImage,
@@ -73,6 +74,19 @@ export default function AdminCategoryImagesPage() {
       await load();
     } finally {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setBusySlug(null);
+    }
+  }
+
+  async function onDelete(categorySlug: string) {
+    setBusySlug(categorySlug);
+    setError(null);
+    try {
+      const updated = await deleteAdminCategoryImage(collection, categorySlug);
+      setRows(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "حذف ناموفق");
+    } finally {
       setBusySlug(null);
     }
   }
@@ -149,28 +163,40 @@ export default function AdminCategoryImagesPage() {
                   <p className="truncate text-sm font-medium text-cream">
                     {row.name}
                   </p>
-                  <p className="text-xs text-muted" dir="ltr">
-                    {row.categorySlug}
-                  </p>
                 </div>
               </div>
-              <label className="mt-4 block">
-                <span className="sr-only">تصویر {row.name}</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  disabled={busySlug === row.categorySlug}
-                  className="block w-full text-xs text-muted file:mr-2 file:rounded-lg file:border-0 file:bg-gold file:px-3 file:py-2 file:text-xs file:font-medium file:text-ink disabled:opacity-50"
-                  onChange={(event) => {
-                    const picked = event.target.files?.[0];
-                    void onPickFile(row.categorySlug, picked);
-                    event.target.value = "";
-                  }}
-                />
-              </label>
-              {busySlug === row.categorySlug && (
-                <p className="mt-2 text-xs text-muted">در حال آپلود…</p>
-              )}
+              <div className="mt-4 flex gap-2">
+                <label
+                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-lg border border-white/15 px-3 py-2 text-sm text-cream transition hover:border-gold/40 ${
+                    busySlug === row.categorySlug
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }`}
+                >
+                  {busySlug === row.categorySlug ? "در حال آپلود…" : "تغییر عکس"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    disabled={busySlug === row.categorySlug}
+                    onChange={(event) => {
+                      const picked = event.target.files?.[0];
+                      void onPickFile(row.categorySlug, picked);
+                      event.target.value = "";
+                    }}
+                  />
+                </label>
+                <button
+                  type="button"
+                  disabled={
+                    busySlug === row.categorySlug || !row.hasOverride
+                  }
+                  onClick={() => void onDelete(row.categorySlug)}
+                  className="flex flex-1 items-center justify-center rounded-lg border border-red-500/35 px-3 py-2 text-sm text-red-200 transition hover:border-red-400/55 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  حذف
+                </button>
+              </div>
             </li>
           ))}
         </ul>

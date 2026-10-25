@@ -1,5 +1,6 @@
 import { assertAdmin } from "@/lib/admin-auth";
 import {
+  deleteCategoryImage,
   listAdminCategoryImages,
   upsertCategoryImage,
 } from "@/lib/catalog-db";
@@ -136,4 +137,52 @@ export async function POST(request: Request) {
 
   const categories = listAdminCategoryImages(collection);
   return Response.json({ ok: true, categories });
+}
+
+type DeleteBody = {
+  collection?: CollectionSlug;
+  categorySlug?: string;
+};
+
+export async function DELETE(request: Request) {
+  try {
+    assertAdmin(request);
+  } catch (response) {
+    if (response instanceof Response) return response;
+    throw response;
+  }
+
+  if (!isSqliteCatalog()) {
+    return Response.json(
+      { error: "Admin requires CATALOG_BACKEND=sqlite" },
+      { status: 503 },
+    );
+  }
+
+  let body: DeleteBody;
+  try {
+    body = (await request.json()) as DeleteBody;
+  } catch {
+    return Response.json({ error: "invalid json" }, { status: 400 });
+  }
+
+  const collection = parseCollection(body.collection ?? null);
+  const categorySlug = body.categorySlug?.trim();
+  if (!collection || !categorySlug) {
+    return Response.json({ error: "missing fields" }, { status: 400 });
+  }
+
+  try {
+    deleteCategoryImage(collection, categorySlug);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "delete failed";
+    return Response.json({ error: message }, { status: 400 });
+  }
+
+  revalidateStorefrontCatalog({ collection, category: categorySlug });
+
+  return Response.json({
+    ok: true,
+    categories: listAdminCategoryImages(collection),
+  });
 }
