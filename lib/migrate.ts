@@ -220,6 +220,40 @@ function tableHasColumn(
   return rows.some((row) => row.name === column);
 }
 
+/** One-time-safe remap when women's category slugs change in catalog-meta. */
+function remapWomenCategorySlugs(sqlite: Database.Database) {
+  const productMaps: [string, string][] = [
+    ["blouse", "shomiz"],
+    ["hoodie", "hoodie-sweatshirt"],
+    ["skirt", "pants"],
+    ["shoes", "bag-shoes"],
+  ];
+  const updateProduct = sqlite.prepare(
+    `UPDATE products SET category = ? WHERE collection = 'women' AND category = ?`,
+  );
+  for (const [from, to] of productMaps) {
+    updateProduct.run(to, from);
+  }
+
+  const selectImage = sqlite.prepare(
+    `SELECT image_url FROM category_images WHERE collection = 'women' AND category_slug = ?`,
+  );
+  const upsertImage = sqlite.prepare(
+    `INSERT INTO category_images (collection, category_slug, image_url)
+     VALUES ('women', ?, ?)
+     ON CONFLICT(collection, category_slug) DO UPDATE SET image_url = excluded.image_url`,
+  );
+  const deleteImage = sqlite.prepare(
+    `DELETE FROM category_images WHERE collection = 'women' AND category_slug = ?`,
+  );
+  for (const [from, to] of productMaps) {
+    const row = selectImage.get(from) as { image_url: string } | undefined;
+    if (!row) continue;
+    upsertImage.run(to, row.image_url);
+    deleteImage.run(from);
+  }
+}
+
 function backfillAccountTables(sqlite: Database.Database) {
   try {
     sqlite.exec(`
@@ -381,6 +415,7 @@ export function runMigrations() {
   } catch {
     // payments.order_id not added yet on very old DBs
   }
+  remapWomenCategorySlugs(sqlite);
   backfillAccountTables(sqlite);
   try {
     syncAdminFromEnv(sqlite);
