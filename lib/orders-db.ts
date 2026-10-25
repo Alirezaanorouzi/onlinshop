@@ -202,6 +202,77 @@ export function setOrderShipped(orderId: number, shipped: boolean) {
   setOrderStatus(orderId, shipped ? "shipped" : "paid");
 }
 
+export type CustomerOrderDetail = {
+  id: number;
+  amountTomans: number;
+  status: OrderStatus;
+  refId: string | null;
+  createdAt: Date;
+  shippingFullName: string;
+  shippingPhone: string;
+  shippingCity: string;
+  shippingAddress: string;
+  shippingPostalCode: string;
+  items: {
+    productSlug: string;
+    productName: string;
+    size: string;
+    color: string;
+    quantity: number;
+    unitPriceTomans: number;
+  }[];
+  resumeLines: CartLine[];
+};
+
+export function getCustomerOrderDetail(
+  userId: number,
+  orderId: number,
+): CustomerOrderDetail | null {
+  const bundle = getOrderWithItems(orderId);
+  if (!bundle || bundle.order.userId !== userId) return null;
+
+  const db = getDb();
+  const payment = db
+    .select({ refId: payments.refId })
+    .from(payments)
+    .where(eq(payments.orderId, orderId))
+    .get();
+
+  const items = bundle.items.map((line) => ({
+    productSlug: line.productSlug,
+    productName: line.productName,
+    size: line.size,
+    color: line.color,
+    quantity: line.quantity,
+    unitPriceTomans: line.unitPriceTomans,
+  }));
+
+  const resumeLines: CartLine[] =
+    bundle.order.status === "awaiting_payment"
+      ? items.map((line) => ({
+          productSlug: line.productSlug,
+          size: line.size,
+          color: line.color,
+          quantity: line.quantity,
+        }))
+      : [];
+
+  return {
+    id: bundle.order.id,
+    amountTomans: bundle.order.amountTomans,
+    status: bundle.order.status as OrderStatus,
+    refId: payment?.refId ?? null,
+    createdAt: bundle.order.createdAt,
+    shippingFullName: bundle.order.shippingFullName,
+    shippingPhone: bundle.order.shippingPhone,
+    shippingCity: bundle.order.shippingCity,
+    shippingAddress: bundle.order.shippingAddress,
+    shippingPostalCode: bundle.order.shippingPostalCode,
+    items,
+    resumeLines,
+  };
+}
+
 export function listOrdersForUser(
   userId: number,
   limit = 50,

@@ -6,8 +6,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { apiPath } from "@/lib/api-path";
 import { logoutAuthSession } from "@/lib/client-auth";
 import { clearStoredAdminToken } from "@/lib/admin-api";
+import {
+  CHECKOUT_LINES_STORAGE_KEY,
+  cartLineKey,
+} from "@/lib/cart-line-key";
+import { useCart } from "@/lib/cart";
 import { formatIranMobileDisplay } from "@/lib/phone-ir";
 import { formatNumber, formatPrice } from "@/lib/format";
+import type { CartLine } from "@/lib/types";
 
 type Profile = {
   phone: string | null;
@@ -32,6 +38,29 @@ type Order = {
   itemCount: number;
 };
 
+type OrderDetail = {
+  id: number;
+  amountTomans: number;
+  status: Order["status"];
+  refId: string | null;
+  createdAt: string;
+  shippingFullName: string;
+  shippingPhone: string;
+  shippingCity: string;
+  shippingAddress: string;
+  shippingPostalCode: string;
+  items: {
+    productSlug: string;
+    productName: string;
+    size: string;
+    color: string;
+    colorLabel: string;
+    quantity: number;
+    unitPriceTomans: number;
+  }[];
+  resumeLines: CartLine[];
+};
+
 type AccountSection = "profile" | "orders" | "logout";
 
 const sectionTitle: Record<AccountSection, string> = {
@@ -40,13 +69,24 @@ const sectionTitle: Record<AccountSection, string> = {
   logout: "خروج",
 };
 
-function orderStatusLabel(status: Order["status"]) {
-  if (status === "paid") return "پرداخت شده";
-  if (status === "processing") return "در حال آماده‌سازی";
-  if (status === "shipped") return "ارسال شده";
+/** Short label in the orders list */
+function orderListStatusLabel(status: Order["status"]) {
   if (status === "awaiting_payment") return "در انتظار پرداخت";
+  if (
+    status === "paid" ||
+    status === "processing" ||
+    status === "shipped"
+  ) {
+    return "پرداخت شده";
+  }
   if (status === "cancelled") return "لغو شده";
   return "ناموفق";
+}
+
+function orderDetailStatusLabel(status: Order["status"]) {
+  if (status === "shipped") return "ارسال شده";
+  if (status === "processing") return "در حال آماده‌سازی";
+  return orderListStatusLabel(status);
 }
 
 function orderStatusClass(status: Order["status"]) {
@@ -78,6 +118,7 @@ function ProfileInfoRow({
 
 export function CustomerAccountPanel({ phone }: { phone: string }) {
   const router = useRouter();
+  const { setQuantity } = useCart();
   const searchParams = useSearchParams();
   const orderSuccess = searchParams.get("order") === "success";
   const menuRef = useRef<HTMLDivElement>(null);
@@ -95,6 +136,10 @@ export function CustomerAccountPanel({ phone }: { phone: string }) {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
+  const [orderDetail, setOrderDetail] = useState<OrderDetail | null>(null);
+  const [orderActionError, setOrderActionError] = useState<string | null>(null);
+  const [orderActionBusy, setOrderActionBusy] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -158,6 +203,80 @@ export function CustomerAccountPanel({ phone }: { phone: string }) {
     setEditingProfile(false);
     setError(null);
     setSaved(false);
+    setExpandedOrderId(null);
+    setOrderDetail(null);
+    setOrderActionError(null);
+  }
+
+  async function handleOrderClick(order: Order) {
+    setOrderActionError(null);
+
+    if (order.status === "awaiting_payment") {
+      setOrderActionBusy(true);
+      try {
+        const response = await fetch(apiPath(`/api/account/orders/${order.id}`), {
+          credentials: "include",
+        });
+        const data = (await response.json()) as {
+          error?: string;
+          order?: OrderDetail;
+        };
+        if (!response.ok || !data.order?.resumeLines?.length) {
+          setOrderActionError(data.error ?? "ادامه پرداخت ممکن نیست");
+          setOrderActionBusy(false);
+          return;
+        }
+        for (const line of data.order.resumeLines) {
+          setQuantity(
+            {
+              productSlug: line.productSlug,
+              size: line.size,
+              color: line.color,
+            },
+            line.quantity,
+          );
+        }
+        sessionStorage.setItem(
+          CHECKOUT_LINES_STORAGE_KEY,
+          JSON.stringify(data.order.resumeLines.map((line) => cartLineKey(line))),
+        );
+        router.push("/cart/checkout");
+      } catch {
+        setOrderActionError("اتصال به سرور برقرار نشد.");
+        setOrderActionBusy(false);
+      }
+      return;
+    }
+
+    if (expandedOrderId === order.id) {
+      setExpandedOrderId(null);
+      setOrderDetail(null);
+      return;
+    }
+
+    setOrderActionBusy(true);
+    setExpandedOrderId(order.id);
+    try {
+      const response = await fetch(apiPath(`/api/account/orders/${order.id}`), {
+        credentials: "include",
+      });
+      const data = (await response.json()) as {
+        error?: string;
+        order?: OrderDetail;
+      };
+      if (!response.ok || !data.order) {
+        setOrderActionError(data.error ?? "بارگذاری جزئیات ناموفق");
+        setExpandedOrderId(null);
+        setOrderActionBusy(false);
+        return;
+      }
+      setOrderDetail(data.order);
+    } catch {
+      setOrderActionError("اتصال به سرور برقرار نشد.");
+      setExpandedOrderId(null);
+    } finally {
+      setOrderActionBusy(false);
+    }
   }
 
   async function saveProfile(event: React.FormEvent<HTMLFormElement>) {
@@ -380,40 +499,123 @@ export function CustomerAccountPanel({ phone }: { phone: string }) {
                 </Link>
               </div>
             ) : (
-              <ul className="space-y-3">
-                {orders.map((order) => (
-                  <li
-                    key={order.id}
-                    className="rounded-2xl border border-white/10 bg-surface/25 p-4"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span
-                        className={`rounded-full px-2.5 py-1 text-xs font-medium ${orderStatusClass(order.status)}`}
+              <>
+                {orderActionError && (
+                  <p className="mb-4 rounded-xl border border-red-500/40 bg-red-950/30 px-3 py-2.5 text-sm text-red-200">
+                    {orderActionError}
+                  </p>
+                )}
+                <ul className="space-y-3">
+                  {orders.map((order) => {
+                    const open = expandedOrderId === order.id;
+                    const awaiting = order.status === "awaiting_payment";
+                    return (
+                      <li
+                        key={order.id}
+                        className="overflow-hidden rounded-2xl border border-white/10 bg-surface/25"
                       >
-                        {orderStatusLabel(order.status)}
-                      </span>
-                      <span className="font-medium text-gold">
-                        {formatPrice(order.amountTomans)}
-                      </span>
-                    </div>
-                    <p className="mt-3 text-xs text-muted">
-                      سفارش #{formatNumber(order.id)}
-                      {" · "}
-                      {new Date(order.createdAt).toLocaleString("fa-IR", {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })}
-                      {" · "}
-                      {formatNumber(order.itemCount)} قلم
-                    </p>
-                    {order.refId && (
-                      <p className="mt-2 text-xs text-cream/80" dir="ltr">
-                        {order.refId}
-                      </p>
-                    )}
-                  </li>
-                ))}
-              </ul>
+                        <button
+                          type="button"
+                          disabled={orderActionBusy}
+                          onClick={() => void handleOrderClick(order)}
+                          className="w-full p-4 text-right transition hover:bg-white/[0.03] disabled:opacity-50"
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <span
+                              className={`rounded-full px-2.5 py-1 text-xs font-medium ${orderStatusClass(order.status)}`}
+                            >
+                              {orderListStatusLabel(order.status)}
+                            </span>
+                            <span className="font-medium text-gold">
+                              {formatPrice(order.amountTomans)}
+                            </span>
+                          </div>
+                          <p className="mt-3 text-xs text-muted">
+                            سفارش #{formatNumber(order.id)}
+                            {" · "}
+                            {new Date(order.createdAt).toLocaleString("fa-IR", {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            })}
+                            {" · "}
+                            {formatNumber(order.itemCount)} قلم
+                          </p>
+                          <p className="mt-2 text-xs text-gold/90">
+                            {awaiting
+                              ? "ادامه پرداخت →"
+                              : open
+                                ? "بستن جزئیات"
+                                : "مشاهده جزئیات →"}
+                          </p>
+                        </button>
+
+                        {open && orderDetail?.id === order.id && (
+                          <div className="border-t border-white/10 px-4 py-4 text-sm">
+                            <p className="text-muted">
+                              وضعیت:{" "}
+                              <span className="text-cream">
+                                {orderDetailStatusLabel(orderDetail.status)}
+                              </span>
+                            </p>
+                            {orderDetail.refId && (
+                              <p className="mt-2 text-muted" dir="ltr">
+                                پیگیری زرین‌پال:{" "}
+                                <span className="text-cream/90">
+                                  {orderDetail.refId}
+                                </span>
+                              </p>
+                            )}
+                            <div className="mt-4 space-y-1 text-cream/90">
+                              <p>
+                                <span className="text-muted">نام: </span>
+                                {orderDetail.shippingFullName}
+                              </p>
+                              <p dir="ltr">
+                                <span className="text-muted" dir="rtl">
+                                  موبایل:{" "}
+                                </span>
+                                {orderDetail.shippingPhone}
+                              </p>
+                              {orderDetail.shippingCity && (
+                                <p>
+                                  <span className="text-muted">شهر: </span>
+                                  {orderDetail.shippingCity}
+                                </p>
+                              )}
+                              <p>
+                                <span className="text-muted">آدرس: </span>
+                                {orderDetail.shippingAddress}
+                              </p>
+                              {orderDetail.shippingPostalCode && (
+                                <p>
+                                  <span className="text-muted">کد پستی: </span>
+                                  {orderDetail.shippingPostalCode}
+                                </p>
+                              )}
+                            </div>
+                            <ul className="mt-4 space-y-2 border-t border-white/10 pt-4">
+                              {orderDetail.items.map((item, index) => (
+                                <li key={`${item.productSlug}-${index}`}>
+                                  <p className="font-medium text-cream">
+                                    {item.productName}
+                                  </p>
+                                  <p className="text-xs text-muted">
+                                    سایز {item.size} · رنگ {item.colorLabel} ·
+                                    ×{formatNumber(item.quantity)} ·{" "}
+                                    {formatPrice(
+                                      item.unitPriceTomans * item.quantity,
+                                    )}
+                                  </p>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
             )}
           </section>
         )}
