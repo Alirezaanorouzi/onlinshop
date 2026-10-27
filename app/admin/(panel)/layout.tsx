@@ -1,3 +1,4 @@
+import "react-advanced-cropper/dist/style.css";
 import { Suspense } from "react";
 import { AdminGate } from "@/components/admin/AdminGate";
 import { AdminNav } from "@/components/admin/AdminNav";

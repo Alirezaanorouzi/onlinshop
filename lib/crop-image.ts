@@ -1,46 +1,26 @@
-import type { Area } from "react-easy-crop";
-
-function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.addEventListener("load", () => resolve(image));
-    image.addEventListener("error", () => reject(new Error("بارگذاری تصویر ناموفق")));
-    image.src = src;
-  });
-}
-
-/** Render cropped region to a JPEG `File` (max edge `maxOutputSize`). */
-export async function cropImageToFile(
-  imageSrc: string,
-  pixelCrop: Area,
+/** Render canvas to a JPEG `File` (max edge `maxOutputSize`). */
+export async function canvasToJpegFile(
+  source: HTMLCanvasElement,
   originalName: string,
   maxOutputSize = 1200,
 ): Promise<File> {
-  const image = await loadImage(imageSrc);
   const scale = Math.min(
     1,
-    maxOutputSize / Math.max(pixelCrop.width, pixelCrop.height),
+    maxOutputSize / Math.max(source.width, source.height),
   );
-  const width = Math.max(1, Math.round(pixelCrop.width * scale));
-  const height = Math.max(1, Math.round(pixelCrop.height * scale));
+  const width = Math.max(1, Math.round(source.width * scale));
+  const height = Math.max(1, Math.round(source.height * scale));
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("برش تصویر ممکن نبود.");
-
-  ctx.drawImage(
-    image,
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height,
-    0,
-    0,
-    width,
-    height,
-  );
+  let canvas = source;
+  if (scale < 1) {
+    const resized = document.createElement("canvas");
+    resized.width = width;
+    resized.height = height;
+    const ctx = resized.getContext("2d");
+    if (!ctx) throw new Error("برش تصویر ممکن نبود.");
+    ctx.drawImage(source, 0, 0, width, height);
+    canvas = resized;
+  }
 
   const blob = await new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(

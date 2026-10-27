@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 import path from "node:path";
 import { getBasePath } from "./lib/base-path";
+import { getAllowedDevOrigins } from "./lib/dev-allowed-origins";
 
 const basePath = getBasePath();
 
@@ -48,7 +49,7 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: false,
   partialPrefetching: false,
-  allowedDevOrigins: ["127.0.0.1"],
+  allowedDevOrigins: getAllowedDevOrigins(),
   turbopack: {
     root: path.join(__dirname),
     rules: {
