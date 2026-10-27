@@ -7,6 +7,7 @@ import {
   type CropperRef,
   RectangleStencil,
 } from "react-advanced-cropper";
+import { defaultStencilCoverImage } from "@/lib/crop-default-size";
 import { canvasToJpegFile } from "@/lib/crop-image";
 
 type CropShape = "rect" | "round";
@@ -96,6 +97,9 @@ export function AdminImageCropModal({
               aspectRatio: aspect,
               grid: cropShape === "rect",
             }}
+            defaultSize={(state, settings) =>
+              defaultStencilCoverImage(state, settings, aspect)
+            }
             onReady={() => setReady(true)}
           />
         </div>

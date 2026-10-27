@@ -147,20 +147,6 @@ export async function listAdminCategoryImages(collection: CollectionSlug) {
   return data.categories;
 }
 
-export async function saveAdminCategoryImage(input: {
-  collection: CollectionSlug;
-  categorySlug: string;
-  imageUrl: string;
-}) {
-  const response = await adminFetch("/api/admin/category-images", {
-    method: "PUT",
-    body: JSON.stringify(input),
-  });
-  if (!response.ok) throw new Error(await response.text());
-  const data = (await response.json()) as { categories: AdminCategoryImage[] };
-  return data.categories;
-}
-
 export async function deleteAdminCategoryImage(
   collection: CollectionSlug,
   categorySlug: string,
