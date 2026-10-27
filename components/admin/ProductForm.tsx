@@ -7,6 +7,7 @@ import { getCollections } from "@/lib/catalog";
 import { assetPath } from "@/lib/asset-path";
 import { categoryForCollection, normalizeProductGallery } from "@/lib/product-gallery";
 import { parseProductInput } from "@/lib/product-input";
+import { AdminImageCropModal } from "@/components/admin/AdminImageCropModal";
 import { prepareImageForUpload } from "@/lib/prepare-image-upload";
 import type { Color, CollectionSlug } from "@/lib/types";
 
@@ -31,6 +32,7 @@ export function ProductForm({
   const [sizesText, setSizesText] = useState(initial.sizes.join(", "));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cropFile, setCropFile] = useState<File | null>(null);
 
   const categories = useMemo(() => {
     return (
@@ -146,6 +148,7 @@ export function ProductForm({
   const mainPreview = imageUrls[0] ? assetPath(imageUrls[0]) : "";
 
   return (
+    <>
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-6 px-4 py-8">
       {error && (
         <p className="rounded-lg border border-red-500/40 bg-red-950/30 px-3 py-2 text-sm text-red-200">
@@ -304,7 +307,18 @@ export function ProductForm({
             disabled={busy}
             onChange={(e) => {
               const file = e.target.files?.[0];
-              if (file) uploadGalleryImage(file);
+              if (file) {
+                void (async () => {
+                  setError(null);
+                  try {
+                    setCropFile(await prepareImageForUpload(file));
+                  } catch (err) {
+                    setError(
+                      err instanceof Error ? err.message : "آپلود ناموفق",
+                    );
+                  }
+                })();
+              }
               e.target.value = "";
             }}
           />
@@ -365,5 +379,18 @@ export function ProductForm({
         {busy ? "در حال ذخیره…" : isNew ? "ایجاد محصول" : "ذخیره تغییرات"}
       </button>
     </form>
+
+    <AdminImageCropModal
+      file={cropFile}
+      title="برش تصویر محصول"
+      aspect={3 / 4}
+      cropShape="rect"
+      onClose={() => setCropFile(null)}
+      onConfirm={async (cropped) => {
+        setCropFile(null);
+        await uploadGalleryImage(cropped);
+      }}
+    />
+    </>
   );
 }

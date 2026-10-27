@@ -11,6 +11,7 @@ import {
 } from "@/lib/admin-api";
 import { assetPath } from "@/lib/asset-path";
 import { getCollections } from "@/lib/catalog";
+import { AdminImageCropModal } from "@/components/admin/AdminImageCropModal";
 import { prepareImageForUpload } from "@/lib/prepare-image-upload";
 import type { CollectionSlug } from "@/lib/types";
 
@@ -27,6 +28,10 @@ export default function AdminCategoryImagesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [busySlug, setBusySlug] = useState<string | null>(null);
+  const [cropTarget, setCropTarget] = useState<{
+    categorySlug: string;
+    file: File;
+  } | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -54,19 +59,28 @@ export default function AdminCategoryImagesPage() {
 
   async function onPickFile(categorySlug: string, file: File | undefined) {
     if (!file) return;
+    setError(null);
+    try {
+      const prepared = await prepareImageForUpload(file);
+      setCropTarget({ categorySlug, file: prepared });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "آپلود ناموفق");
+    }
+  }
+
+  async function uploadCategoryImage(categorySlug: string, file: File) {
     setBusySlug(categorySlug);
     setError(null);
 
     let previewUrl: string | null = null;
     try {
-      const prepared = await prepareImageForUpload(file);
-      previewUrl = URL.createObjectURL(prepared);
+      previewUrl = URL.createObjectURL(file);
       patchRow(categorySlug, { imageUrl: previewUrl, hasOverride: true });
 
       const updated = await uploadAdminCategoryImage(
         collection,
         categorySlug,
-        prepared,
+        file,
       );
       setRows(updated);
     } catch (err) {
@@ -201,6 +215,20 @@ export default function AdminCategoryImagesPage() {
           ))}
         </ul>
       )}
+
+      <AdminImageCropModal
+        file={cropTarget?.file ?? null}
+        title="برش تصویر دسته"
+        aspect={1}
+        cropShape="round"
+        onClose={() => setCropTarget(null)}
+        onConfirm={async (cropped) => {
+          const slug = cropTarget?.categorySlug;
+          if (!slug) return;
+          setCropTarget(null);
+          await uploadCategoryImage(slug, cropped);
+        }}
+      />
     </div>
   );
 }

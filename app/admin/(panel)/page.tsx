@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AdminNewProductLink } from "@/components/admin/AdminNewProductLink";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { ProductShareButton } from "@/components/ProductShareButton";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   listAdminProducts,
@@ -200,7 +201,12 @@ export default function AdminDashboardPage() {
                 </p>
               </div>
               <p className="text-sm text-gold">{formatPrice(product.price)}</p>
-              <div className="flex gap-2 text-sm">
+              <div className="flex items-center gap-2 text-sm">
+                <ProductShareButton
+                  slug={product.slug}
+                  productName={product.name}
+                  variant="inline"
+                />
                 <Link
                   href={`/admin/products/${product.slug}/edit`}
                   className="text-cream hover:text-gold"

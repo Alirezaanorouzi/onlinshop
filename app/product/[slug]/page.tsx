@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddToCart } from "@/components/AddToCart";
+import { ProductShareButton } from "@/components/ProductShareButton";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductSpecifications } from "@/components/ProductSpecifications";
 import { assetPath } from "@/lib/asset-path";
@@ -86,9 +87,16 @@ export default async function ProductPage({
             </>
           )}
         </p>
-        <h1 className="mt-4 text-2xl font-semibold sm:text-3xl md:text-4xl">
-          {product.name}
-        </h1>
+        <div className="mt-4 flex items-start justify-between gap-3">
+          <h1 className="text-2xl font-semibold sm:text-3xl md:text-4xl">
+            {product.name}
+          </h1>
+          <ProductShareButton
+            slug={product.slug}
+            productName={product.name}
+            variant="inline"
+          />
+        </div>
         <p className="mt-4 max-w-md text-sm leading-8 text-cream/80">
           {product.description}
         </p>
