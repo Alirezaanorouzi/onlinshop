@@ -12,12 +12,13 @@ export const collections: Collection[] = [
     title: "کالکشن آقایان",
     nav: "کالکشن آقایان",
     description:
-      "جدیدترین کالکشن آقایان قائم مقام؛ پیراهن، تیشرت، هودی، شلوار و کفش با برش راحت برای استفاده روزمره.",
+      "جدیدترین کالکشن آقایان قائم مقام؛ پیراهن، تیشرت، دورس و هودی، کت و کاپشن، شلوار، شلوارک و کفش.",
     categories: [
       { slug: "accessory", name: "اکسسوری مردانه" },
       { slug: "shirt", name: "پیراهن مردانه" },
       { slug: "tshirt", name: "تیشرت مردانه" },
       { slug: "hoodie", name: "دورس و هودی مردانه" },
+      { slug: "coat-jacket", name: "کت و کاپشن مردانه" },
       { slug: "set", name: "ست مردانه" },
       { slug: "pants", name: "شلوار مردانه" },
       { slug: "shorts", name: "شلوارک مردانه" },
