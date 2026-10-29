@@ -7,17 +7,18 @@ import {
   CustomerProfileForm,
   type CustomerProfileFields,
 } from "@/components/CustomerProfileForm";
-import { SnappPayCheckout } from "@/components/SnappPayCheckout";
-import { ZarinpalCheckout } from "@/components/ZarinpalCheckout";
+import { CheckoutPaymentMethods } from "@/components/CheckoutPaymentMethods";
 import { apiPath } from "@/lib/api-path";
 import {
   CHECKOUT_LINES_STORAGE_KEY,
   cartLineKey,
 } from "@/lib/cart-line-key";
 import { useCart } from "@/lib/cart";
+import { filterPayableCartLines } from "@/lib/cart-validation";
 import { fetchAuthSession } from "@/lib/client-auth";
 import { formatNumber, formatPrice } from "@/lib/format";
-import type { CartLine, Product } from "@/lib/types";
+import { useCartCatalogSync } from "@/lib/use-cart-catalog-sync";
+import type { CartLine } from "@/lib/types";
 
 type PaymentConfig = { enabled?: boolean };
 
@@ -42,8 +43,10 @@ const emptyProfile = (phone: string | null): CustomerProfileFields => ({
 export function CheckoutView() {
   const router = useRouter();
   const { lines } = useCart();
+  const { bySlug, productsLoading, catalogLoaded, prunedCount } =
+    useCartCatalogSync(lines);
   const [checkoutLines, setCheckoutLines] = useState<CartLine[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [showPrunedNotice, setShowPrunedNotice] = useState(false);
   const [authOk, setAuthOk] = useState(false);
   const [profileComplete, setProfileComplete] = useState(false);
   const [profile, setProfile] = useState<CustomerProfileFields | undefined>();
@@ -55,7 +58,10 @@ export function CheckoutView() {
   const [loading, setLoading] = useState(true);
   const [selectionReady, setSelectionReady] = useState(false);
   const [showProfileForm, setShowProfileForm] = useState(false);
-  const [productsLoading, setProductsLoading] = useState(false);
+
+  useEffect(() => {
+    if (prunedCount > 0) setShowPrunedNotice(true);
+  }, [prunedCount]);
 
   useEffect(() => {
     const raw = sessionStorage.getItem(CHECKOUT_LINES_STORAGE_KEY);
@@ -78,24 +84,15 @@ export function CheckoutView() {
     setSelectionReady(true);
   }, [lines]);
 
-  const slugsKey = useMemo(
-    () => checkoutLines.map((line) => line.productSlug).join(","),
-    [checkoutLines],
-  );
+  const products = useMemo(() => [...bySlug.values()], [bySlug]);
 
-  useEffect(() => {
-    if (!slugsKey) {
-      setProducts([]);
-      setProductsLoading(false);
-      return;
-    }
-    setProductsLoading(true);
-    fetch(apiPath(`/api/products?slugs=${encodeURIComponent(slugsKey)}`))
-      .then((response) => response.json())
-      .then((data: { products?: Product[] }) => setProducts(data.products ?? []))
-      .catch(() => setProducts([]))
-      .finally(() => setProductsLoading(false));
-  }, [slugsKey]);
+  const payableCheckoutLines = useMemo(
+    () =>
+      catalogLoaded
+        ? filterPayableCartLines(checkoutLines, products)
+        : checkoutLines,
+    [catalogLoaded, checkoutLines, products],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -134,13 +131,10 @@ export function CheckoutView() {
     };
   }, [router]);
 
-  const bySlug = useMemo(
-    () => new Map(products.map((product) => [product.slug, product])),
-    [products],
-  );
+  const bySlugMap = bySlug;
 
-  const detailed = checkoutLines.flatMap((line) => {
-    const product = bySlug.get(line.productSlug);
+  const detailed = payableCheckoutLines.flatMap((line) => {
+    const product = bySlugMap.get(line.productSlug);
     if (!product) return [];
     const color = product.colors.find((item) => item.id === line.color);
     return [{ line, product, colorName: color?.name ?? line.color }];
@@ -151,11 +145,12 @@ export function CheckoutView() {
     0,
   );
   const cartReady =
-    checkoutLines.length > 0 && detailed.length === checkoutLines.length;
+    payableCheckoutLines.length > 0 &&
+    detailed.length === payableCheckoutLines.length;
   const cartProductsMissing =
+    catalogLoaded &&
     checkoutLines.length > 0 &&
-    !productsLoading &&
-    detailed.length < checkoutLines.length;
+    payableCheckoutLines.length < checkoutLines.length;
 
   function handleProfileSaved(p: CustomerProfileFields, complete: boolean) {
     setProfile(p);
@@ -192,6 +187,15 @@ export function CheckoutView() {
       <p className="mt-2 text-sm text-muted">
         اطلاعات ارسال از حساب کاربری شما استفاده می‌شود.
       </p>
+
+      {showPrunedNotice && (
+        <p
+          className="mt-4 rounded-lg border border-amber-500/35 bg-amber-950/25 px-3 py-2 text-sm text-amber-100"
+          role="status"
+        >
+          اقلام حذف‌شده از فروشگاه از سبد خارج شدند.
+        </p>
+      )}
 
       {profile && !showProfileForm && profileComplete && (
         <div className="mt-6 rounded-xl border border-white/10 bg-surface/40 p-4 text-sm">
@@ -268,26 +272,18 @@ export function CheckoutView() {
           <>
             {cartProductsMissing && (
               <p className="mb-4 text-sm text-red-200">
-                برخی محصولات سبد در دسترس نیستند. به سبد خرید برگردید و دوباره
-                انتخاب کنید.
+                برخی اقلام انتخاب‌شده دیگر قابل پرداخت نیستند (ناموجود یا حذف
+                شده). فقط اقلام موجود در جمع بالا پرداخت می‌شوند.
               </p>
             )}
-            {gateways.zarinpal && (
-              <ZarinpalCheckout
-                lines={checkoutLines}
-                totalTomans={total}
-                cartReady={cartReady}
-                productsLoading={productsLoading}
-              />
-            )}
-            {gateways.snapppay && (
-              <SnappPayCheckout
-                lines={checkoutLines}
-                totalTomans={total}
-                cartReady={cartReady}
-                productsLoading={productsLoading}
-              />
-            )}
+            <CheckoutPaymentMethods
+              lines={payableCheckoutLines}
+              totalTomans={total}
+              cartReady={cartReady}
+              productsLoading={productsLoading}
+              zarinpalEnabled={gateways.zarinpal}
+              snapppayEnabled={gateways.snapppay}
+            />
           </>
         )}
         {onlineEnabled && !profileComplete && (
