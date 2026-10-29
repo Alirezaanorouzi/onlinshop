@@ -72,6 +72,24 @@ if (vars.KAVENEGAR_VERIFY_TEMPLATE) {
   pairs.push(["KAVENEGAR_VERIFY_TEMPLATE", "loginotp"]);
 }
 
+const snappClientId = vars.SNAPPPAY_CLIENT_ID?.trim();
+const snappSecret = vars.SNAPPPAY_CLIENT_SECRET?.trim();
+const snappUser = vars.SNAPPPAY_USERNAME?.trim();
+const snappPass = vars.SNAPPPAY_PASSWORD?.trim();
+if (snappClientId && snappSecret && snappUser && snappPass) {
+  let snappBase = (vars.SNAPPPAY_BASE_URL || "https://api.snapppay.ir")
+    .trim()
+    .replace(/\/+$/, "");
+  if (snappBase.endsWith("/v1")) snappBase = snappBase.slice(0, -3);
+  pairs.push(
+    ["SNAPPPAY_CLIENT_ID", snappClientId],
+    ["SNAPPPAY_CLIENT_SECRET", snappSecret],
+    ["SNAPPPAY_USERNAME", snappUser],
+    ["SNAPPPAY_PASSWORD", snappPass],
+    ["SNAPPPAY_BASE_URL", snappBase],
+  );
+}
+
 for (const [key, value] of pairs) {
   const r = spawnSync(
     liaraCmd,

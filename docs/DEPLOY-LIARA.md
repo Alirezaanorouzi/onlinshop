@@ -65,6 +65,13 @@ ZARINPAL_MERCHANT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 SITE_URL=https://دامنه-شما.ir
 # اختیاری: ZARINPAL_SANDBOX=true برای تست | ZARINPAL_ACCESS_TOKEN=...
 
+# اسنپ‌پی (پرداخت اقساطی) — IP خروجی سرور را در portal.snapppay.ir whitelist کنید
+# SNAPPPAY_BASE_URL=https://api.snapppay.ir
+# SNAPPPAY_CLIENT_ID= ...
+# SNAPPPAY_CLIENT_SECRET= ...
+# SNAPPPAY_USERNAME= ...
+# SNAPPPAY_PASSWORD= ...
+
 # اینماد — کد HTML را **عیناً** از پنل کپی کنید (داخل گیومهٔ دوتایی):
 # ENAMAD_EMBED="<a referrerpolicy='origin' target='_blank' href='...'><img ...></a>"
 # rel= روی لینک نگذارید (noreferrer لوگو را خراب می‌کند).
@@ -144,6 +151,14 @@ npm run db:seed-admin
 ```bash
 node scripts/liara-sync-telegram-env.mjs
 ```
+
+**اسنپ‌پی (پرداخت اقساطی):** پنج متغیر `SNAPPPAY_*` را در `.env.local` بگذارید، IP خروجی Liara را در portal.snapppay.ir whitelist کنید، سپس از لوکال:
+
+```bash
+node scripts/liara-sync-snapppay-env.mjs
+```
+
+(اگر هم‌زمان زرین‌پال و اینماد را هم می‌خواهید: `node scripts/liara-sync-payment-env.mjs` — در صورت کامل بودن اسنپ‌پی، آن متغیرها را هم push می‌کند.)
 
 ---
 

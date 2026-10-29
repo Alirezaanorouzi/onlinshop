@@ -13,3 +13,4 @@ export function parseCartLineKey(key: string): Omit<CartLine, "quantity"> | null
 }
 
 export const CHECKOUT_LINES_STORAGE_KEY = "ghaem-magham-checkout-lines";
+export const CHECKOUT_SNAPPPAY_TOKEN_KEY = "ghaem-magham-snapppay-token";

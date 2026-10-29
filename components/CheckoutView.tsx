@@ -7,6 +7,7 @@ import {
   CustomerProfileForm,
   type CustomerProfileFields,
 } from "@/components/CustomerProfileForm";
+import { SnappPayCheckout } from "@/components/SnappPayCheckout";
 import { ZarinpalCheckout } from "@/components/ZarinpalCheckout";
 import { apiPath } from "@/lib/api-path";
 import {
@@ -19,6 +20,11 @@ import { formatNumber, formatPrice } from "@/lib/format";
 import type { CartLine, Product } from "@/lib/types";
 
 type PaymentConfig = { enabled?: boolean };
+
+type GatewayFlags = {
+  zarinpal: boolean;
+  snapppay: boolean;
+};
 
 type ProfileResponse = {
   profile?: CustomerProfileFields;
@@ -42,6 +48,10 @@ export function CheckoutView() {
   const [profileComplete, setProfileComplete] = useState(false);
   const [profile, setProfile] = useState<CustomerProfileFields | undefined>();
   const [onlineEnabled, setOnlineEnabled] = useState(false);
+  const [gateways, setGateways] = useState<GatewayFlags>({
+    zarinpal: false,
+    snapppay: false,
+  });
   const [loading, setLoading] = useState(true);
   const [selectionReady, setSelectionReady] = useState(false);
   const [showProfileForm, setShowProfileForm] = useState(false);
@@ -98,14 +108,19 @@ export function CheckoutView() {
       }
       setAuthOk(true);
 
-      const [configRes, profileRes] = await Promise.all([
+      const [zarinpalConfigRes, snapppayConfigRes, profileRes] = await Promise.all([
         fetch(apiPath("/api/payment/zarinpal/config")),
+        fetch(apiPath("/api/payment/snapppay/config")),
         fetch(apiPath("/api/account/profile"), { credentials: "include" }),
       ]);
-      const config = (await configRes.json()) as PaymentConfig;
+      const zarinpalConfig = (await zarinpalConfigRes.json()) as PaymentConfig;
+      const snapppayConfig = (await snapppayConfigRes.json()) as PaymentConfig;
       const profileData = (await profileRes.json()) as ProfileResponse;
       if (!cancelled) {
-        setOnlineEnabled(Boolean(config.enabled));
+        const zarinpal = Boolean(zarinpalConfig.enabled);
+        const snapppay = Boolean(snapppayConfig.enabled);
+        setGateways({ zarinpal, snapppay });
+        setOnlineEnabled(zarinpal || snapppay);
         const p = profileData.profile ?? emptyProfile(user.phone ?? null);
         setProfile(p);
         const complete = Boolean(profileData.complete);
@@ -257,12 +272,22 @@ export function CheckoutView() {
                 انتخاب کنید.
               </p>
             )}
-            <ZarinpalCheckout
-              lines={checkoutLines}
-              totalTomans={total}
-              cartReady={cartReady}
-              productsLoading={productsLoading}
-            />
+            {gateways.zarinpal && (
+              <ZarinpalCheckout
+                lines={checkoutLines}
+                totalTomans={total}
+                cartReady={cartReady}
+                productsLoading={productsLoading}
+              />
+            )}
+            {gateways.snapppay && (
+              <SnappPayCheckout
+                lines={checkoutLines}
+                totalTomans={total}
+                cartReady={cartReady}
+                productsLoading={productsLoading}
+              />
+            )}
           </>
         )}
         {onlineEnabled && !profileComplete && (

@@ -6,9 +6,27 @@ import { Suspense, useEffect, useState } from "react";
 import { apiPath } from "@/lib/api-path";
 import {
   CHECKOUT_LINES_STORAGE_KEY,
+  CHECKOUT_SNAPPPAY_TOKEN_KEY,
   parseCartLineKey,
 } from "@/lib/cart-line-key";
 import { removeCartLinesFromStorage } from "@/lib/cart";
+
+function clearPaidCartFromSession() {
+  const raw = sessionStorage.getItem(CHECKOUT_LINES_STORAGE_KEY);
+  if (raw) {
+    try {
+      const keys = JSON.parse(raw) as string[];
+      const lines = keys
+        .map((key) => parseCartLineKey(key))
+        .filter((line): line is NonNullable<typeof line> => line !== null);
+      removeCartLinesFromStorage(lines);
+    } catch {
+      /* ignore */
+    }
+    sessionStorage.removeItem(CHECKOUT_LINES_STORAGE_KEY);
+  }
+  sessionStorage.removeItem(CHECKOUT_SNAPPPAY_TOKEN_KEY);
+}
 
 function PaymentCallbackContent() {
   const router = useRouter();
@@ -19,6 +37,57 @@ function PaymentCallbackContent() {
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
+    const gateway = searchParams.get("gateway");
+
+    if (gateway === "snapppay") {
+      const snappState = searchParams.get("state");
+      const paymentToken =
+        sessionStorage.getItem(CHECKOUT_SNAPPPAY_TOKEN_KEY)?.trim() ?? "";
+
+      if (snappState !== "OK" || !paymentToken) {
+        setState(snappState === "OK" ? "error" : "cancelled");
+        setMessage(
+          snappState === "OK"
+            ? "توکن پرداخت در مرورگر یافت نشد. لطفاً دوباره از صفحه پرداخت اقدام کنید."
+            : "پرداخت توسط شما لغو شد یا ناموفق بود.",
+        );
+        return;
+      }
+
+      let cancelled = false;
+      (async () => {
+        try {
+          const response = await fetch(apiPath("/api/payment/snapppay/verify"), {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ paymentToken }),
+          });
+          const data = (await response.json()) as {
+            ok?: boolean;
+            error?: string;
+          };
+          if (cancelled) return;
+          if (!response.ok || !data.ok) {
+            setState("error");
+            setMessage(data.error ?? "تأیید پرداخت ناموفق بود");
+            return;
+          }
+          clearPaidCartFromSession();
+          router.replace("/account?order=success");
+        } catch {
+          if (!cancelled) {
+            setState("error");
+            setMessage("اتصال به سرور برقرار نشد.");
+          }
+        }
+      })();
+
+      return () => {
+        cancelled = true;
+      };
+    }
+
     const status = searchParams.get("Status");
     const authority = searchParams.get("Authority");
 
@@ -37,6 +106,7 @@ function PaymentCallbackContent() {
       try {
         const response = await fetch(apiPath("/api/payment/zarinpal/verify"), {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ authority }),
         });
@@ -51,20 +121,7 @@ function PaymentCallbackContent() {
           return;
         }
 
-        const raw = sessionStorage.getItem(CHECKOUT_LINES_STORAGE_KEY);
-        if (raw) {
-          try {
-            const keys = JSON.parse(raw) as string[];
-            const lines = keys
-              .map((key) => parseCartLineKey(key))
-              .filter((line): line is NonNullable<typeof line> => line !== null);
-            removeCartLinesFromStorage(lines);
-          } catch {
-            /* ignore */
-          }
-          sessionStorage.removeItem(CHECKOUT_LINES_STORAGE_KEY);
-        }
-
+        clearPaidCartFromSession();
         router.replace("/account?order=success");
       } catch {
         if (!cancelled) {
