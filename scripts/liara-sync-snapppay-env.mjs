@@ -32,6 +32,9 @@ const app = vars.LIARA_APP_NAME || "qaim-magham";
 
 function normalizeSnappBaseUrl(raw) {
   let base = (raw || "https://api.snapppay.ir").trim().replace(/\/+$/, "");
+  if (!/^https?:\/\//i.test(base)) {
+    base = `https://${base.replace(/^\/+/, "")}`;
+  }
   if (base.endsWith("/v1")) base = base.slice(0, -3);
   return base;
 }

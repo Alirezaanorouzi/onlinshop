@@ -4,6 +4,15 @@ import { tomansToRials } from "@/lib/zarinpal";
 
 export { tomansToRials };
 
+/** Snapp stage/test eligible range (academy.snapppay.ir). */
+export const SNAPP_PAY_MIN_RIALS = 40_000;
+export const SNAPP_PAY_MAX_RIALS = 100_000_000;
+
+export function isSnappPayAmountInEligibleRange(amountTomans: number): boolean {
+  const rials = tomansToRials(amountTomans);
+  return rials >= SNAPP_PAY_MIN_RIALS && rials <= SNAPP_PAY_MAX_RIALS;
+}
+
 type SnappPayJson = Record<string, unknown>;
 
 let cachedAccessToken: string | null = null;
@@ -25,10 +34,13 @@ export function getSnappPayPassword(): string {
   return process.env.SNAPPPAY_PASSWORD?.trim() ?? "";
 }
 
-/** Production default; strips mistaken `/v1` suffix from env. */
+/** Production default; normalizes missing scheme and mistaken `/v1` suffix. */
 export function getSnappPayBaseUrl(): string {
   let base =
     process.env.SNAPPPAY_BASE_URL?.trim() || "https://api.snapppay.ir";
+  if (!/^https?:\/\//i.test(base)) {
+    base = `https://${base.replace(/^\/+/, "")}`;
+  }
   base = base.replace(/\/+$/, "");
   if (base.endsWith("/v1")) {
     base = base.slice(0, -3);

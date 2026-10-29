@@ -80,6 +80,9 @@ if (snappClientId && snappSecret && snappUser && snappPass) {
   let snappBase = (vars.SNAPPPAY_BASE_URL || "https://api.snapppay.ir")
     .trim()
     .replace(/\/+$/, "");
+  if (!/^https?:\/\//i.test(snappBase)) {
+    snappBase = `https://${snappBase.replace(/^\/+/, "")}`;
+  }
   if (snappBase.endsWith("/v1")) snappBase = snappBase.slice(0, -3);
   pairs.push(
     ["SNAPPPAY_CLIENT_ID", snappClientId],
