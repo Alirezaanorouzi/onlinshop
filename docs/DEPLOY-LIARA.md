@@ -72,6 +72,8 @@ SITE_URL=https://دامنه-شما.ir
 # SNAPPPAY_USERNAME= ...
 # SNAPPPAY_PASSWORD= ...
 
+# اسنپ‌پی — Site Map URL: https://دامنه-شما.ir/sitemap.xml (فایل sitemap.xml در ریشهٔ پروژه)
+
 # اینماد — کد HTML را **عیناً** از پنل کپی کنید (داخل گیومهٔ دوتایی):
 # ENAMAD_EMBED="<a referrerpolicy='origin' target='_blank' href='...'><img ...></a>"
 # rel= روی لینک نگذارید (noreferrer لوگو را خراب می‌کند).
