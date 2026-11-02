@@ -165,6 +165,9 @@ const alterMigrations = [
   `ALTER TABLE payments ADD COLUMN user_id INTEGER`,
   `ALTER TABLE payments ADD COLUMN shipping_json TEXT`,
   `ALTER TABLE payments ADD COLUMN order_id INTEGER`,
+  `ALTER TABLE products ADD COLUMN seo_title TEXT`,
+  `ALTER TABLE products ADD COLUMN seo_description TEXT`,
+  `ALTER TABLE products ADD COLUMN long_description TEXT`,
 ];
 
 const tableMigrations = [

@@ -25,7 +25,7 @@ export function CategoryCircles({
                 src={assetPath(category.image)}
                 alt=""
                 fill
-                unoptimized
+                loading="lazy"
                 className="object-cover"
                 sizes="96px"
               />

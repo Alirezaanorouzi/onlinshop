@@ -5,7 +5,8 @@ import { CollectionHero } from "@/components/CollectionHero";
 import { ProductStrip } from "@/components/ProductStrip";
 import { SnappPayPromo } from "@/components/SnappPayPromo";
 import { getCollection } from "@/lib/catalog";
-import { getCategories, getProducts } from "@/lib/catalog-server";
+import { getCategoriesWithProducts, getProducts } from "@/lib/catalog-server";
+import { collectionCanonical } from "@/lib/seo/site";
 
 /** SQLite catalog on Liara: must not bake `catalog.json` at build into this page. */
 export const dynamic = "force-dynamic";
@@ -21,7 +22,23 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const collection = getCollection(slug);
-  return { title: collection?.title ?? "کالکشن" };
+  if (!collection) return { title: "کالکشن" };
+
+  const title = collection.title;
+  const description = collection.description;
+  const url = collectionCanonical(slug);
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "website",
+    },
+  };
 }
 
 export default async function CollectionPage({
@@ -62,7 +79,7 @@ export default async function CollectionPage({
       )}
       <CategoryCircles
         collection={slug}
-        categories={getCategories(slug)}
+        categories={getCategoriesWithProducts(slug)}
       />
       <ProductStrip title="محصولات" products={products} />
     </>

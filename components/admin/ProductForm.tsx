@@ -225,6 +225,43 @@ export function ProductForm({
         />
       </label>
 
+      <div className="space-y-4 rounded-xl border border-white/10 p-4">
+        <p className="text-sm text-muted">سئو (اختیاری)</p>
+        <label className="block text-sm">
+          <span className="text-muted">عنوان سئو</span>
+          <input
+            value={form.seoTitle ?? ""}
+            onChange={(e) => setForm({ ...form, seoTitle: e.target.value })}
+            className="mt-1 w-full rounded-lg border border-white/15 bg-ink px-3 py-2 text-sm"
+            placeholder="در صورت خالی بودن، نام محصول در گوگل نمایش داده می‌شود"
+          />
+        </label>
+        <label className="block text-sm">
+          <span className="text-muted">توضیح متا (سئو)</span>
+          <textarea
+            rows={2}
+            value={form.seoDescription ?? ""}
+            onChange={(e) =>
+              setForm({ ...form, seoDescription: e.target.value })
+            }
+            className="mt-1 w-full rounded-lg border border-white/15 bg-ink px-3 py-2 text-sm leading-7"
+            placeholder="خلاصه برای نتایج جستجو"
+          />
+        </label>
+        <label className="block text-sm">
+          <span className="text-muted">توضیحات کامل (صفحه محصول)</span>
+          <textarea
+            rows={6}
+            value={form.longDescription ?? ""}
+            onChange={(e) =>
+              setForm({ ...form, longDescription: e.target.value })
+            }
+            className="mt-1 w-full rounded-lg border border-white/15 bg-ink px-3 py-2 text-sm leading-7"
+            placeholder="جنس، دوخت، رنگ‌ها، سایزبندی — فقط اطلاعات واقعی"
+          />
+        </label>
+      </div>
+
       <fieldset className="space-y-4 rounded-xl border border-white/10 p-4">
         <legend className="px-1 text-sm text-muted">گالری تصاویر</legend>
         <p className="text-xs leading-6 text-muted">
@@ -239,7 +276,7 @@ export function ProductForm({
               src={mainPreview}
               alt=""
               fill
-              unoptimized
+              loading="lazy"
               className="object-cover"
             />
           </div>
@@ -266,7 +303,7 @@ export function ProductForm({
                     src={assetPath(url)}
                     alt=""
                     fill
-                    unoptimized
+                    loading="lazy"
                     className="object-cover"
                   />
                 </button>

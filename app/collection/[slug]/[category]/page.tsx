@@ -1,30 +1,21 @@
 import Link from "next/link";
-import { markCatalogRequestDynamic } from "@/lib/catalog-runtime";
 import { notFound } from "next/navigation";
+import { markCatalogRequestDynamic } from "@/lib/catalog-runtime";
+import { CategoryCircles } from "@/components/CategoryCircles";
+import { CollectionHero } from "@/components/CollectionHero";
 import { ProductStrip } from "@/components/ProductStrip";
-import { getCollections, getCollection } from "@/lib/catalog";
+import { SnappPayPromo } from "@/components/SnappPayPromo";
+import { getCollection } from "@/lib/catalog";
 import {
-  getCategories,
-  getCategory,
+  categoryStaticParams,
   getProducts,
 } from "@/lib/catalog-server";
-import {
-  catalogIsDatabaseBacked,
-  staticCategoryParams,
-} from "@/lib/catalog-pages";
+import { categoryCanonical } from "@/lib/seo/site";
 
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  if (catalogIsDatabaseBacked()) {
-    return staticCategoryParams();
-  }
-  return getCollections().flatMap((collection) =>
-    getCategories(collection.slug).map((category) => ({
-      slug: collection.slug,
-      category: category.slug,
-    })),
-  );
+  return categoryStaticParams();
 }
 
 export async function generateMetadata({
@@ -33,8 +24,25 @@ export async function generateMetadata({
   params: Promise<{ slug: string; category: string }>;
 }) {
   const { slug, category: categorySlug } = await params;
-  const category = getCategory(slug, categorySlug);
-  return { title: category?.name ?? "دسته‌بندی" };
+  const collection = getCollection(slug);
+  const category = collection?.categories.find((c) => c.slug === categorySlug);
+  if (!collection || !category) return { title: "دسته‌بندی" };
+
+  const title = `${category.name} | ${collection.title}`;
+  const description = `${category.name} — ${collection.description}`;
+  const url = categoryCanonical(slug, categorySlug);
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "website",
+    },
+  };
 }
 
 export default async function CategoryPage({
@@ -46,10 +54,11 @@ export default async function CategoryPage({
 
   const { slug, category: categorySlug } = await params;
   const collection = getCollection(slug);
-  const category = getCategory(slug, categorySlug);
+  const category = collection?.categories.find((c) => c.slug === categorySlug);
   if (!collection || !category) notFound();
 
   const products = getProducts({ collection: slug, category: categorySlug });
+  if (products.length === 0) notFound();
 
   return (
     <div className="pt-10">
@@ -62,6 +71,9 @@ export default async function CategoryPage({
           <span>{category.name}</span>
         </p>
         <h1 className="mt-4 text-4xl font-semibold">{category.name}</h1>
+        <p className="mt-4 max-w-2xl text-sm leading-8 text-cream/80">
+          {collection.description}
+        </p>
       </div>
       <div className="mt-10">
         <ProductStrip title="محصولات" products={products} />

@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import path from "node:path";
 import { getBasePath } from "./lib/base-path";
 import { getAllowedDevOrigins } from "./lib/dev-allowed-origins";
+import { getImageRemotePatterns } from "./lib/next-image-remote-patterns";
 
 const basePath = getBasePath();
 
@@ -40,12 +41,15 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    unoptimized: true,
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [48, 64, 96, 128, 256, 384],
     localPatterns: [
       { pathname: "/uploads/**" },
       { pathname: "/images/**" },
       { pathname: "/api/files/**" },
     ],
+    remotePatterns: getImageRemotePatterns(),
   },
   cacheComponents: false,
   partialPrefetching: false,

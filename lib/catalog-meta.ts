@@ -81,6 +81,10 @@ export function rowToProduct(row: {
   category: string;
   price: number;
   description: string;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  longDescription?: string | null;
+  updatedAt?: Date | null;
   primaryImageUrl: string;
   galleryUrls: string[];
   colors: Product["colors"];
@@ -99,6 +103,10 @@ export function rowToProduct(row: {
     image: primaryImageUrl,
     images: galleryUrls.length > 1 ? galleryUrls : undefined,
     description: row.description,
+    seoTitle: row.seoTitle?.trim() || undefined,
+    seoDescription: row.seoDescription?.trim() || undefined,
+    longDescription: row.longDescription?.trim() || undefined,
+    updatedAt: row.updatedAt ?? undefined,
     colors: row.colors,
     sizes: row.sizes,
     variants: variantsFor(row.sizes, row.colors),
@@ -123,6 +131,10 @@ export function isVariantInStock(
       (variant) => variant.size === size && variant.color === color,
     )?.inStock ?? false
   );
+}
+
+export function productHasStock(product: Product): boolean {
+  return product.variants.some((variant) => variant.inStock);
 }
 
 export function buildCategories(

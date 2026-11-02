@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getDb } from "@/db/index";
+import { productHasStock } from "@/lib/catalog-meta";
 import { isSqliteCatalog } from "@/lib/env";
 import * as db from "@/lib/catalog-db";
 import * as json from "@/lib/catalog-json";
@@ -69,6 +70,15 @@ export function getCategories(collectionSlug: string) {
     : json.getCategories(collectionSlug);
 }
 
+export function getCategoriesWithProducts(collectionSlug: string) {
+  const productCategories = new Set(
+    getProducts({ collection: collectionSlug }).map((product) => product.category),
+  );
+  return getCategories(collectionSlug).filter((category) =>
+    productCategories.has(category.slug),
+  );
+}
+
 export function getCategory(collectionSlug: string, categorySlug: string) {
   return useSqlite()
     ? db.getCategory(collectionSlug, categorySlug)
@@ -77,4 +87,35 @@ export function getCategory(collectionSlug: string, categorySlug: string) {
 
 export function listProductSlugs() {
   return useSqlite() ? db.listProductSlugs() : json.listProductSlugs();
+}
+
+export function getNewestProducts(limit: number) {
+  return useSqlite()
+    ? db.getNewestProducts(limit)
+    : json.getNewestProducts(limit);
+}
+
+export function getTopSellingProducts(limit: number) {
+  return useSqlite()
+    ? db.getTopSellingProducts(limit)
+    : json.getTopSellingProducts(limit);
+}
+
+export function listProductsForSitemap() {
+  return useSqlite()
+    ? db.listProductsForSitemap()
+    : json.listProductsForSitemap();
+}
+
+export function listCategorySlugsWithProducts() {
+  return useSqlite()
+    ? db.listCategorySlugsWithProducts()
+    : json.listCategorySlugsWithProducts();
+}
+
+export function categoryStaticParams() {
+  return listCategorySlugsWithProducts().map((row) => ({
+    slug: row.collection,
+    category: row.category,
+  }));
 }

@@ -299,7 +299,6 @@ export function CartView() {
                   alt=""
                   width={96}
                   height={96}
-                  unoptimized
                   className="size-24 shrink-0 object-cover"
                 />
               ) : (

@@ -6,7 +6,13 @@ import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductSpecifications } from "@/components/ProductSpecifications";
 import { assetPath } from "@/lib/asset-path";
 import { getProductImages } from "@/lib/product-images";
+import { ProductJsonLd } from "@/components/ProductJsonLd";
 import { getProductShareUrl } from "@/lib/product-share-url";
+import {
+  resolveLongDescription,
+  resolveSeoDescription,
+  resolveSeoTitle,
+} from "@/lib/seo/product-meta";
 import { getCollection } from "@/lib/catalog";
 import { getPublicSiteUrl } from "@/lib/site-url";
 import {
@@ -27,6 +33,8 @@ export async function generateMetadata({
   if (!product) return { title: "محصول" };
 
   const url = getProductShareUrl(slug);
+  const title = resolveSeoTitle(product);
+  const description = resolveSeoDescription(product);
   const origin = getPublicSiteUrl().replace(/\/$/, "");
   const imageRel = assetPath(product.image);
   const ogImage = imageRel.startsWith("http")
@@ -34,12 +42,12 @@ export async function generateMetadata({
     : `${origin}${imageRel.startsWith("/") ? imageRel : `/${imageRel}`}`;
 
   return {
-    title: product.name,
-    description: product.description,
+    title,
+    description,
     alternates: { canonical: url },
     openGraph: {
-      title: product.name,
-      description: product.description,
+      title,
+      description,
       url,
       type: "website",
       images: [{ url: ogImage, alt: product.name }],
@@ -58,9 +66,15 @@ export default async function ProductPage({
 
   const collection = getCollection(product.collection);
   const category = getCategory(product.collection, product.category);
+  const longDescription = resolveLongDescription(product);
+  const showLong =
+    product.longDescription?.trim() &&
+    product.longDescription.trim() !== product.description.trim();
 
   return (
-    <article className="mx-auto grid max-w-6xl gap-8 px-3 py-8 sm:gap-10 sm:px-4 sm:py-12 lg:grid-cols-2">
+    <>
+      <ProductJsonLd product={product} />
+      <article className="mx-auto grid max-w-6xl gap-8 px-3 py-8 sm:gap-10 sm:px-4 sm:py-12 lg:grid-cols-2">
       <ProductImageGallery
         images={getProductImages(product)}
         alt={product.name}
@@ -100,6 +114,13 @@ export default async function ProductPage({
         <p className="mt-4 max-w-md text-sm leading-8 text-cream/80">
           {product.description}
         </p>
+        {showLong ? (
+          <div className="mt-4 max-w-lg space-y-3 text-sm leading-8 text-cream/85">
+            {longDescription.split(/\n+/).map((paragraph) => (
+              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+            ))}
+          </div>
+        ) : null}
         <AddToCart product={product} />
         <ProductSpecifications
           product={product}
@@ -108,5 +129,6 @@ export default async function ProductPage({
         />
       </div>
     </article>
+    </>
   );
 }

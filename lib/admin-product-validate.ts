@@ -8,6 +8,9 @@ export type AdminProductBody = {
   category: string;
   price: number;
   description: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  longDescription?: string;
   primaryImageUrl: string;
   galleryUrls?: string[];
   colors: Color[];

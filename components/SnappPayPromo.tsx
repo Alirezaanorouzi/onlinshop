@@ -48,7 +48,7 @@ export function SnappPayPromo({
                 src={assetPath(featured.image)}
               alt={featured.name}
               fill
-              unoptimized
+              loading="lazy"
               className="object-cover"
               sizes="96px"
             />

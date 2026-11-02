@@ -23,7 +23,6 @@ export function ProductCard({ product }: { product: Product }) {
             src={assetPath(product.image)}
             alt={product.name}
             fill
-            unoptimized
             loading="lazy"
             className="object-cover"
             sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"

@@ -189,7 +189,6 @@ export default function AdminDashboardPage() {
                   src={assetPath(product.image)}
                   alt=""
                   fill
-                  unoptimized
                   loading="lazy"
                   className="object-cover"
                 />

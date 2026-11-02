@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { StoreChrome } from "@/components/StoreChrome";
+import { business } from "@/lib/business";
+import { getMetadataBase } from "@/lib/seo/site";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -11,11 +13,19 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata: Metadata = {
+  metadataBase: getMetadataBase(),
   title: {
     default: site.name,
     template: `%s | ${site.name}`,
   },
-  description: site.description,
+  description: `${site.description}. ${business.tagline}`,
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    siteName: site.name,
+    title: site.name,
+    description: business.tagline,
+  },
 };
 
 export const viewport = {

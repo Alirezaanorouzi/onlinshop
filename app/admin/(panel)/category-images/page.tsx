@@ -164,7 +164,7 @@ export default function AdminCategoryImagesPage() {
                       src={previewSrc(row.imageUrl)}
                       alt=""
                       fill
-                      unoptimized
+                      loading="lazy"
                       className="object-cover"
                     />
                   ) : (

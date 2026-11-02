@@ -72,7 +72,8 @@ SITE_URL=https://دامنه-شما.ir
 # SNAPPPAY_USERNAME= ...
 # SNAPPPAY_PASSWORD= ...
 
-# اسنپ‌پی — Site Map URL: https://دامنه-شما.ir/sitemap.xml (فایل sitemap.xml در ریشهٔ پروژه)
+# اسنپ‌پی — Site Map URL: https://دامنه-شما.ir/sitemap.xml (تولید پویا در app/sitemap.ts از SQLite)
+# SEO — راهنمای کامل: docs/SEO.md (SITE_URL الزامی، Search Console)
 
 # اینماد — کد HTML را **عیناً** از پنل کپی کنید (داخل گیومهٔ دوتایی):
 # ENAMAD_EMBED="<a referrerpolicy='origin' target='_blank' href='...'><img ...></a>"

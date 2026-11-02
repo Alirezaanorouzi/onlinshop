@@ -55,7 +55,6 @@ export function ProductImageGallery({
         src={assetPath(src)}
         alt={alt}
         fill
-        unoptimized
         priority={priority}
         className="object-cover"
         sizes={mainSizes}
@@ -102,7 +101,7 @@ export function ProductImageGallery({
                   src={assetPath(image)}
                   alt=""
                   fill
-                  unoptimized
+                  loading="lazy"
                   className="object-cover"
                   sizes="80px"
                 />

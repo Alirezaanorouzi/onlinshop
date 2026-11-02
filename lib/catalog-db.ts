@@ -1,14 +1,34 @@
-import { and, eq, inArray, like } from "drizzle-orm";
+import { and, desc, eq, inArray, like } from "drizzle-orm";
 import { categoryImages, products } from "@/db/schema";
 import { getDb } from "@/db/index";
 import {
   buildCategories,
   getCollection,
   menCategoryImages,
+  productHasStock,
   rowToProduct,
 } from "@/lib/catalog-meta";
 import { normalizeProductGallery } from "@/lib/product-gallery";
 import type { Product } from "@/lib/types";
+
+function mapProductRow(row: typeof products.$inferSelect): Product {
+  return rowToProduct({
+    slug: row.slug,
+    name: row.name,
+    collection: row.collection,
+    category: row.category,
+    price: row.price,
+    description: row.description,
+    seoTitle: row.seoTitle,
+    seoDescription: row.seoDescription,
+    longDescription: row.longDescription,
+    updatedAt: row.updatedAt,
+    primaryImageUrl: row.primaryImageUrl,
+    galleryUrls: row.galleryUrls ?? [],
+    colors: row.colors,
+    sizes: row.sizes,
+  });
+}
 
 export function getProducts(filter?: {
   collection?: string;
@@ -21,20 +41,7 @@ export function getProducts(filter?: {
 
   const query = filter?.query?.trim();
   return rows
-    .map((row) =>
-      rowToProduct({
-        slug: row.slug,
-        name: row.name,
-        collection: row.collection,
-        category: row.category,
-        price: row.price,
-        description: row.description,
-        primaryImageUrl: row.primaryImageUrl,
-        galleryUrls: row.galleryUrls ?? [],
-        colors: row.colors,
-        sizes: row.sizes,
-      }),
-    )
+    .map((row) => mapProductRow(row))
     .filter((product) => {
       if (filter?.slugs?.length && !filter.slugs.includes(product.slug)) {
         return false;
@@ -59,18 +66,7 @@ export function getProductBySlug(slug: string) {
     .get();
   if (!row) return undefined;
 
-  return rowToProduct({
-    slug: row.slug,
-    name: row.name,
-    collection: row.collection,
-    category: row.category,
-    price: row.price,
-    description: row.description,
-    primaryImageUrl: row.primaryImageUrl,
-    galleryUrls: row.galleryUrls ?? [],
-    colors: row.colors,
-    sizes: row.sizes,
-  });
+  return mapProductRow(row);
 }
 
 export function getProductsBySlugs(slugs: string[]) {
@@ -82,20 +78,76 @@ export function getProductsBySlugs(slugs: string[]) {
     .where(inArray(products.slug, slugs))
     .all();
 
-  return rows.map((row) =>
-    rowToProduct({
-      slug: row.slug,
-      name: row.name,
-      collection: row.collection,
-      category: row.category,
-      price: row.price,
-      description: row.description,
-      primaryImageUrl: row.primaryImageUrl,
-      galleryUrls: row.galleryUrls ?? [],
-      colors: row.colors,
-      sizes: row.sizes,
-    }),
-  );
+  return rows.map((row) => mapProductRow(row));
+}
+
+export function getNewestProducts(limit: number): Product[] {
+  const db = getDb();
+  const rows = db
+    .select()
+    .from(products)
+    .orderBy(desc(products.updatedAt))
+    .limit(limit)
+    .all();
+  return rows.map((row) => mapProductRow(row));
+}
+
+export function getTopSellingProducts(limit: number): Product[] {
+  const sqlite = getDb().$client;
+  const ranked = sqlite
+    .prepare(
+      `SELECT oi.product_slug AS slug, SUM(oi.quantity) AS total
+       FROM order_items oi
+       INNER JOIN orders o ON o.id = oi.order_id
+       WHERE o.status = 'paid'
+       GROUP BY oi.product_slug
+       ORDER BY total DESC
+       LIMIT ?`,
+    )
+    .all(limit) as { slug: string }[];
+
+  if (ranked.length === 0) {
+    return getNewestProducts(limit);
+  }
+
+  const slugs = ranked.map((row) => row.slug);
+  const bySlug = new Map(getProductsBySlugs(slugs).map((p) => [p.slug, p]));
+  return slugs
+    .map((slug) => bySlug.get(slug))
+    .filter((p): p is Product => Boolean(p));
+}
+
+export type SitemapCategoryRow = {
+  collection: Product["collection"];
+  category: string;
+  maxUpdatedAt: Date;
+};
+
+export function listCategorySlugsWithProducts(): SitemapCategoryRow[] {
+  const byKey = new Map<string, SitemapCategoryRow>();
+  for (const product of getProducts()) {
+    if (!productHasStock(product)) continue;
+    const key = `${product.collection}:${product.category}`;
+    const updatedAt = product.updatedAt ?? new Date(0);
+    const existing = byKey.get(key);
+    if (!existing || updatedAt > existing.maxUpdatedAt) {
+      byKey.set(key, {
+        collection: product.collection,
+        category: product.category,
+        maxUpdatedAt: updatedAt,
+      });
+    }
+  }
+  return [...byKey.values()];
+}
+
+export function listProductsForSitemap(): { slug: string; updatedAt: Date }[] {
+  return getProducts()
+    .filter((product) => productHasStock(product))
+    .map((product) => ({
+      slug: product.slug,
+      updatedAt: product.updatedAt ?? new Date(),
+    }));
 }
 
 export function getCategories(collectionSlug: string) {
@@ -145,6 +197,9 @@ export function upsertProduct(input: {
   category: string;
   price: number;
   description: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  longDescription?: string;
   primaryImageUrl: string;
   galleryUrls?: string[];
   colors: Product["colors"];
@@ -155,6 +210,9 @@ export function upsertProduct(input: {
     input.primaryImageUrl,
     input.galleryUrls,
   );
+  const seoTitle = input.seoTitle?.trim() || null;
+  const seoDescription = input.seoDescription?.trim() || null;
+  const longDescription = input.longDescription?.trim() || null;
   db.insert(products)
     .values({
       slug: input.slug,
@@ -163,6 +221,9 @@ export function upsertProduct(input: {
       category: input.category,
       price: input.price,
       description: input.description,
+      seoTitle,
+      seoDescription,
+      longDescription,
       primaryImageUrl,
       galleryUrls,
       colors: input.colors,
@@ -176,6 +237,9 @@ export function upsertProduct(input: {
         category: input.category,
         price: input.price,
         description: input.description,
+        seoTitle,
+        seoDescription,
+        longDescription,
         primaryImageUrl,
         galleryUrls,
         colors: input.colors,
@@ -306,18 +370,5 @@ export function findProductsByNameQuery(collection: string | undefined, query: s
     .limit(12)
     .all();
 
-  return rows.map((row) =>
-    rowToProduct({
-      slug: row.slug,
-      name: row.name,
-      collection: row.collection,
-      category: row.category,
-      price: row.price,
-      description: row.description,
-      primaryImageUrl: row.primaryImageUrl,
-      galleryUrls: row.galleryUrls ?? [],
-      colors: row.colors,
-      sizes: row.sizes,
-    }),
-  );
+  return rows.map((row) => mapProductRow(row));
 }

@@ -22,6 +22,10 @@ export type Product = {
   /** Extra gallery shots; falls back to `image` when omitted */
   images?: string[];
   description: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  longDescription?: string;
+  updatedAt?: Date;
   colors: Color[];
   sizes: string[];
   variants: Variant[];

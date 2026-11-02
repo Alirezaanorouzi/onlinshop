@@ -15,6 +15,9 @@ export const products = sqliteTable("products", {
   category: text("category").notNull(),
   price: integer("price").notNull(),
   description: text("description").notNull(),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  longDescription: text("long_description"),
   primaryImageUrl: text("primary_image_url").notNull(),
   galleryUrls: text("gallery_urls", { mode: "json" })
     .$type<string[]>()

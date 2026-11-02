@@ -2,6 +2,7 @@ import rawCatalog from "@/data/catalog.json";
 import {
   buildCategories,
   getCollection,
+  productHasStock,
   rowToProduct,
   variantsFor,
 } from "@/lib/catalog-meta";
@@ -65,4 +66,46 @@ export function getCategory(collectionSlug: string, categorySlug: string) {
 
 export function listProductSlugs() {
   return products.map((product) => product.slug);
+}
+
+export function getNewestProducts(limit: number): Product[] {
+  return products.slice(0, limit);
+}
+
+export function getTopSellingProducts(limit: number): Product[] {
+  return products.slice(0, limit);
+}
+
+export function listProductsForSitemap(): { slug: string; updatedAt: Date }[] {
+  return products
+    .filter((product) => productHasStock(product))
+    .map((product) => ({
+      slug: product.slug,
+      updatedAt: product.updatedAt ?? new Date(),
+    }));
+}
+
+export function listCategorySlugsWithProducts(): Array<{
+  collection: CollectionSlug;
+  category: string;
+  maxUpdatedAt: Date;
+}> {
+  const byKey = new Map<
+    string,
+    { collection: CollectionSlug; category: string; maxUpdatedAt: Date }
+  >();
+  for (const product of products) {
+    if (!productHasStock(product)) continue;
+    const key = `${product.collection}:${product.category}`;
+    const updatedAt = product.updatedAt ?? new Date(0);
+    const existing = byKey.get(key);
+    if (!existing || updatedAt > existing.maxUpdatedAt) {
+      byKey.set(key, {
+        collection: product.collection,
+        category: product.category,
+        maxUpdatedAt: updatedAt,
+      });
+    }
+  }
+  return [...byKey.values()];
 }
