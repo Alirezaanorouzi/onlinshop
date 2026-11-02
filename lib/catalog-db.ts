@@ -12,7 +12,8 @@ import { normalizeProductGallery } from "@/lib/product-gallery";
 import type { Product } from "@/lib/types";
 
 function mapProductRow(row: typeof products.$inferSelect): Product {
-  return rowToProduct({
+  return {
+    ...rowToProduct({
     slug: row.slug,
     name: row.name,
     collection: row.collection,
@@ -27,7 +28,9 @@ function mapProductRow(row: typeof products.$inferSelect): Product {
     galleryUrls: row.galleryUrls ?? [],
     colors: row.colors,
     sizes: row.sizes,
-  });
+  }),
+    productCode: row.id,
+  };
 }
 
 export function getProducts(filter?: {

@@ -1,4 +1,8 @@
 import { formatPrice } from "@/lib/format";
+import {
+  PRODUCT_WARRANTY,
+  formatProductCode,
+} from "@/lib/product-code";
 import type { Product } from "@/lib/types";
 
 export function ProductSpecifications({
@@ -28,7 +32,13 @@ export function ProductSpecifications({
         </div>
         <div className="flex justify-between gap-4 py-3">
           <dt className="text-muted">کد محصول</dt>
-          <dd className="text-left" dir="ltr">{product.slug}</dd>
+          <dd className="text-left tabular-nums" dir="ltr">
+            {formatProductCode(product.productCode)}
+          </dd>
+        </div>
+        <div className="flex justify-between gap-4 py-3">
+          <dt className="text-muted">گارانتی</dt>
+          <dd className="max-w-[16rem] text-left leading-7">{PRODUCT_WARRANTY}</dd>
         </div>
         {collectionTitle && (
           <div className="flex justify-between gap-4 py-3">

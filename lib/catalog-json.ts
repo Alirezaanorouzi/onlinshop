@@ -3,13 +3,13 @@ import {
   buildCategories,
   getCollection,
   productHasStock,
-  rowToProduct,
   variantsFor,
 } from "@/lib/catalog-meta";
 import type { CollectionSlug, Product } from "@/lib/types";
 
-type RawProduct = Omit<Product, "variants" | "collection"> & {
+type RawProduct = Omit<Product, "variants" | "collection" | "productCode"> & {
   collection: CollectionSlug | "kids";
+  productCode?: number;
 };
 
 const products: Product[] = (rawCatalog as RawProduct[])
@@ -17,8 +17,9 @@ const products: Product[] = (rawCatalog as RawProduct[])
     (product): product is RawProduct & { collection: CollectionSlug } =>
       product.collection === "men" || product.collection === "women",
   )
-  .map((product) => ({
+  .map((product, index) => ({
     ...product,
+    productCode: product.productCode ?? index + 1,
     variants: variantsFor(product.sizes, product.colors),
   }));
 

@@ -89,7 +89,7 @@ export function rowToProduct(row: {
   galleryUrls: string[];
   colors: Product["colors"];
   sizes: string[];
-}): Product {
+}): Omit<Product, "productCode"> {
   const { primaryImageUrl, galleryUrls } = normalizeProductGallery(
     row.primaryImageUrl,
     row.galleryUrls,

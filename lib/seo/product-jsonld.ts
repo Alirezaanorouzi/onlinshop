@@ -7,6 +7,7 @@ import {
   resolveSeoTitle,
 } from "@/lib/seo/product-meta";
 import { absolutePath } from "@/lib/seo/site";
+import { formatProductCode } from "@/lib/product-code";
 import { tomansToRials } from "@/lib/zarinpal";
 import type { Product } from "@/lib/types";
 
@@ -23,7 +24,7 @@ export function buildProductJsonLd(product: Product, request?: Request) {
     "@type": "Product",
     name: resolveSeoTitle(product),
     description: resolveLongDescription(product),
-    sku: product.slug,
+    sku: formatProductCode(product.productCode),
     image: images.length > 0 ? images : undefined,
     brand: {
       "@type": "Brand",

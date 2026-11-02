@@ -14,6 +14,8 @@ export type Variant = {
 
 export type Product = {
   slug: string;
+  /** Numeric store code (SQLite `products.id`; stable in JSON dev catalog). */
+  productCode: number;
   name: string;
   collection: CollectionSlug;
   category: string;
