@@ -33,5 +33,5 @@ For Liara deploy and env vars, see [docs/DEPLOY-LIARA.md](docs/DEPLOY-LIARA.md).
 | `components/` | React UI |
 | `lib/` | Catalog, auth, payments, storage |
 | `data/catalog.json` | Seed source for `db:seed` |
-| `scripts/` | Migrate/seed and Liara deploy helpers |
+| `scripts/` | DB migrate/seed, Seaweed init, `deploy-liara.ps1` |
 | `docs/DEPLOY-LIARA.md` | Production deploy |

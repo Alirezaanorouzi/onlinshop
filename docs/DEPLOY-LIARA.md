@@ -147,21 +147,11 @@ npm run db:seed
 npm run db:seed-admin
 ```
 
-(`db:seed-admin` نیاز به `ADMIN_PHONE` در env دارد؛ مایگریت با هر `npm start` خودکار است. برای ست env از لوکال: `node scripts/liara-sync-admin-env.mjs`.)
+(`db:seed-admin` نیاز به `ADMIN_PHONE` در env دارد؛ مایگریت با هر `npm start` خودکار است. بقیهٔ متغیرها — کاوه‌نگار، زرین‌پال، اسنپ‌پی، تلگرام، اینماد — را در **کنسول لیارا → متغیرهای محیطی** کپی کنید.)
 
-**اعلان تلگرام بعد از پرداخت موفق:** در `.env.local` مقدار `TELEGRAM_BOT_TOKEN` و `TELEGRAM_CHAT_ID` (یا `CHANNEL_ID`) را بگذارید، ربات را **ادمین کانال خصوصی** کنید، سپس:
+**اعلان تلگرام:** `TELEGRAM_BOT_TOKEN` و `TELEGRAM_CHAT_ID` (یا `CHANNEL_ID`) را در env لیارا بگذارید؛ ربات را **ادمین کانال خصوصی** کنید.
 
-```bash
-node scripts/liara-sync-telegram-env.mjs
-```
-
-**اسنپ‌پی (پرداخت اقساطی):** پنج متغیر `SNAPPPAY_*` را در `.env.local` بگذارید، IP خروجی Liara را در portal.snapppay.ir whitelist کنید، سپس از لوکال:
-
-```bash
-node scripts/liara-sync-snapppay-env.mjs
-```
-
-(اگر هم‌زمان زرین‌پال و اینماد را هم می‌خواهید: `node scripts/liara-sync-payment-env.mjs` — در صورت کامل بودن اسنپ‌پی، آن متغیرها را هم push می‌کند.)
+**اسنپ‌پی:** پنج متغیر `SNAPPPAY_*` در env لیارا؛ IP خروجی سرور را در portal.snapppay.ir whitelist کنید.
 
 ---
 

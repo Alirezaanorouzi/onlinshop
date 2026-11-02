@@ -17,7 +17,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "npm run db:migrate && next start",
-    "start:with-migrate": "node scripts/start-production.mjs",
     "lint": "eslint",
     "db:migrate": "node ./node_modules/tsx/dist/cli.mjs scripts/migrate.ts",
     "db:seed": "node ./node_modules/tsx/dist/cli.mjs scripts/seed.ts",
