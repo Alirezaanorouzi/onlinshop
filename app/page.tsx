@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OrganizationJsonLd } from "@/components/OrganizationJsonLd";
 import { HomePage } from "@/components/HomePage";
 import { markCatalogRequestDynamic } from "@/lib/catalog-runtime";
 import { business } from "@/lib/business";
@@ -23,5 +24,10 @@ export const metadata: Metadata = {
 
 export default function Home() {
   markCatalogRequestDynamic();
-  return <HomePage />;
+  return (
+    <>
+      <OrganizationJsonLd />
+      <HomePage />
+    </>
+  );
 }

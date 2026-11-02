@@ -12,6 +12,7 @@ import {
 } from "@/lib/catalog-server";
 import { business } from "@/lib/business";
 import { formatNumber } from "@/lib/format";
+import { homePageH1 } from "@/lib/seo/organization-jsonld";
 import { site } from "@/lib/site";
 
 export function HomePage() {
@@ -33,7 +34,7 @@ export function HomePage() {
     <>
       <section className="mx-auto max-w-6xl px-3 py-10 sm:px-4 sm:py-14">
         <p className="text-[11px] tracking-[0.35em] text-gold">فروشگاه اینترنتی</p>
-        <h1 className="mt-3 text-2xl font-semibold sm:text-4xl">{site.name}</h1>
+        <h1 className="mt-3 text-2xl font-semibold sm:text-4xl">{homePageH1}</h1>
         <p className="mt-4 max-w-2xl text-sm leading-8 text-cream/85">
           {business.tagline} خرید آنلاین پوشاک آقایان و بانوان با قیمت شفاف،
           ارسال به سراسر کشور و پشتیبانی از طریق تماس و ایمیل.

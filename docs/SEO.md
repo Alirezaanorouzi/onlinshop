@@ -37,3 +37,7 @@
 - آپلودهای محلی از `/api/files/…` و استاتیک از `/images/…` پشتیبانی می‌شوند.
 - برای URL مطلق S3، **`S3_PUBLIC_BASE_URL`** (و **`SITE_URL`**) در env باید تنظیم باشد تا در `remotePatterns` قرار گیرد.
 - بعد از استقرار، [PageSpeed Insights](https://pagespeed.web.dev/) را روی صفحهٔ محصول و صفحهٔ اصلی بزنید.
+
+## Schema (صفحهٔ اصلی)
+
+- **`ClothingStore`** JSON-LD از [`lib/seo/organization-jsonld.ts`](../lib/seo/organization-jsonld.ts) — نام «پوشاک قائم مقام»، آدرس، تلفن، ساعات کاری، URL (از `SITE_URL`).
