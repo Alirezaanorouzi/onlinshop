@@ -75,7 +75,7 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
     return (
       <header className="relative">
         <div
-          className="fixed inset-x-0 top-0 z-[60] border-b border-white/10 bg-ink/95 backdrop-blur supports-[padding:max(0px)]:pt-[max(0px,env(safe-area-inset-top))]"
+          className="fixed inset-x-0 top-0 z-[100] border-b border-white/10 bg-ink/95 backdrop-blur supports-[padding:max(0px)]:pt-[max(0px,env(safe-area-inset-top))]"
         >
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-3 sm:h-16 sm:px-4">
           <Link
@@ -98,12 +98,12 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
   }
 
   return (
-    <header className="relative isolate">
+    <header className="relative z-[100]">
       <div
-        className="fixed inset-x-0 top-0 z-[60] border-b border-white/10 bg-ink/95 backdrop-blur supports-[padding:max(0px)]:pt-[max(0px,env(safe-area-inset-top))]"
+        className="fixed inset-x-0 top-0 z-[100] border-b border-white/10 bg-ink/95 backdrop-blur supports-[padding:max(0px)]:pt-[max(0px,env(safe-area-inset-top))]"
       >
       <div className="relative mx-auto max-w-6xl px-3 sm:px-4">
-        <div className="relative z-[62] flex h-14 items-center gap-2 sm:h-16 sm:gap-4">
+        <div className="relative flex h-14 items-center gap-2 sm:h-16 sm:gap-4">
           <Link
             href="/"
             className="min-w-0 shrink truncate text-base font-semibold sm:text-lg"

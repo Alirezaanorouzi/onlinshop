@@ -16,7 +16,7 @@ export function StoreChrome({ children }: { children: React.ReactNode }) {
   return (
     <>
       {!hidden && <Header minimal={minimal} />}
-      <main className="flex-1">{children}</main>
+      <main className="relative z-0 flex-1">{children}</main>
       {!hidden && !minimal && <SiteFooter />}
     </>
   );
