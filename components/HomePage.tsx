@@ -9,24 +9,26 @@ import { site } from "@/lib/site";
 export function HomePage() {
   const newest = getNewestProducts(8);
   const bestSellers = getTopSellingProducts(8);
-  const featuredMen =
+  const featuredForSnapp =
     getProducts({ collection: "men", category: "hoodie" })[0] ??
     getProducts({ collection: "men" })[0] ??
+    getProducts()[0] ??
     null;
 
   return (
     <>
-      <section className="mx-auto max-w-6xl px-3 pt-6 pb-4 sm:px-4 sm:pt-8">
+      {featuredForSnapp ? (
+        <section className="mx-auto max-w-6xl px-3 pt-4 pb-2 sm:px-4 sm:pt-5">
+          <SnappPayPromo compact featured={featuredForSnapp} />
+        </section>
+      ) : null}
+
+      <section className="mx-auto max-w-6xl px-3 pb-4 sm:px-4 sm:pb-6">
         <p className="text-[11px] tracking-[0.35em] text-gold">فروشگاه اینترنتی</p>
         <h1 className="mt-3 text-2xl font-semibold sm:text-4xl">{homePageH1}</h1>
         <p className="mt-4 max-w-2xl text-sm leading-8 text-cream/85">
           {business.tagline} خرید آنلاین پوشاک آقایان و بانوان با قیمت شفاف و
           ارسال به سراسر کشور.
-        </p>
-        <p className="mt-4 text-sm">
-          <Link href="/about" className="text-gold hover:underline">
-            بیشتر درباره فروشگاه
-          </Link>
         </p>
       </section>
 
@@ -45,11 +47,6 @@ export function HomePage() {
           <li>امکان پرداخت قسطی با اسنپ‌پی (در صورت فعال بودن برای سفارش شما)</li>
           <li>{business.defaultShipping}</li>
         </ul>
-        {featuredMen ? (
-          <div className="mt-8 max-w-md">
-            <SnappPayPromo compact featured={featuredMen} />
-          </div>
-        ) : null}
         <p className="mt-8 text-sm text-muted">
           {business.address} ·{" "}
           <a href={`tel:${business.phoneMobile}`} className="text-gold">

@@ -68,8 +68,8 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
     };
   }, [open]);
 
-  const toolbarOffset =
-    "calc(3.5rem + env(safe-area-inset-top, 0px))";
+  const toolbarOffsetMobile =
+    "calc(7rem + env(safe-area-inset-top, 0px))";
 
   if (minimal) {
     return (
@@ -160,17 +160,42 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
         </div>
       </div>
 
+      <div className="mx-auto max-w-6xl border-t border-white/10 px-3 md:hidden sm:px-4">
+        <nav
+          className="grid grid-cols-2 gap-2 py-2"
+          aria-label="کالکشن‌ها"
+        >
+          {collections.map((collection) => {
+            const active = pathname.includes(
+              `/collection/${collection.slug}`,
+            );
+            return (
+              <CollectionLink
+                key={collection.slug}
+                collection={collection}
+                active={active}
+                label={
+                  collectionShortLabel[collection.slug] ?? collection.nav
+                }
+                onNavigate={() => setQuery("")}
+                mobile
+              />
+            );
+          })}
+        </nav>
+      </div>
+
       {open && (
         <>
           <button
             type="button"
             className="fixed inset-x-0 bottom-0 z-[55] bg-black/50 md:hidden"
-            style={{ top: toolbarOffset }}
+            style={{ top: toolbarOffsetMobile }}
             aria-label="بستن جستجو"
             onClick={() => setOpen(false)}
           />
           <div
-            className="fixed inset-x-3 top-[calc(3.5rem+env(safe-area-inset-top,0px)+0.5rem)] z-[56] rounded-xl border border-white/10 bg-elevated p-3 shadow-xl sm:top-[calc(4rem+env(safe-area-inset-top,0px)+0.5rem)] md:absolute md:inset-x-auto md:end-3 md:top-full md:mt-2 md:w-72"
+            className="fixed inset-x-3 z-[56] rounded-xl border border-white/10 bg-elevated p-3 shadow-xl max-md:top-[calc(7rem+env(safe-area-inset-top,0px)+0.5rem)] md:absolute md:inset-x-auto md:end-3 md:top-full md:mt-2 md:w-72"
             role="search"
           >
             <input
@@ -205,29 +230,10 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
       )}
       </div>
 
-      <div className="h-14 sm:h-16" aria-hidden />
-      <div className="mx-auto max-w-6xl border-b border-white/10 px-3 md:hidden sm:px-4">
-        <nav
-          className="grid grid-cols-2 gap-2 py-2"
-          aria-label="کالکشن‌ها"
-        >
-          {collections.map((collection) => {
-            const active = pathname.includes(`/collection/${collection.slug}`);
-            return (
-              <CollectionLink
-                key={collection.slug}
-                collection={collection}
-                active={active}
-                label={
-                  collectionShortLabel[collection.slug] ?? collection.nav
-                }
-                onNavigate={() => setQuery("")}
-                mobile
-              />
-            );
-          })}
-        </nav>
-      </div>
+      <div
+        aria-hidden
+        className="h-[calc(7rem+env(safe-area-inset-top,0px))] md:h-[calc(4rem+env(safe-area-inset-top,0px))]"
+      />
     </header>
   );
 }
