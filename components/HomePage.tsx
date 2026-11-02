@@ -1,15 +1,12 @@
 import Link from "next/link";
-import { CollectionOvals } from "@/components/CollectionOvals";
 import { ProductStrip } from "@/components/ProductStrip";
 import { SnappPayPromo } from "@/components/SnappPayPromo";
-import { getCollections } from "@/lib/catalog";
 import { getNewestProducts, getProducts, getTopSellingProducts } from "@/lib/catalog-server";
 import { business } from "@/lib/business";
 import { homePageH1 } from "@/lib/seo/organization-jsonld";
 import { site } from "@/lib/site";
 
 export function HomePage() {
-  const collections = getCollections();
   const newest = getNewestProducts(8);
   const bestSellers = getTopSellingProducts(8);
   const featuredMen =
@@ -17,22 +14,9 @@ export function HomePage() {
     getProducts({ collection: "men" })[0] ??
     null;
 
-  const collectionOvals = collections
-    .map((collection) => {
-      const products = getProducts({ collection: collection.slug });
-      const first = products[0];
-      if (!first) return null;
-      return {
-        collection,
-        productCount: products.length,
-        imageUrl: first.image,
-      };
-    })
-    .filter((item): item is NonNullable<typeof item> => item !== null);
-
   return (
     <>
-      <section className="mx-auto max-w-6xl px-3 pt-10 pb-4 sm:px-4 sm:pt-14">
+      <section className="mx-auto max-w-6xl px-3 pt-6 pb-4 sm:px-4 sm:pt-8">
         <p className="text-[11px] tracking-[0.35em] text-gold">فروشگاه اینترنتی</p>
         <h1 className="mt-3 text-2xl font-semibold sm:text-4xl">{homePageH1}</h1>
         <p className="mt-4 max-w-2xl text-sm leading-8 text-cream/85">
@@ -45,8 +29,6 @@ export function HomePage() {
           </Link>
         </p>
       </section>
-
-      <CollectionOvals items={collectionOvals} />
 
       {newest.length > 0 && (
         <ProductStrip title="جدیدترین محصولات" products={newest} />

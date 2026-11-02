@@ -105,7 +105,7 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
       <div className="relative mx-auto max-w-6xl px-3 sm:px-4">
         <div className="relative z-[62] flex h-14 items-center gap-2 sm:h-16 sm:gap-4">
           <Link
-            href="/collection/men"
+            href="/"
             className="min-w-0 shrink truncate text-base font-semibold sm:text-lg"
             prefetch={true}
           >
@@ -113,7 +113,7 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
           </Link>
 
           <nav
-            className="hidden min-w-0 items-center gap-4 overflow-x-auto text-sm text-muted md:flex"
+            className="hidden min-w-0 items-center gap-3 overflow-x-auto md:flex"
             aria-label="کالکشن‌ها"
           >
             {collections.map((collection) => {
@@ -208,7 +208,7 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
       <div className="h-14 sm:h-16" aria-hidden />
       <div className="mx-auto max-w-6xl border-b border-white/10 px-3 md:hidden sm:px-4">
         <nav
-          className="grid grid-cols-2 gap-2 py-2"
+          className="flex items-center justify-center gap-5 py-3 sm:gap-8"
           aria-label="کالکشن‌ها"
         >
           {collections.map((collection) => {
@@ -232,6 +232,12 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
   );
 }
 
+function collectionOvalClass(active: boolean) {
+  return active
+    ? "inline-flex h-10 min-w-[7.5rem] items-center justify-center rounded-[50%] bg-surface px-4 text-sm font-medium text-cream ring-1 ring-gold/45 sm:min-w-[8.5rem]"
+    : "inline-flex h-10 min-w-[7.5rem] items-center justify-center rounded-[50%] bg-surface/35 px-4 text-sm text-muted ring-1 ring-white/10 transition hover:text-cream sm:min-w-[8.5rem]";
+}
+
 function CollectionLink({
   collection,
   active,
@@ -245,16 +251,14 @@ function CollectionLink({
   onNavigate: () => void;
   mobile?: boolean;
 }) {
+  const className = collectionOvalClass(active);
+
   if (mobile) {
     return (
       <Link
         href={`/collection/${collection.slug}`}
         onClick={onNavigate}
-        className={
-          active
-            ? "rounded-lg bg-surface py-2.5 text-center text-sm font-medium text-cream ring-1 ring-gold/40"
-            : "rounded-lg bg-surface/40 py-2.5 text-center text-sm text-muted"
-        }
+        className={className}
       >
         {label}
       </Link>
@@ -265,11 +269,7 @@ function CollectionLink({
     <Link
       href={`/collection/${collection.slug}`}
       onClick={onNavigate}
-      className={
-        active
-          ? "shrink-0 border-b-2 border-gold pb-1 text-cream"
-          : "shrink-0 pb-1 hover:text-cream"
-      }
+      className={className}
     >
       {label}
     </Link>
