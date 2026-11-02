@@ -27,7 +27,8 @@
 | صفحهٔ اصلی واقعی (نه فقط ریدایرکت) | [`app/page.tsx`](../app/page.tsx) + [`components/HomePage.tsx`](../components/HomePage.tsx) |
 | Canonical و `metadataBase` با دامنهٔ production | [`lib/seo/site.ts`](../lib/seo/site.ts) + [`app/layout.tsx`](../app/layout.tsx) — **`SITE_URL` الزامی** |
 | URL پایدار برای محصول (`/product/slug`) | بدون تغییر slug پس از انتشار |
-| Structured data: فروشگاه | **`ClothingStore`** در [`lib/seo/organization-jsonld.ts`](../lib/seo/organization-jsonld.ts) |
+| Structured data: فروشگاه | **`ClothingStore`** + `logo`/`image` در [`lib/seo/organization-jsonld.ts`](../lib/seo/organization-jsonld.ts) |
+| OG/Twitter تصویر (صفحهٔ اصلی، کالکشن، محصول) | [`lib/seo/share-image.ts`](../lib/seo/share-image.ts) — پیش‌فرض: تصویر محصول از کاتالوگ؛ اختیاری: `STORE_OG_IMAGE_URL` / `STORE_LOGO_URL` |
 | Structured data: محصول (قیمت، موجودی، SKU) | **`Product`** + `Offer` (IRR) در [`lib/seo/product-jsonld.ts`](../lib/seo/product-jsonld.ts) |
 | `noindex` برای سبد/پرداخت/حساب | layoutهای مربوط + [`noIndexMetadata()`](../lib/seo/site.ts) |
 
@@ -67,6 +68,13 @@ SITE_URL=https://ghaemmaghamp.ir
 ```
 
 برای تصاویر S3 مطلق: `S3_PUBLIC_BASE_URL` (و در صورت نیاز همان دامنه در remote patterns).
+
+برای **لوگو/تصویر ثابت** در گوگل و شبکه‌های اجتماعی (اختیاری — وگرنه از تصویر یک محصول در کاتالوگ استفاده می‌شود):
+
+```env
+STORE_OG_IMAGE_URL=https://ghaemmaghamp.ir/uploads/og.jpg
+STORE_LOGO_URL=https://ghaemmaghamp.ir/uploads/logo-square.jpg
+```
 
 ---
 

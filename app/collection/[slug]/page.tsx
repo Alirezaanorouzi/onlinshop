@@ -6,6 +6,10 @@ import { ProductStrip } from "@/components/ProductStrip";
 import { SnappPayPromo } from "@/components/SnappPayPromo";
 import { getCollection } from "@/lib/catalog";
 import { getCategoriesWithProducts, getProducts } from "@/lib/catalog-server";
+import {
+  getCollectionOgImageUrl,
+  socialImageMetadata,
+} from "@/lib/seo/share-image";
 import { collectionCanonical } from "@/lib/seo/site";
 
 /** SQLite catalog on Liara: must not bake `catalog.json` at build into this page. */
@@ -21,12 +25,15 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  markCatalogRequestDynamic();
   const collection = getCollection(slug);
   if (!collection) return { title: "کالکشن" };
 
   const title = collection.title;
   const description = collection.description;
   const url = collectionCanonical(slug);
+  const imageUrl = getCollectionOgImageUrl(slug);
+  const { openGraphImages, twitter } = socialImageMetadata(imageUrl, title);
 
   return {
     title,
@@ -37,6 +44,12 @@ export async function generateMetadata({
       description,
       url,
       type: "website",
+      images: openGraphImages,
+    },
+    twitter: {
+      ...twitter,
+      title,
+      description,
     },
   };
 }

@@ -1,4 +1,5 @@
 import { business } from "@/lib/business";
+import { getStoreLogoUrl } from "@/lib/seo/share-image";
 import { absolutePath } from "@/lib/seo/site";
 import { site } from "@/lib/site";
 
@@ -53,6 +54,13 @@ export function buildOrganizationJsonLd(request?: Request) {
   if (business.instagram.trim()) {
     data.sameAs = [business.instagram];
   }
+
+  const logoUrl = getStoreLogoUrl(request);
+  data.logo = {
+    "@type": "ImageObject",
+    url: logoUrl,
+  };
+  data.image = logoUrl;
 
   return data;
 }

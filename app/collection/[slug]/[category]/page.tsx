@@ -10,6 +10,10 @@ import {
   categoryStaticParams,
   getProducts,
 } from "@/lib/catalog-server";
+import {
+  getCategoryOgImageUrl,
+  socialImageMetadata,
+} from "@/lib/seo/share-image";
 import { categoryCanonical } from "@/lib/seo/site";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +28,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string; category: string }>;
 }) {
   const { slug, category: categorySlug } = await params;
+  markCatalogRequestDynamic();
   const collection = getCollection(slug);
   const category = collection?.categories.find((c) => c.slug === categorySlug);
   if (!collection || !category) return { title: "دسته‌بندی" };
@@ -31,6 +36,8 @@ export async function generateMetadata({
   const title = `${category.name} | ${collection.title}`;
   const description = `${category.name} — ${collection.description}`;
   const url = categoryCanonical(slug, categorySlug);
+  const imageUrl = getCategoryOgImageUrl(slug, categorySlug);
+  const { openGraphImages, twitter } = socialImageMetadata(imageUrl, category.name);
 
   return {
     title,
@@ -41,6 +48,12 @@ export async function generateMetadata({
       description,
       url,
       type: "website",
+      images: openGraphImages,
+    },
+    twitter: {
+      ...twitter,
+      title,
+      description,
     },
   };
 }

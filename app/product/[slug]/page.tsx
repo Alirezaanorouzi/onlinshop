@@ -4,17 +4,19 @@ import { AddToCart } from "@/components/AddToCart";
 import { ProductShareButton } from "@/components/ProductShareButton";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ProductSpecifications } from "@/components/ProductSpecifications";
-import { assetPath } from "@/lib/asset-path";
 import { getProductImages } from "@/lib/product-images";
 import { ProductJsonLd } from "@/components/ProductJsonLd";
 import { getProductShareUrl } from "@/lib/product-share-url";
+import {
+  getProductOgImageUrl,
+  socialImageMetadata,
+} from "@/lib/seo/share-image";
 import {
   resolveLongDescription,
   resolveSeoDescription,
   resolveSeoTitle,
 } from "@/lib/seo/product-meta";
 import { getCollection } from "@/lib/catalog";
-import { getPublicSiteUrl } from "@/lib/site-url";
 import {
   getCategory,
   getProductBySlug,
@@ -35,11 +37,8 @@ export async function generateMetadata({
   const url = getProductShareUrl(slug);
   const title = resolveSeoTitle(product);
   const description = resolveSeoDescription(product);
-  const origin = getPublicSiteUrl().replace(/\/$/, "");
-  const imageRel = assetPath(product.image);
-  const ogImage = imageRel.startsWith("http")
-    ? imageRel
-    : `${origin}${imageRel.startsWith("/") ? imageRel : `/${imageRel}`}`;
+  const ogImage = getProductOgImageUrl(product);
+  const { openGraphImages, twitter } = socialImageMetadata(ogImage, product.name);
 
   return {
     title,
@@ -50,7 +49,12 @@ export async function generateMetadata({
       description,
       url,
       type: "website",
-      images: [{ url: ogImage, alt: product.name }],
+      images: openGraphImages,
+    },
+    twitter: {
+      ...twitter,
+      title,
+      description,
     },
   };
 }
