@@ -208,7 +208,7 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
       <div className="h-14 sm:h-16" aria-hidden />
       <div className="mx-auto max-w-6xl border-b border-white/10 px-3 md:hidden sm:px-4">
         <nav
-          className="flex items-center justify-center gap-5 py-3 sm:gap-8"
+          className="grid grid-cols-2 gap-2 py-2"
           aria-label="کالکشن‌ها"
         >
           {collections.map((collection) => {
@@ -232,10 +232,26 @@ export function Header({ minimal = false }: { minimal?: boolean }) {
   );
 }
 
-function collectionOvalClass(active: boolean) {
-  return active
-    ? "inline-flex h-10 min-w-[7.5rem] items-center justify-center rounded-[50%] bg-surface px-4 text-sm font-medium text-cream ring-1 ring-gold/45 sm:min-w-[8.5rem]"
-    : "inline-flex h-10 min-w-[7.5rem] items-center justify-center rounded-[50%] bg-surface/35 px-4 text-sm text-muted ring-1 ring-white/10 transition hover:text-cream sm:min-w-[8.5rem]";
+function collectionOvalClass(active: boolean, mobile: boolean) {
+  const label =
+    "text-sm font-bold text-gold " +
+    (active ? "" : "text-gold/80 hover:text-gold");
+
+  if (mobile) {
+    return (
+      label +
+      (active
+        ? " w-full rounded-full bg-surface py-2.5 text-center ring-1 ring-gold/45"
+        : " w-full rounded-full bg-surface/40 py-2.5 text-center ring-1 ring-white/10")
+    );
+  }
+
+  return (
+    label +
+    (active
+      ? " inline-flex min-w-[8.5rem] items-center justify-center rounded-full bg-surface px-5 py-2 ring-1 ring-gold/45"
+      : " inline-flex min-w-[8.5rem] items-center justify-center rounded-full bg-surface/35 px-5 py-2 ring-1 ring-white/10")
+  );
 }
 
 function CollectionLink({
@@ -251,19 +267,7 @@ function CollectionLink({
   onNavigate: () => void;
   mobile?: boolean;
 }) {
-  const className = collectionOvalClass(active);
-
-  if (mobile) {
-    return (
-      <Link
-        href={`/collection/${collection.slug}`}
-        onClick={onNavigate}
-        className={className}
-      >
-        {label}
-      </Link>
-    );
-  }
+  const className = collectionOvalClass(active, mobile);
 
   return (
     <Link
